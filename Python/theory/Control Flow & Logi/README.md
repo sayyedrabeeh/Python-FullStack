@@ -649,4 +649,300 @@ You can even write your own with `@contextmanager` decorator.
 
 ---
  
+# Ternary operator, match-case (Python 3.10+)
+
+
+Excellent topics! Let’s cover both:
+
+1. ✅ **Ternary Operator** — Python’s way of writing `if-else` in one line
+2. 🔀 **match-case** — New in **Python 3.10+**, similar to `switch-case` in other languages
  
+
+---
+
+## ✅ 1. **Ternary Operator (Conditional Expression)**
+
+> A **one-line if-else statement** that returns a value based on a condition.
+
+### 📌 Syntax:
+
+```python
+value_if_true if condition else value_if_false
+```
+
+---
+
+### 🧪 Example 1:
+
+```python
+age = 18
+status = "Adult" if age >= 18 else "Minor"
+print(status)
+```
+
+✅ Output:
+
+```
+Adult
+```
+
+---
+
+### 🧪 Example 2:
+
+```python
+a = 5
+b = 10
+max_value = a if a > b else b
+print(max_value)
+```
+
+✅ Output:
+
+```
+10
+```
+
+---
+
+###  When to use:
+
+* For short, **simple conditions**
+* Inside assignments, return statements, or prints
+
+---
+
+###  Don’t overuse it:
+
+Bad readability when nesting ternary operators:
+
+```python
+# Hard to read!
+x = "A" if grade > 90 else "B" if grade > 80 else "C"
+```
+
+---
+
+##  2. **match-case (Python 3.10+)**
+
+> Like a `switch-case` in other languages — lets you compare **a single variable to multiple patterns**.
+
+### 📌 Syntax:
+
+```python
+match variable:
+    case value1:
+        # code block
+    case value2:
+        # code block
+    case _:
+        # default case
+```
+
+---
+
+### 🧪 Example 1:
+
+```python
+day = "Sunday"
+
+match day:
+    case "Monday":
+        print("Start of the week")
+    case "Friday":
+        print("Weekend is near")
+    case "Sunday":
+        print("It's holiday!")
+    case _:
+        print("Normal day")
+```
+
+✅ Output:
+
+```
+It's holiday!
+```
+
+---
+
+###  Example 2: Using multiple values
+
+```python
+command = "start"
+
+match command:
+    case "start" | "run":
+        print("Program started")
+    case "stop":
+        print("Program stopped")
+    case _:
+        print("Unknown command")
+```
+
+---
+
+###  Why use match-case?
+
+* Cleaner than multiple `if-elif-else`
+* Supports complex pattern matching (tuples, classes, guards)
+
+---
+
+###  Python 3.10+ only!
+
+Check your version:
+
+```bash
+python --version
+```
+
+---
+
+## ✅ Summary Table
+
+| Feature        | Use Case                           | Example                            |
+| -------------- | ---------------------------------- | ---------------------------------- |
+| Ternary (`?:`) | One-line `if-else`                 | `x = 10 if flag else 0`            |
+| match-case     | Compare 1 variable to many options | `match command: case "start": ...` |
+
+---
+# Operators:
+  ### Arithmetic, Comparison, Logical
+  ### Identity (is), Membership (in)
+  ### Bitwise, Assignment
+
+ 
+
+---
+ 
+
+> Operators are **symbols** that perform operations on values or variables.
+
+---
+
+###  1. **Arithmetic Operators**
+
+Used for basic math operations.
+
+| Operator | Meaning        | Example   | Result  |
+| -------- | -------------- | --------- | ------- |
+| `+`      | Addition       | `3 + 2`   | `5`     |
+| `-`      | Subtraction    | `5 - 1`   | `4`     |
+| `*`      | Multiplication | `4 * 2`   | `8`     |
+| `/`      | Division       | `10 / 3`  | `3.333` |
+| `//`     | Floor Division | `10 // 3` | `3`     |
+| `%`      | Modulus        | `10 % 3`  | `1`     |
+| `**`     | Exponentiation | `2 ** 3`  | `8`     |
+
+---
+
+###  2. **Comparison Operators (Relational)**
+
+Used to compare values. They always return `True` or `False`.
+
+| Operator | Meaning          | Example  | Result  |
+| -------- | ---------------- | -------- | ------- |
+| `==`     | Equal            | `5 == 5` | `True`  |
+| `!=`     | Not equal        | `5 != 3` | `True`  |
+| `>`      | Greater than     | `5 > 2`  | `True`  |
+| `<`      | Less than        | `2 < 5`  | `True`  |
+| `>=`     | Greater or equal | `5 >= 5` | `True`  |
+| `<=`     | Less or equal    | `4 <= 2` | `False` |
+
+---
+
+###  3. **Logical Operators**
+
+Used to combine multiple conditions (Booleans).
+
+| Operator | Meaning                      | Example            | Result  |
+| -------- | ---------------------------- | ------------------ | ------- |
+| `and`    | True if both are True        | `x > 5 and x < 10` | `True`  |
+| `or`     | True if at least one is True | `x > 5 or x < 2`   | `True`  |
+| `not`    | Reverses the condition       | `not(x > 5)`       | `False` |
+
+---
+
+###  4. **Identity Operators**
+
+Used to compare **object identity** (i.e., whether they are the **same object in memory**).
+
+| Operator | Meaning         | Example      | Result       |
+| -------- | --------------- | ------------ | ------------ |
+| `is`     | Same object     | `x is y`     | `True/False` |
+| `is not` | Not same object | `x is not y` | `True/False` |
+
+🧪 Example:
+
+```python
+x = [1, 2]
+y = x
+z = [1, 2]
+
+print(x is y)    # True (same object)
+print(x is z)    # False (same content, different objects)
+```
+
+---
+
+###  5. **Membership Operators**
+
+Used to test if a value is **in** a container (like list, tuple, dict, string).
+
+| Operator | Meaning                 | Example            | Result |
+| -------- | ----------------------- | ------------------ | ------ |
+| `in`     | Present in sequence     | `3 in [1,2,3]`     | `True` |
+| `not in` | Not present in sequence | `5 not in [1,2,3]` | `True` |
+
+---
+
+###  6. **Bitwise Operators**
+
+Used to compare binary (bit-level) values.
+
+| Operator | Meaning     | Example  | Result |     |     |
+| -------- | ----------- | -------- | ------ | --- | --- |
+| `&`      | AND         | `5 & 3`  | `1`    |     |     |
+| \`       | \`          | OR       | \`5    | 3\` | `7` |
+| `^`      | XOR         | `5 ^ 3`  | `6`    |     |     |
+| `~`      | NOT         | `~5`     | `-6`   |     |     |
+| `<<`     | Left shift  | `2 << 2` | `8`    |     |     |
+| `>>`     | Right shift | `8 >> 2` | `2`    |     |     |
+
+📌 Binary of `5` is `0b0101`, `3` is `0b0011`
+
+---
+
+###  7. **Assignment Operators**
+
+Used to assign values to variables.
+
+| Operator | Meaning                 | Example   | Same As      |
+| -------- | ----------------------- | --------- | ------------ |
+| `=`      | Assign                  | `x = 5`   | `x = 5`      |
+| `+=`     | Add and assign          | `x += 3`  | `x = x + 3`  |
+| `-=`     | Subtract and assign     | `x -= 2`  | `x = x - 2`  |
+| `*=`     | Multiply and assign     | `x *= 4`  | `x = x * 4`  |
+| `/=`     | Divide and assign       | `x /= 2`  | `x = x / 2`  |
+| `//=`    | Floor divide and assign | `x //= 3` | `x = x // 3` |
+| `%=`     | Modulus and assign      | `x %= 2`  | `x = x % 2`  |
+| `**=`    | Power and assign        | `x **= 2` | `x = x ** 2` |
+
+---
+
+##  Summary Cheat Sheet
+
+| Category   | Examples                            |                           |
+| ---------- | ----------------------------------- | ------------------------- |
+| Arithmetic | `+`, `-`, `*`, `/`, `**`, `%`, `//` |                           |
+| Comparison | `==`, `!=`, `>`, `<`, `>=`, `<=`    |                           |
+| Logical    | `and`, `or`, `not`                  |                           |
+| Identity   | `is`, `is not`                      |                           |
+| Membership | `in`, `not in`                      |                           |
+| Bitwise    | `&`, \`                             | `, `^`, `\~`, `<<`, `>>\` |
+| Assignment | `=`, `+=`, `-=`, `*=`, etc.         |                           |
+
+---
+
+ 
+
