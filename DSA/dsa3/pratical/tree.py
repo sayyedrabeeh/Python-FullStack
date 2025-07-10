@@ -58,6 +58,7 @@ class GenneralTree:
                 return True
         return False
     
+    
 tree = GenneralTree("CEO")
 cto = tree.add_child(tree.root, "CTO")
 cfo = tree.add_child(tree.root, "CFO")
