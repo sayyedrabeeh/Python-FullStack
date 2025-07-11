@@ -5,10 +5,15 @@ function Todo() {
   const [text, setText] = useState("");
   const [editindex, setEditIndex] = useState(null);
   const [editText, setEditText] = useState("");
+  const count = todo.length;
 
   const addtodo = () => {
     if (text.trim() === "") return;
-    setTodo([...todo, text]);
+    const newtext = {
+        text:text,
+        time:new Date().toLocaleString()
+    }
+    setTodo([...todo, newtext]);
     setText("");
   };
 
@@ -19,31 +24,36 @@ function Todo() {
 
   const edit = (index) => {
     setEditIndex(index);
-    setEditText(todo[index]);
+    setEditText(todo[index].text);
   };
 
   const save = () => {
     const updated = [...todo];
-    updated[editindex] = editText;
+    updated[editindex].text = editText;
     setTodo(updated);
     setEditIndex(null);
     setEditText("");
   };
 
-  // Inline styles as objects
   const styles = {
     container: {
-      maxWidth: "500px",
-      margin: "40px auto",
-      padding: "20px",
-      background: "#ffffff",
-      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-      borderRadius: "8px",
-      fontFamily: "Arial, sans-serif",
+      maxWidth: "600px",
+      margin: "50px auto",
+      padding: "30px",
+      background: "#f0f2f5",
+      boxShadow: "0 6px 12px rgba(0,0,0,0.15)",
+      borderRadius: "10px",
+      fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
     },
     title: {
       textAlign: "center",
-      color: "#333",
+      marginBottom: "20px",
+      color: "#2c3e50",
+    },
+    counter: {
+      marginBottom: "10px",
+      fontSize: "18px",
+      color: "#555",
     },
     inputGroup: {
       display: "flex",
@@ -52,28 +62,33 @@ function Todo() {
     },
     input: {
       flex: 1,
-      padding: "10px",
+      padding: "12px",
       fontSize: "16px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
     },
     button: {
-      padding: "10px 20px",
+      padding: "12px 20px",
       backgroundColor: "#4CAF50",
-      color: "white",
+      color: "#fff",
       border: "none",
+      borderRadius: "6px",
       cursor: "pointer",
+      transition: "background 0.3s ease",
     },
     list: {
       listStyle: "none",
       padding: 0,
     },
     item: {
-      background: "#f9f9f9",
-      marginBottom: "10px",
-      padding: "12px",
-      borderRadius: "5px",
+      background: "#fff",
+      marginBottom: "12px",
+      padding: "15px",
+      borderRadius: "8px",
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
+      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
     },
     buttonGroup: {
       display: "flex",
@@ -83,35 +98,49 @@ function Todo() {
       backgroundColor: "#e74c3c",
       color: "white",
       border: "none",
-      padding: "5px 12px",
+      padding: "8px 16px",
       cursor: "pointer",
-      borderRadius: "4px",
+      borderRadius: "6px",
+      transition: "background 0.3s ease",
     },
     editButton: {
       backgroundColor: "#3498db",
       color: "white",
       border: "none",
-      padding: "5px 12px",
+      padding: "8px 16px",
       cursor: "pointer",
-      borderRadius: "4px",
+      borderRadius: "6px",
+      transition: "background 0.3s ease",
     },
     saveButton: {
       marginLeft: "8px",
-      padding: "8px 14px",
+      padding: "8px 16px",
       backgroundColor: "#27ae60",
       color: "white",
       border: "none",
       cursor: "pointer",
+      borderRadius: "6px",
+      transition: "background 0.3s ease",
     },
     editInput: {
-      padding: "8px",
+      padding: "10px",
       fontSize: "16px",
+      flex: 1,
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+    },
+     time: {
+      fontSize: "12px",
+      color: "#777",
+      marginTop: "5px",
     },
   };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Todo App</h1>
+      <div style={styles.counter}>Total Todos: {count}</div>
+
       <div style={styles.inputGroup}>
         <input
           value={text}
@@ -126,7 +155,7 @@ function Todo() {
         {todo.map((item, index) => (
           <li key={index} style={styles.item}>
             {editindex === index ? (
-              <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+              <div style={{ display: "flex", alignItems: "center", width: "100%", gap: "10px" }}>
                 <input
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
@@ -136,11 +165,12 @@ function Todo() {
               </div>
             ) : (
               <>
-                <span>{item}</span>
+                <span>{item.text}</span>
                 <div style={styles.buttonGroup}>
                   <button onClick={() => delete1(index)} style={styles.deleteButton}>Delete</button>
                   <button onClick={() => edit(index)} style={styles.editButton}>Edit</button>
                 </div>
+                <div style={styles.time}>Added on: {item.time}</div>
               </>
             )}
           </li>
