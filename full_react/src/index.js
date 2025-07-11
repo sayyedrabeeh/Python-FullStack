@@ -5,13 +5,14 @@ import ReactDOM from 'react-dom/client';
 // import InputDisplay from './react1/pratical/inputdisplay';
 // import Parent from './react1/pratical/parent_child';
 // import Useeffect1 from './react1/pratical/useffeect';
-import Test from './react1/pratical/classcomponent';
+// import Test from './react1/pratical/classcomponent';
 // import Upper from './react1/pratical/customhook';
+import Todo from './react1/pratical/Todo';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Test />
+    <Todo />
   </React.StrictMode>
 );
  
