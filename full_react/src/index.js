@@ -10,12 +10,13 @@ import ReactDOM from 'react-dom/client';
 // import Todo from './react1/pratical/Todo';
 // import Match from './react1/pratical/match-field';
 // import Time from './react1/pratical/time';
-import Timer from './react1/pratical/timer';
+// import Timer from './react1/pratical/timer';
+import Parent from './react1/pratical/child_parent';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Timer />
+    <Parent />
   </React.StrictMode>
 );
  
