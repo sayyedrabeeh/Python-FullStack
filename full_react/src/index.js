@@ -8,12 +8,13 @@ import ReactDOM from 'react-dom/client';
 // import Test from './react1/pratical/classcomponent';
 // import Upper from './react1/pratical/customhook';
 // import Todo from './react1/pratical/Todo';
-import Match from './react1/pratical/match-field';
+// import Match from './react1/pratical/match-field';
+import Time from './react1/pratical/time';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Match />
+    <Time />
   </React.StrictMode>
 );
  
