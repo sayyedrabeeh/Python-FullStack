@@ -83,7 +83,7 @@ print(trie.starts_with("ap"))
 
 print(trie.starts_with("ba")) 
 trie.delete("app")
-print(trie.search("app"))     # False
+print(trie.search("app"))      
 print(trie.search("apple")) 
     
 print("Words in Trie:")
