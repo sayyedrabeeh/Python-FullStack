@@ -5,13 +5,13 @@ import ReactDOM from 'react-dom/client';
 // import InputDisplay from './react1/pratical/inputdisplay';
 // import Parent from './react1/pratical/parent_child';
 // import Useeffect1 from './react1/pratical/useffeect';
-
-import Upper from './react1/pratical/customhook';
+import Test from './react1/pratical/classcomponent';
+// import Upper from './react1/pratical/customhook';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Upper />
+    <Test />
   </React.StrictMode>
 );
  
