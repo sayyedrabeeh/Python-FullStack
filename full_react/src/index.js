@@ -24,12 +24,19 @@ import { Provider } from 'react-redux'
 
 
 // import Display,{store} from './react3/pratical/autocounter';
-import Calculator,{store} from './react3/pratical/calculator_redux';
+// import Calculator,{store} from './react3/pratical/calculator_redux';
+
+import CounterDisplay,{persistor,store} from './react3/pratical/counter_redux_persist';
+import { PersistGate } from 'redux-persist/integration/react';
+
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Calculator/>
+      <PersistGate loading={null} persistor={persistor}>
+      <CounterDisplay/>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );
