@@ -11,12 +11,13 @@ import ReactDOM from 'react-dom/client';
 // import Match from './react1/pratical/match-field';
 // import Time from './react1/pratical/time';
 // import Timer from './react1/pratical/timer';
-import Parent from './react1/pratical/child_parent';
+// import Parent from './react1/pratical/child_parent';
+import Add from './react2/counter';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Parent />
+    <Add />
   </React.StrictMode>
 );
  
