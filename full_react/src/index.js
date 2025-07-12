@@ -17,12 +17,15 @@ import ReactDOM from 'react-dom/client';
 // import Calc from './react2/calculator_usereducer';
 // import Calc from './react2/calculator_usecontext';
 // import Addtwonum from './react2/usememo';
-import Todo from './react2/todolist';
-
+// import Todo from './react2/todolist';
+import { Provider } from 'react-redux'
+import Display,{store} from './react3/pratical/autocounter';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Todo />
+    <Provider store={store}>
+      <Display/>
+    </Provider>
   </React.StrictMode>
 );
  
