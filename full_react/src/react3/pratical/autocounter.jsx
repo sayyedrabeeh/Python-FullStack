@@ -1,52 +1,98 @@
 import React from "react";
-import {createSlice,configureStore  } from '@reduxjs/toolkit'
-import { useDispatch,useSelector } from 'react-redux'
+import { createSlice, configureStore } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 
 const counterSlice = createSlice({
-    name:'Counter',
-    initialState:{
-        count:0
+  name: "Counter",
+  initialState: {
+    count: 0,
+  },
+  reducers: {
+    incremet: (state) => {
+      state.count += 1;
     },
-    reducers:{
-        incremet:(state) =>{
-            state.count+=1
-        },
-        decrement:(state) =>{
-            state.count-=1
-        },
-        reset :(state) =>{
-            state.count = 0 
-        }
-    }
-})
-const { incremet,decrement,reset} = counterSlice.actions
+    decrement: (state) => {
+      state.count -= 1;
+    },
+    reset: (state) => {
+      state.count = 0;
+    },
+  },
+});
 
-const  store = configureStore({
-    reducer:{
-    Counter : counterSlice.reducer
-}})
- 
-export {store}
+const { incremet, decrement, reset } = counterSlice.actions;
 
-function Display(){
-    const  count  = useSelector((state) => state.Counter.count)
-    const dispatch = useDispatch()
+const store = configureStore({
+  reducer: {
+    Counter: counterSlice.reducer,
+  },
+});
+export { store }
 
-    return(
-        <>
-        <h2>count:{count}</h2>
+function Display() {
+  const count = useSelector((state) => state.Counter.count);
+  const dispatch = useDispatch();
 
-        <button onClick={()=>dispatch(incremet())}>increment</button>
-        <button onClick={()=>dispatch(decrement())}>decrement</button>
-        <button onClick={() =>dispatch(reset())}>reset</button>
-        
-        </>
-    )
+  const containerStyle = {
+    textAlign: "center",
+    marginTop: "50px",
+    fontFamily: "Arial, sans-serif",
+  };
 
+  const countStyle = {
+    fontSize: "2rem",
+    color: "#333",
+    marginBottom: "20px",
+  };
+
+  const buttonGroupStyle = {
+    display: "flex",
+    justifyContent: "center",
+    gap: "10px",
+  };
+
+  const buttonStyle = {
+    padding: "10px 20px",
+    fontSize: "1rem",
+    cursor: "pointer",
+    border: "none",
+    borderRadius: "5px",
+    color: "white",
+    background: "linear-gradient(to right, #4CAF50, #45A049)",
+    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+  };
+
+  const resetButtonStyle = {
+    ...buttonStyle,
+    background: "linear-gradient(to right, #f44336, #e53935)",
+  };
+
+  return (
+    <div style={containerStyle}>
+      <h2 style={countStyle}>Count: {count}</h2>
+
+      <div style={buttonGroupStyle}>
+        <button
+          style={buttonStyle}
+          onClick={() => dispatch(incremet())}
+        >
+          Increment
+        </button>
+        <button
+          style={buttonStyle}
+          onClick={() => dispatch(decrement())}
+        >
+          Decrement
+        </button>
+        <button
+          style={resetButtonStyle}
+          onClick={() => dispatch(reset())}
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  );
 }
-
-
 export default Display
-
-
-
