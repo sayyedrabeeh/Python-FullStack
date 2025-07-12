@@ -14,13 +14,14 @@ import ReactDOM from 'react-dom/client';
 // import Parent from './react1/pratical/child_parent';
 // import Add from './react2/usecontext';
 // import Add from './react2/usereducer';
-import Calc from './react2/calculator_usereducer';
+// import Calc from './react2/calculator_usereducer';
 // import Calc from './react2/calculator_usecontext';
+import Addtwonum from './react2/usememo';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Calc />
+    <Addtwonum />
   </React.StrictMode>
 );
  
