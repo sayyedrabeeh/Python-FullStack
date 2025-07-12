@@ -16,12 +16,13 @@ import ReactDOM from 'react-dom/client';
 // import Add from './react2/usereducer';
 // import Calc from './react2/calculator_usereducer';
 // import Calc from './react2/calculator_usecontext';
-import Addtwonum from './react2/usememo';
+// import Addtwonum from './react2/usememo';
+import Todo from './react2/todolist';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Addtwonum />
+    <Todo />
   </React.StrictMode>
 );
  
