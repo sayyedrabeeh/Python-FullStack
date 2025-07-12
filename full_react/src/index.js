@@ -12,12 +12,14 @@ import ReactDOM from 'react-dom/client';
 // import Time from './react1/pratical/time';
 // import Timer from './react1/pratical/timer';
 // import Parent from './react1/pratical/child_parent';
-import Add from './react2/counter';
+// import Add from './react2/usecontext';
+// import Add from './react2/usereducer';
+import Calc from './react2/calculator_usereducer';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Add />
+    <Calc />
   </React.StrictMode>
 );
  
