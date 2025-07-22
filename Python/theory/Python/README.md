@@ -79,9 +79,11 @@ Python provides two types of type casting:
 
 ## F-String
 
- efficient way to interpolate variables, objects, and expressions directly into strings. By prefixing a string with f or F, you can embed expressions within curly braces ({}), which are evaluated at runtime.
- This makes f-strings faster and more readable compared to older approaches like the modulo (%) operator or the string .format() method.
-
+ efficient way to interpolate variables, objects, and expressions directly into strings. By prefixing a string with 
+ f or F, you can embed expressions within curly braces ({}), which are evaluated at runtime.
+ This makes f-strings faster and more readable compared to older approaches like the modulo (%) operator or the 
+ string .format() method.
+---
 Before f-strings (introduced in Python 3.6), there were three main ways to do string interpolation (i.e., inserting 
 variables into strings):
 <pre>
@@ -103,6 +105,38 @@ variables into strings):
         message = "My name is " + name + " and I am " + str(age) + " years old."
         print(message)
 </pre>
-F-strings joined the party in Python 3.6 with PEP 498. Also called formatted string literals,You can embed almost any Python expression in an f-string. This allows you to do some nifty things.
+F-strings joined the party in Python 3.6 with PEP 498. Also called formatted string literals,You can embed almost 
+any Python expression in an f-string. This allows you to do some nifty things.
+---
 > f"{2 * 21}"
-When Python runs this f-string, it multiplies 2 by 21 and immediately interpolates the resulting value into the final string
+When Python runs this f-string, it multiplies 2 by 21 and immediately interpolates the resulting value into the 
+final string
+
+
+You can use a variable name followed by an equal sign (=) in an f-string to create a self-documented expression. 
+When Python runs the f-string, it builds an expression-like string containing the variable’s name, the equal sign, 
+and the variable’s current value.
+
+<pre>
+variable = "Some mysterious value"
+
+print(f"{variable = }")
+
+</pre>
+
+### Magic Methods
+
+> customizing  classes using special methods, also known as magic methods or dunder methods. 
+
+
+A special method is a method whose name starts and ends with a double underscore. These methods have special 
+meanings for Python.Python automatically calls magic methods as a response to certain operations, such as 
+instantiation, sequence indexing, attribute managing, and much more, All these methods support specific feature.
+
+---
+>A method that is called implicitly by Python to execute a certain operation on a type, such as addition. Such methods have names starting and ending with double underscores.
+
+###  **.__init__()**
+When creating custom classes in Python, probably the first and most common method that you implement is .__init__(). This method works as an initializer because it allows you to provide initial values to any instance attributes that you define in your classes.
+
+
