@@ -82,8 +82,9 @@ Python provides two types of type casting:
  efficient way to interpolate variables, objects, and expressions directly into strings. By prefixing a string with f or F, you can embed expressions within curly braces ({}), which are evaluated at runtime.
  This makes f-strings faster and more readable compared to older approaches like the modulo (%) operator or the string .format() method.
 
-Before f-strings (introduced in Python 3.6), there were three main ways to do string interpolation (i.e., inserting variables into strings):
-
+Before f-strings (introduced in Python 3.6), there were three main ways to do string interpolation (i.e., inserting 
+variables into strings):
+<pre>
   1 : % Operator (Old-style formatting)
         name = "Alice"
         age = 30
@@ -101,7 +102,7 @@ Before f-strings (introduced in Python 3.6), there were three main ways to do st
         age = 30
         message = "My name is " + name + " and I am " + str(age) + " years old."
         print(message)
-
+</pre>
 F-strings joined the party in Python 3.6 with PEP 498. Also called formatted string literals,You can embed almost any Python expression in an f-string. This allows you to do some nifty things.
 > f"{2 * 21}"
 When Python runs this f-string, it multiplies 2 by 21 and immediately interpolates the resulting value into the final string
