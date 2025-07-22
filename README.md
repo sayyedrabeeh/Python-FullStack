@@ -1,4 +1,4 @@
-Here’s a complete guide to all major **styling elements** you can use in a `README.md` file using **Markdown syntax**—useful for GitHub, GitLab, Bitbucket, and other Markdown-rendering tools.
+ Here’s a complete guide to all major *styling elements* you can use in a README.md file using *Markdown syntax*—useful for GitHub, GitLab, Bitbucket, and other Markdown-rendering tools.
 
 ---
 
@@ -6,58 +6,58 @@ Here’s a complete guide to all major **styling elements** you can use in a `RE
 
 ### Headers
 
-```md
+md
 # H1
 ## H2
 ### H3
 #### H4
 ##### H5
 ###### H6
-```
+
 
 ### Emphasis
 
-```md
+md
 *Italic* or _Italic_
 **Bold** or __Bold__
 ***Bold and Italic*** or ___Bold and Italic___
-```
+
 
 ### Strikethrough
 
-```md
+md
 ~~Strikethrough~~
-```
+
 
 ### Blockquotes
 
-```md
+md
 > This is a blockquote.
-```
+
 
 ### Horizontal Rule
 
-```md
+md
 ---
-```
+
 
 ---
 
 ## 🔗 Links
 
-```md
+md
 [Text](https://example.com)
 [Text with title](https://example.com "Optional Title")
-```
+
 
 ---
 
-## 🖼️ Images
+## 🖼 Images
 
-```md
+md
 ![Alt Text](image.png)
 ![Alt Text with Title](image.png "Image Title")
-```
+
 
 ---
 
@@ -65,20 +65,20 @@ Here’s a complete guide to all major **styling elements** you can use in a `RE
 
 ### Unordered List
 
-```md
+md
 - Item 1
 - Item 2
   - Subitem
 * Another item
-```
+
 
 ### Ordered List
 
-```md
+md
 1. First
 2. Second
    1. Sub-step
-```
+
 
 ---
 
@@ -86,39 +86,39 @@ Here’s a complete guide to all major **styling elements** you can use in a `RE
 
 ### Inline Code
 
-```md
+md
 `Inline code`
-```
+
 
 ### Code Block
 
 <pre>
-```language
+language
 function helloWorld() {
   console.log("Hello, world!");
 }
-```
+
 </pre>
 
 ---
 
 ## 📌 Tables
 
-```md
+md
 | Header 1 | Header 2 |
 |----------|----------|
 | Cell 1   | Cell 2   |
 | Cell 3   | Cell 4   |
-```
+
 
 ---
 
 ## 📦 Checkboxes (Task Lists)
 
-```md
+md
 - [x] Task 1 (completed)
 - [ ] Task 2 (incomplete)
-```
+
 
 ---
 
@@ -126,53 +126,53 @@ function helloWorld() {
 
 You can use inline HTML:
 
-```md
+md
 <b>Bold via HTML</b>
 <br>
 <i>Italic via HTML</i>
-```
+
 
 ---
 
 ## 🧱 Badges (using Shields.io)
 
-```md
+md
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-```
+
 
 ---
 
 ## 📁 Folder/File Structure
 
-```md
+md
 project/
 ├── src/
 │   └── main.js
 ├── README.md
 └── package.json
-```
+
 
 ---
 
 ## 💡 Tips
 
-* Use emoji: `:rocket:` → 🚀 (only supported in some Markdown renderers like GitHub)
-* Use `<details>` for collapsible sections:
+* Use emoji: :rocket: → 🚀 (only supported in some Markdown renderers like GitHub)
+* Use <details> for collapsible sections:
 
-```md
+md
 <details>
 <summary>Click to expand</summary>
 
 Hidden content here.
 
 </details>
-```
+
 
 ---
 
 ## Example README Snippet
 
-````md
+`md
 # Project Title 🚀
 
 A brief description of the project.
@@ -185,24 +185,24 @@ A brief description of the project.
 
 ## Installation
 
-```bash
+bash
 npm install my-project
-````
+`
 
 ## Usage
 
-```js
+js
 import { myFunction } from 'my-project';
 myFunction();
-```
+
 
 ## License
 
 [MIT](LICENSE)
 
-```
+
 
 ---
 
-Would you like a downloadable `.md` file with all this content?
+Would you like a downloadable .md file with all this content?
 ```

@@ -102,4 +102,6 @@ Before f-strings (introduced in Python 3.6), there were three main ways to do st
         message = "My name is " + name + " and I am " + str(age) + " years old."
         print(message)
 
-
+F-strings joined the party in Python 3.6 with PEP 498. Also called formatted string literals,You can embed almost any Python expression in an f-string. This allows you to do some nifty things.
+> f"{2 * 21}"
+When Python runs this f-string, it multiplies 2 by 21 and immediately interpolates the resulting value into the final string
