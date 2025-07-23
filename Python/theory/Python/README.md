@@ -159,7 +159,7 @@ that you define in your classes.
 42
 </pre>
 
-### <u> ** __new__()   ** </u>
+### <u> **__new__()** </u>
 
 When you call a class constructor to create a new instance of a class, Python implicitly calls the .__new__() 
 method as the first step in the instantiation process. This method is responsible for creating and returning a new 
@@ -210,7 +210,7 @@ how this class works in practice:
 True
 </pre>
 
-### <u>** .__str__() v/s .__repr__()    **   </u>
+### <u>**.__str__() v/s .__repr__()**   </u>
 
 
 If you want to provide user-friendly output, then you can use the .__str__() method. On the other hand, when you 
@@ -499,3 +499,61 @@ print(inspect.getsource(Person))  # Shows source code of the class
 ---
 
  
+### ___Iterators__
+
+you need two special methods. By implementing these methods, you’ll take control of the iteration process.
+methods that make up an iterator. They’re known as the iterator protocol.
+
+> .__iter__()	Called to initialize the iterator. It must return an iterator object.
+> .__next__()	Called to iterate over the iterator. It must return the next value in the data stream.
+
+
+. In .__iter__(), you typically return self, the current object. In .__next__(), you need to return the next value 
+from the data stream in a sequence. This method must raise a StopIteration when the stream of data is exhausted.
+
+```python
+
+numbers = [10, 20, 30]
+
+# Create an iterator
+iterator = iter(numbers)
+
+# Get elements one by one
+print(next(iterator))  # 10
+print(next(iterator))  # 20
+print(next(iterator))  # 30
+
+# If you call next again, you'll get StopIteration
+# print(next(iterator))  # Uncomment to see error
+
+
+class CountUpTo:
+    def __init__(self, max):
+        self.max = max
+        self.current = 1
+
+    def __iter__(self):
+        return self  # The object itself is the iterator
+
+    def __next__(self):
+        if self.current <= self.max:
+            num = self.current
+            self.current += 1
+            return num
+        else:
+            raise StopIteration
+
+counter = CountUpTo(3)
+
+for number in counter:
+    print(number)
+
+# Output:
+# 1
+# 2
+# 3
+
+
+
+```
+
