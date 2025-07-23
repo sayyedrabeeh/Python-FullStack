@@ -290,3 +290,212 @@ Person(name='John Doe', age=35)
 "Person(name='John Doe', age=35)"
 </pre>
 
+### <u> **operator overloading.** </u>
+
+Operator overloading means providing additional functionality to the operators. You can do this with most built-in 
+types and their specific supported operators. However, that’s not all you can do with the special methods that 
+support Python operators. You can also use these methods to support some operators in your custom classes.
+
+Operator overloading means giving extended meaning to standard operators (like +, -, *, etc.) when used with custom objects (your own classes).
+
+#### 🧮 Operator Overloading Methods in Python
+
+| Operator | Method Name             | Description                     |
+|----------|-------------------------|---------------------------------|
+| `+`      | `__add__(self, other)`  | Addition                        |
+| `-`      | `__sub__(self, other)`  | Subtraction                     |
+| `*`      | `__mul__(self, other)`  | Multiplication                  |
+| `/`      | `__truediv__(self, other)` | True Division               |
+| `//`     | `__floordiv__(self, other)`| Floor Division              |
+| `%`      | `__mod__(self, other)`  | Modulo (Remainder)             |
+| `**`     | `__pow__(self, other[, modulo])` | Exponentiation       |
+
+<pre>
+class Number:
+    def __init__(self, value):
+        self.value = value
+
+    def __add__(self, other):
+        return Number(self.value + other.value)
+
+</pre>
+
+----
+>>> Just like the + operator:
+
+2 + 3 → adds numbers
+
+'Hello' + 'World' → joins strings
+
+You can define what + does for your own class, like combining two Point or Vector objects.
+----
+
+<pre>
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    # Overload + operator
+    def __add__(self, other):
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+p1 = Point(2, 3)
+p2 = Point(4, 5)
+p3 = p1 + p2  # Uses __add__
+print(p3)     # Output: (6, 8)
+
+</pre>
+
+| Without Overloading  | With Overloading             |
+| -------------------- | ---------------------------- |
+| `p1.add(p2)`         | `p1 + p2`                    |
+| `v1.multiply(v2)`    | `v1 * v2`                    |
+| Manual function call | Cleaner, more natural syntax |
+
+
+
+#### 🔁 Right-Hand Operator Overloading Methods in Python
+
+When the **left-hand operand** doesn’t support the operation (or returns `NotImplemented`), Python tries the corresponding **right-hand method**.
+
+| Operator | Right-Hand Method         | Used When                                   |
+|----------|---------------------------|---------------------------------------------|
+| `+`      | `__radd__(self, other)`   | `other + self` when `other.__add__` fails   |
+| `-`      | `__rsub__(self, other)`   | `other - self` when `other.__sub__` fails   |
+| `*`      | `__rmul__(self, other)`   | `other * self` when `other.__mul__` fails   |
+| `/`      | `__rtruediv__(self, other)`| `other / self` when `other.__truediv__` fails |
+| `//`     | `__rfloordiv__(self, other)`| `other // self` when `other.__floordiv__` fails |
+| `%`      | `__rmod__(self, other)`   | `other % self` when `other.__mod__` fails   |
+| `**`     | `__rpow__(self, other[, modulo])` | `other ** self` when `other.__pow__` fails |
+
+
+<pre>
+
+class CustomNumber:
+    def __init__(self, value):
+        self.value = value
+
+    def __add__(self, other):
+        if isinstance(other, CustomNumber):
+            print("Called __add__")
+            return CustomNumber(self.value + other.value)
+        return NotImplemented  # Triggers __radd__ if available on other
+
+    def __radd__(self, other):
+        print("Called __radd__")
+        return CustomNumber(self.value + other)  # assume `other` is int or float
+
+    def __str__(self):
+        return f"CustomNumber({self.value})"
+
+
+a = CustomNumber(10)
+b = CustomNumber(20)
+
+# ✅ Left-hand __add__
+result1 = a + b
+print(result1)  # Output: CustomNumber(30)
+
+# ✅ Right-hand __radd__
+result2 = 5 + a   # int + CustomNumber —> triggers __radd__
+print(result2)   # Output: CustomNumber(15)
+
+# ✅ What happens here?
+result3 = a + 5   # CustomNumber + int —> __add__ returns NotImplemented —> __radd__ not used because int doesn't have it
+print(result3)    # TypeError
+
+
+</pre>
+
+
+### <u>**Introspection** </u>
+
+### 🔍 What is **Introspection** in Python?
+
+**Introspection** is the ability of a Python program to **examine the type or properties of an object at runtime**.
+
+In simple words, Python lets you ask questions like:
+
+* “What type is this object?”
+* “What attributes and methods does it have?”
+* “Where is this object defined?”
+* “Is this a class, a function, or a module?”
+
+---
+
+## ✅ Why is Introspection useful?
+
+* Debugging
+* Writing dynamic or generic code
+* Understanding third-party libraries
+* Auto-documentation and tools like `dir()`, `help()`
+
+---
+
+## 📦 Common Introspection Tools in Python
+
+| Function / Tool             | Purpose                                                    |
+| --------------------------- | ---------------------------------------------------------- |
+| `type(obj)`                 | Returns the type of `obj`                                  |
+| `id(obj)`                   | Returns the unique memory address of `obj`                 |
+| `isinstance(obj, cls)`      | Checks if `obj` is an instance of class `cls`              |
+| `issubclass(cls1, cls2)`    | Checks if `cls1` is a subclass of `cls2`                   |
+| `dir(obj)`                  | Lists all attributes and methods of `obj`                  |
+| `hasattr(obj, attr)`        | Checks if `obj` has an attribute named `attr`              |
+| `getattr(obj, attr)`        | Gets the value of the attribute `attr` from `obj`          |
+| `setattr(obj, attr, value)` | Sets the value of `attr` in `obj`                          |
+| `callable(obj)`             | Checks if the object is callable (like functions, methods) |
+| `globals()`                 | Returns current global symbol table                        |
+| `locals()`                  | Returns current local symbol table                         |
+| `help(obj)`                 | Opens the help/manual page for the object                  |
+
+---
+
+## 🧪 Example
+
+```python
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+p = Person("Rabeeh")
+
+print(type(p))             # <class '__main__.Person'>
+print(isinstance(p, Person))  # True
+print(dir(p))              # ['__class__', '__delattr__', ..., 'name']
+print(hasattr(p, 'name'))  # True
+print(getattr(p, 'name'))  # Rabeeh
+print(callable(p))         # False
+print(callable(p.__init__))  # True
+```
+
+---
+
+## 🧠 Advanced Introspection (via `inspect` module)
+
+```python
+import inspect
+
+print(inspect.getmembers(p))  # List all members (methods + attributes)
+print(inspect.isclass(Person))  # True
+print(inspect.getsource(Person))  # Shows source code of the class
+```
+
+---
+
+## 🔥 Summary
+
+| Introspection lets you...       | With tools like...                |
+| ------------------------------- | --------------------------------- |
+| Know an object’s type           | `type()`                          |
+| List its methods and attributes | `dir()`                           |
+| Check if it's a class/function  | `inspect.isclass()`, `callable()` |
+| Dynamically access attributes   | `getattr()`, `setattr()`          |
+
+---
+
+ 
