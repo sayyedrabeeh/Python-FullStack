@@ -13,12 +13,12 @@ It supports multiple programming paradigms, including structured.object-oriented
 
 simple values of data.are typically immutable, meaning their value cannot change after they are created.for storing single values and performing basic operations. In Python, all data values are objects. That means Python has no primitive data types and all the types are reference types. However, Python has built-in data types.
 python has four primitive variable types:
-
+---
  1.Integers
  2.Float
  3.Strings
  4.Boolean
-
+---
 
 ### Collection Datatpe
 
@@ -44,16 +44,16 @@ Commas are what makes a tuple, as parentheses are optional.
 
  that do not support duplicated objects and as such, they cannot be indexed. ets can be created by using curly brackets using the set() constructor.
 
-    eg : a = {a,b,c,d}
+        eg : a = {a,b,c,d}
          a = set((1,2,3,4,5))
 
 #### Dictionary
 
 A dictionary is an unordered set of key/value pairs. Each unique key has a value.duplicates are not allowed, as a dictionary cannot have multiple items with the same key, because the values will overwrite and the most recent value will be returned.
-    eg : a = {
-        1:2,
-        3:4
-    }        
+        eg : a = {
+            1:2,
+            3:4
+        }        
 
 ### Non-Primitive Data Types
 
@@ -70,11 +70,11 @@ before performing arithmetic operations. Otherwise, Python will interpret "27" a
 strings instead of performing arithmetic.
 
 Python provides two types of type casting:
-
+---
   1 : Explicit Type Casting: Where the programmer manually converts one data type into another.
   2 : Implicit Type Casting (Automatic Type Conversion): Where Python automatically converts one data type to 
       another to prevent data loss or errors.
-
+---
 
 
 ## F-String
@@ -134,9 +134,368 @@ meanings for Python.Python automatically calls magic methods as a response to ce
 instantiation, sequence indexing, attribute managing, and much more, All these methods support specific feature.
 
 ---
->A method that is called implicitly by Python to execute a certain operation on a type, such as addition. Such methods have names starting and ending with double underscores.
+>A method that is called implicitly by Python to execute a certain operation on a type, such as addition. Such 
+methods have names starting and ending with double underscores.
 
-###  **.__init__()**
-When creating custom classes in Python, probably the first and most common method that you implement is .__init__(). This method works as an initializer because it allows you to provide initial values to any instance attributes that you define in your classes.
+###  <u> **.__init__()** </u>
 
 
+When creating custom classes in Python, probably the first and most common method that you implement is .__init__
+(). This method works as an initializer because it allows you to provide initial values to any instance attributes 
+that you define in your classes.
+
+
+<pre>
+>>> class Point:
+...     def __init__(self, x, y):
+...         self.x = x
+...         self.y = y
+...
+
+>>> point = Point(21, 42)
+>>> point.x
+21
+>>> point.y
+42
+</pre>
+
+### <u> ** __new__()   ** </u>
+
+When you call a class constructor to create a new instance of a class, Python implicitly calls the .__new__() 
+method as the first step in the instantiation process. This method is responsible for creating and returning a new 
+empty object of the underlying class. Python then passes the just-created object to .__init__() for initialization.
+
+The default implementation of .__new__() is enough for most practical use cases. So, you probably won’t need to 
+write a custom implementation of .__new__() in most cases.
+
+
+
+you can use .__new__() to create subclasses of immutable types, such as int, float, tuple, and str.
+
+
+<pre>
+
+>>> class Storage(float):
+...     def __new__(cls, value, unit):
+...         instance = super().__new__(cls, value)
+...         instance.unit = unit
+...         return instance
+...
+
+
+</pre>
+
+In this example, you’ll note that .__new__() is a class method because it gets the current class (cls) rather than 
+the current instance (self) as an argument.
+
+Then, you run three steps. First, you create a new instance of the current class, cls, by calling .__new__() on the 
+float class through the built-in super() function. This call creates a new instance of float and initializes it 
+using value as an argument.
+
+Then, you customize the new instance by dynamically attaching a .unit attribute to it. Finally, you return the new 
+instance to meet the default behavior of .__new__().
+
+
+how this class works in practice:
+
+<pre>
+>>> disk = Storage(1024, "GB")
+
+>>> disk
+1024.0
+>>> disk.unit
+'GB'
+
+>>> isinstance(disk, float)
+True
+</pre>
+
+### <u>** .__str__() v/s .__repr__()    **   </u>
+
+
+If you want to provide user-friendly output, then you can use the .__str__() method. On the other hand, when you 
+need to provide developer-friendly output, then you can use the .__repr__() method. These methods support two 
+different string representations for Python objects.
+
+---
+
+The .__str__() special method returns a human-readable string representation of the object.Python calls this method 
+when you call the built-in str() function, passing an instance of the class as an argument.
+
+Python also calls this method when you use the instance as an argument to the print() and format() functions. The 
+method is meant to provide a string that’s understandable.
+
+<pre>
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"I'm {self.name}, and I'm {self.age} years old."
+
+</pre>
+
+ example of how your class works.
+
+<pre>
+
+>>> from person import Person
+
+>>> jane = Person("Jane Doe", 25)
+
+>>> str(jane)
+"I'm Jane Doe, and I'm 25 years old."
+
+>>> print(jane)
+I'm Jane Doe, and I'm 25 years old.
+
+</pre>
+
+
+When you use an instance of Person as an argument to str() or print(), you get a string representation of the 
+object on your screen.
+
+---
+
+
+
+The .__repr__() method returns a string representation of an object that’s targeted at the developer.
+
+
+<pre>
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"I'm {self.name}, and I'm {self.age} years old."
+
+   def __repr__(self):
+        return f"{type(self).__name__}(name='{self.name}', age={self.age})"   
+
+</pre>
+
+<pre>
+>>> from person import Person
+
+>>> john = Person("John Doe", 35)
+
+>>> john   // working  only in shell 
+Person(name='John Doe', age=35)
+
+>>> print(repr(john))
+"Person(name='John Doe', age=35)"
+</pre>
+
+### <u> **operator overloading.** </u>
+
+Operator overloading means providing additional functionality to the operators. You can do this with most built-in 
+types and their specific supported operators. However, that’s not all you can do with the special methods that 
+support Python operators. You can also use these methods to support some operators in your custom classes.
+
+Operator overloading means giving extended meaning to standard operators (like +, -, *, etc.) when used with custom objects (your own classes).
+
+#### 🧮 Operator Overloading Methods in Python
+
+| Operator | Method Name             | Description                     |
+|----------|-------------------------|---------------------------------|
+| `+`      | `__add__(self, other)`  | Addition                        |
+| `-`      | `__sub__(self, other)`  | Subtraction                     |
+| `*`      | `__mul__(self, other)`  | Multiplication                  |
+| `/`      | `__truediv__(self, other)` | True Division               |
+| `//`     | `__floordiv__(self, other)`| Floor Division              |
+| `%`      | `__mod__(self, other)`  | Modulo (Remainder)             |
+| `**`     | `__pow__(self, other[, modulo])` | Exponentiation       |
+
+<pre>
+class Number:
+    def __init__(self, value):
+        self.value = value
+
+    def __add__(self, other):
+        return Number(self.value + other.value)
+
+</pre>
+
+----
+>>> Just like the + operator:
+
+2 + 3 → adds numbers
+
+'Hello' + 'World' → joins strings
+
+You can define what + does for your own class, like combining two Point or Vector objects.
+----
+
+<pre>
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    # Overload + operator
+    def __add__(self, other):
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+p1 = Point(2, 3)
+p2 = Point(4, 5)
+p3 = p1 + p2  # Uses __add__
+print(p3)     # Output: (6, 8)
+
+</pre>
+
+| Without Overloading  | With Overloading             |
+| -------------------- | ---------------------------- |
+| `p1.add(p2)`         | `p1 + p2`                    |
+| `v1.multiply(v2)`    | `v1 * v2`                    |
+| Manual function call | Cleaner, more natural syntax |
+
+
+
+#### 🔁 Right-Hand Operator Overloading Methods in Python
+
+When the **left-hand operand** doesn’t support the operation (or returns `NotImplemented`), Python tries the corresponding **right-hand method**.
+
+| Operator | Right-Hand Method         | Used When                                   |
+|----------|---------------------------|---------------------------------------------|
+| `+`      | `__radd__(self, other)`   | `other + self` when `other.__add__` fails   |
+| `-`      | `__rsub__(self, other)`   | `other - self` when `other.__sub__` fails   |
+| `*`      | `__rmul__(self, other)`   | `other * self` when `other.__mul__` fails   |
+| `/`      | `__rtruediv__(self, other)`| `other / self` when `other.__truediv__` fails |
+| `//`     | `__rfloordiv__(self, other)`| `other // self` when `other.__floordiv__` fails |
+| `%`      | `__rmod__(self, other)`   | `other % self` when `other.__mod__` fails   |
+| `**`     | `__rpow__(self, other[, modulo])` | `other ** self` when `other.__pow__` fails |
+
+
+<pre>
+
+class CustomNumber:
+    def __init__(self, value):
+        self.value = value
+
+    def __add__(self, other):
+        if isinstance(other, CustomNumber):
+            print("Called __add__")
+            return CustomNumber(self.value + other.value)
+        return NotImplemented  # Triggers __radd__ if available on other
+
+    def __radd__(self, other):
+        print("Called __radd__")
+        return CustomNumber(self.value + other)  # assume `other` is int or float
+
+    def __str__(self):
+        return f"CustomNumber({self.value})"
+
+
+a = CustomNumber(10)
+b = CustomNumber(20)
+
+# ✅ Left-hand __add__
+result1 = a + b
+print(result1)  # Output: CustomNumber(30)
+
+# ✅ Right-hand __radd__
+result2 = 5 + a   # int + CustomNumber —> triggers __radd__
+print(result2)   # Output: CustomNumber(15)
+
+# ✅ What happens here?
+result3 = a + 5   # CustomNumber + int —> __add__ returns NotImplemented —> __radd__ not used because int doesn't have it
+print(result3)    # TypeError
+
+
+</pre>
+
+
+### <u>**Introspection** </u>
+
+### 🔍 What is **Introspection** in Python?
+
+**Introspection** is the ability of a Python program to **examine the type or properties of an object at runtime**.
+
+In simple words, Python lets you ask questions like:
+
+* “What type is this object?”
+* “What attributes and methods does it have?”
+* “Where is this object defined?”
+* “Is this a class, a function, or a module?”
+
+---
+
+## ✅ Why is Introspection useful?
+
+* Debugging
+* Writing dynamic or generic code
+* Understanding third-party libraries
+* Auto-documentation and tools like `dir()`, `help()`
+
+---
+
+## 📦 Common Introspection Tools in Python
+
+| Function / Tool             | Purpose                                                    |
+| --------------------------- | ---------------------------------------------------------- |
+| `type(obj)`                 | Returns the type of `obj`                                  |
+| `id(obj)`                   | Returns the unique memory address of `obj`                 |
+| `isinstance(obj, cls)`      | Checks if `obj` is an instance of class `cls`              |
+| `issubclass(cls1, cls2)`    | Checks if `cls1` is a subclass of `cls2`                   |
+| `dir(obj)`                  | Lists all attributes and methods of `obj`                  |
+| `hasattr(obj, attr)`        | Checks if `obj` has an attribute named `attr`              |
+| `getattr(obj, attr)`        | Gets the value of the attribute `attr` from `obj`          |
+| `setattr(obj, attr, value)` | Sets the value of `attr` in `obj`                          |
+| `callable(obj)`             | Checks if the object is callable (like functions, methods) |
+| `globals()`                 | Returns current global symbol table                        |
+| `locals()`                  | Returns current local symbol table                         |
+| `help(obj)`                 | Opens the help/manual page for the object                  |
+
+---
+
+## 🧪 Example
+
+```python
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+p = Person("Rabeeh")
+
+print(type(p))             # <class '__main__.Person'>
+print(isinstance(p, Person))  # True
+print(dir(p))              # ['__class__', '__delattr__', ..., 'name']
+print(hasattr(p, 'name'))  # True
+print(getattr(p, 'name'))  # Rabeeh
+print(callable(p))         # False
+print(callable(p.__init__))  # True
+```
+
+---
+
+## 🧠 Advanced Introspection (via `inspect` module)
+
+```python
+import inspect
+
+print(inspect.getmembers(p))  # List all members (methods + attributes)
+print(inspect.isclass(Person))  # True
+print(inspect.getsource(Person))  # Shows source code of the class
+```
+
+---
+
+## 🔥 Summary
+
+| Introspection lets you...       | With tools like...                |
+| ------------------------------- | --------------------------------- |
+| Know an object’s type           | `type()`                          |
+| List its methods and attributes | `dir()`                           |
+| Check if it's a class/function  | `inspect.isclass()`, `callable()` |
+| Dynamically access attributes   | `getattr()`, `setattr()`          |
+
+---
+
+ 
