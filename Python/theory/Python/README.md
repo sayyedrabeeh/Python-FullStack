@@ -210,3 +210,83 @@ how this class works in practice:
 True
 </pre>
 
+### <u>** .__str__() v/s .__repr__()    **   </u>
+
+
+If you want to provide user-friendly output, then you can use the .__str__() method. On the other hand, when you 
+need to provide developer-friendly output, then you can use the .__repr__() method. These methods support two 
+different string representations for Python objects.
+
+---
+
+The .__str__() special method returns a human-readable string representation of the object.Python calls this method 
+when you call the built-in str() function, passing an instance of the class as an argument.
+
+Python also calls this method when you use the instance as an argument to the print() and format() functions. The 
+method is meant to provide a string that’s understandable.
+
+<pre>
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"I'm {self.name}, and I'm {self.age} years old."
+
+</pre>
+
+ example of how your class works.
+
+<pre>
+
+>>> from person import Person
+
+>>> jane = Person("Jane Doe", 25)
+
+>>> str(jane)
+"I'm Jane Doe, and I'm 25 years old."
+
+>>> print(jane)
+I'm Jane Doe, and I'm 25 years old.
+
+</pre>
+
+
+When you use an instance of Person as an argument to str() or print(), you get a string representation of the 
+object on your screen.
+
+---
+
+
+
+The .__repr__() method returns a string representation of an object that’s targeted at the developer.
+
+
+<pre>
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def __str__(self):
+        return f"I'm {self.name}, and I'm {self.age} years old."
+
+   def __repr__(self):
+        return f"{type(self).__name__}(name='{self.name}', age={self.age})"   
+
+</pre>
+
+<pre>
+>>> from person import Person
+
+>>> john = Person("John Doe", 35)
+
+>>> john   // working  only in shell 
+Person(name='John Doe', age=35)
+
+>>> print(repr(john))
+"Person(name='John Doe', age=35)"
+</pre>
+
