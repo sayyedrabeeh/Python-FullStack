@@ -557,3 +557,34 @@ for number in counter:
 
 ```
 
+## *__OPPS IN PYTHON__*
+
+
+Object-oriented programming (OOP) in Python helps you structure your code by grouping related data and behaviors 
+into objects. You start by defining classes, which act as blueprints, and then create objects from them. OOP 
+simplifies modeling real-world concepts in your programs and enables you to build systems that are more reusable 
+and scalable.
+
+
+classes as blueprints for objects. These objects contain data and the methods needed to manipulate that data.
+**The four key concepts of OOP in Python** are encapsulation, inheritance, abstraction, and polymorphism
+
+**four tenants of OOP:**
+
+1. ***Encapsulation*** allows you to bundle data (attributes) and behaviors (methods) within a class to create a 
+cohesive unit. By defining methods to control access to attributes and its modification, encapsulation helps 
+maintain data integrity and promotes modular, secure code.
+2. ***Inheritance*** enables the creation of hierarchical relationships between classes, allowing a subclass to 
+inherit attributes and methods from a parent class. This promotes code reuse and reduces duplication.
+
+3. ***Abstraction*** focuses on hiding implementation details and exposing only the essential functionality of an 
+object. 
+By enforcing a consistent interface, abstraction simplifies interactions with objects, allowing developers to focus 
+on what an object does rather than how it achieves its functionality.
+4. ***Polymorphism*** allows you to treat objects of different types as instances of the same base type, as long as 
+they implement a common interface or behavior. Python’s duck typing make it especially suited for polymorphism, as 
+it  allows you to access attributes and methods on objects without needing to worry about their actual class
+
+
+>objects are at the center of object-oriented programming in Python. In other programming paradigms, objects only represent the data. In OOP, they additionally inform the overall structure of the program.
+
