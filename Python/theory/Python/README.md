@@ -13,12 +13,12 @@ It supports multiple programming paradigms, including structured.object-oriented
 
 simple values of data.are typically immutable, meaning their value cannot change after they are created.for storing single values and performing basic operations. In Python, all data values are objects. That means Python has no primitive data types and all the types are reference types. However, Python has built-in data types.
 python has four primitive variable types:
-
+---
  1.Integers
  2.Float
  3.Strings
  4.Boolean
-
+---
 
 ### Collection Datatpe
 
@@ -44,16 +44,16 @@ Commas are what makes a tuple, as parentheses are optional.
 
  that do not support duplicated objects and as such, they cannot be indexed. ets can be created by using curly brackets using the set() constructor.
 
-    eg : a = {a,b,c,d}
+        eg : a = {a,b,c,d}
          a = set((1,2,3,4,5))
 
 #### Dictionary
 
 A dictionary is an unordered set of key/value pairs. Each unique key has a value.duplicates are not allowed, as a dictionary cannot have multiple items with the same key, because the values will overwrite and the most recent value will be returned.
-    eg : a = {
-        1:2,
-        3:4
-    }        
+        eg : a = {
+            1:2,
+            3:4
+        }        
 
 ### Non-Primitive Data Types
 
@@ -70,11 +70,11 @@ before performing arithmetic operations. Otherwise, Python will interpret "27" a
 strings instead of performing arithmetic.
 
 Python provides two types of type casting:
-
+---
   1 : Explicit Type Casting: Where the programmer manually converts one data type into another.
   2 : Implicit Type Casting (Automatic Type Conversion): Where Python automatically converts one data type to 
       another to prevent data loss or errors.
-
+---
 
 
 ## F-String
@@ -134,9 +134,79 @@ meanings for Python.Python automatically calls magic methods as a response to ce
 instantiation, sequence indexing, attribute managing, and much more, All these methods support specific feature.
 
 ---
->A method that is called implicitly by Python to execute a certain operation on a type, such as addition. Such methods have names starting and ending with double underscores.
+>A method that is called implicitly by Python to execute a certain operation on a type, such as addition. Such 
+methods have names starting and ending with double underscores.
 
-###  **.__init__()**
-When creating custom classes in Python, probably the first and most common method that you implement is .__init__(). This method works as an initializer because it allows you to provide initial values to any instance attributes that you define in your classes.
+###  <u> **.__init__()** </u>
 
+
+When creating custom classes in Python, probably the first and most common method that you implement is .__init__
+(). This method works as an initializer because it allows you to provide initial values to any instance attributes 
+that you define in your classes.
+
+
+<pre>
+>>> class Point:
+...     def __init__(self, x, y):
+...         self.x = x
+...         self.y = y
+...
+
+>>> point = Point(21, 42)
+>>> point.x
+21
+>>> point.y
+42
+</pre>
+
+### <u> ** __new__()   ** </u>
+
+When you call a class constructor to create a new instance of a class, Python implicitly calls the .__new__() 
+method as the first step in the instantiation process. This method is responsible for creating and returning a new 
+empty object of the underlying class. Python then passes the just-created object to .__init__() for initialization.
+
+The default implementation of .__new__() is enough for most practical use cases. So, you probably won’t need to 
+write a custom implementation of .__new__() in most cases.
+
+
+
+you can use .__new__() to create subclasses of immutable types, such as int, float, tuple, and str.
+
+
+<pre>
+
+>>> class Storage(float):
+...     def __new__(cls, value, unit):
+...         instance = super().__new__(cls, value)
+...         instance.unit = unit
+...         return instance
+...
+
+
+</pre>
+
+In this example, you’ll note that .__new__() is a class method because it gets the current class (cls) rather than 
+the current instance (self) as an argument.
+
+Then, you run three steps. First, you create a new instance of the current class, cls, by calling .__new__() on the 
+float class through the built-in super() function. This call creates a new instance of float and initializes it 
+using value as an argument.
+
+Then, you customize the new instance by dynamically attaching a .unit attribute to it. Finally, you return the new 
+instance to meet the default behavior of .__new__().
+
+
+how this class works in practice:
+
+<pre>
+>>> disk = Storage(1024, "GB")
+
+>>> disk
+1024.0
+>>> disk.unit
+'GB'
+
+>>> isinstance(disk, float)
+True
+</pre>
 
