@@ -588,3 +588,62 @@ it  allows you to access attributes and methods on objects without needing to wo
 
 >objects are at the center of object-oriented programming in Python. In other programming paradigms, objects only represent the data. In OOP, they additionally inform the overall structure of the program.
 
+
+
+### ***Classes vs Instances***
+
+A class is a blueprint for how to define something. It doesn’t actually contain any data. The Dog class specifies 
+that a name and an age are necessary for defining a dog, but it doesn’t contain the name or age of any specific dog.
+
+While the class is the blueprint, an instance is an object that’s built from a class and contains real data. An 
+instance of the Dog class is not a blueprint anymore. It’s an actual dog with a name, like Miles, who’s four years 
+old.
+
+
+You start all class definitions with the class keyword, then add the name of the class and a colon. Python will 
+consider any code that you indent below the class definition as part of the class’s body.
+
+
+
+On the other hand, class attributes are attributes that have the same value for all class instances. You can define 
+a class attribute by assigning a value to a variable name outside of .__init__().
+
+```python
+
+class Dog:
+    species = "Canis familiaris"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+
+
+```
+
+You define class attributes directly beneath the first line of the class name and indent them by four spaces. You 
+always need to assign them an initial value. When you create an instance of the class, then Python automatically 
+creates and assigns class attributes to their initial values.
+
+
+
+One of the biggest advantages of using classes to organize data is that instances are guaranteed to have the 
+attributes you expect. All Dog instances have .species, .name, and .age attributes, so you can use those attributes 
+with confidence, knowing that they’ll always return a value.
+
+Although the attributes are guaranteed to exist, their values can change dynamically:
+
+
+```python
+>>> buddy.age = 10
+>>> buddy.age
+10
+
+>>> miles.species = "Felis silvestris"
+>>> miles.species
+'Felis silvestris'
+
+```
+
+
+
