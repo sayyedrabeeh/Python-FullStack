@@ -769,3 +769,25 @@ implements these methods before an instance of the class can be created.
 An interface in python is just an abstract class with no implementations for any of its methods. Python has no 
 inbuilt support for interface but we can use ABC(Abstract base class) from python’s abc module as an interface.
 
+
+
+### ***scope *** && LEGB rule
+
+The scope of a variable in Python determines where in your code that variable is visible and accessible.
+Python has four general scope levels:
+  1. local
+  2. enclosing
+  3. global
+  4. built-in
+
+Python goes through these scopes in order. It follows the LEGB rule, which stands for Local, Enclosing, Global, and 
+Built-in.
+
+
+early programming languages like BASIC only had global names. With this type of name, any part of the program could 
+modify any variable at any time, making large programs difficult to maintain and debug.
+
+For example, if you define a name inside a function, then that name will have a local scope. You can only access 
+the name locally within the function implementation. In contrast, if you define a name at the top level of a 
+module, then that name will have a global scope. You’ll be able to access it from anywhere in your code
+
