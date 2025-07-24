@@ -691,3 +691,38 @@ it’s important to note that, in python, encapsulation is not enforced by the i
 programmer to not access private variables or methods directly. It’s more of a convention and a way to signal to 
 others that these methods or attributes are intended to be used only by the class.
 
+### ***Polymorphism***
+
+Polymorphism is the ability of objects to take on many forms. It allows us to define methods in different classes 
+with the same name but different implementations. Polymorphism promotes code flexibility, as objects can be used 
+interchangeably even if they belong to different classes.
+
+
+ polymorphism is achieved through polymorphic functions, which are functions that can work with multiple types of 
+ input. For example, the len() function can be used to find the length of a string, a list, or other types of data.
+
+ Python also supports polymorphism through method overriding and method overloading. Method overriding occurs when a subclass provides a different implementation of a method that is already defined in the parent class. This allows for objects of the subclass to have a different behavior than objects of the parent class.
+
+For example:
+```python
+class Shape:
+    def area(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    def area(self):
+        return self.width * self.height
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    def area(self):
+        return 3.14 * (self.radius ** 2)
+
+```
+both Rectangle and Circle class inherits from the Shape class and have different implementations for area method. 
+When area is called on an instance of Rectangle and Circle class, it will call the overridden method.
+
