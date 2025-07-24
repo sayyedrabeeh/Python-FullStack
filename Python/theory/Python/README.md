@@ -644,6 +644,16 @@ Although the attributes are guaranteed to exist, their values can change dynamic
 'Felis silvestris'
 
 ```
+***Instance methods*** are functions that you define inside a class and can only call on an instance of that class. 
+Just like .__init__(), an instance method always takes self as its first parameter.
 
+### ***Inheritance***
+
+Inheritance is the process by which one class takes on the attributes and methods of another. Newly formed classes 
+are called child classes, and the classes that you derive child classes from are called parent classes.
+
+Child classes can override or extend the attributes and methods of parent classes. In other words, child classes 
+inherit all of the parent’s attributes and methods but can also specify attributes and methods that are unique to 
+themselves.
 
 
