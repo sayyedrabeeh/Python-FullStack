@@ -159,7 +159,7 @@ that you define in your classes.
 42
 </pre>
 
-### <u> ** __new__()   ** </u>
+### <u> **__new__()** </u>
 
 When you call a class constructor to create a new instance of a class, Python implicitly calls the .__new__() 
 method as the first step in the instantiation process. This method is responsible for creating and returning a new 
@@ -210,7 +210,7 @@ how this class works in practice:
 True
 </pre>
 
-### <u>** .__str__() v/s .__repr__()    **   </u>
+### <u>**.__str__() v/s .__repr__()**   </u>
 
 
 If you want to provide user-friendly output, then you can use the .__str__() method. On the other hand, when you 
@@ -499,3 +499,370 @@ print(inspect.getsource(Person))  # Shows source code of the class
 ---
 
  
+### ___Iterators__
+
+you need two special methods. By implementing these methods, you’ll take control of the iteration process.
+methods that make up an iterator. They’re known as the iterator protocol.
+
+> .__iter__()	Called to initialize the iterator. It must return an iterator object.
+> .__next__()	Called to iterate over the iterator. It must return the next value in the data stream.
+
+
+. In .__iter__(), you typically return self, the current object. In .__next__(), you need to return the next value 
+from the data stream in a sequence. This method must raise a StopIteration when the stream of data is exhausted.
+
+```python
+
+numbers = [10, 20, 30]
+
+# Create an iterator
+iterator = iter(numbers)
+
+# Get elements one by one
+print(next(iterator))  # 10
+print(next(iterator))  # 20
+print(next(iterator))  # 30
+
+# If you call next again, you'll get StopIteration
+# print(next(iterator))  # Uncomment to see error
+
+
+class CountUpTo:
+    def __init__(self, max):
+        self.max = max
+        self.current = 1
+
+    def __iter__(self):
+        return self  # The object itself is the iterator
+
+    def __next__(self):
+        if self.current <= self.max:
+            num = self.current
+            self.current += 1
+            return num
+        else:
+            raise StopIteration
+
+counter = CountUpTo(3)
+
+for number in counter:
+    print(number)
+
+# Output:
+# 1
+# 2
+# 3
+
+
+
+```
+
+## *__OPPS IN PYTHON__*
+
+
+Object-oriented programming (OOP) in Python helps you structure your code by grouping related data and behaviors 
+into objects. You start by defining classes, which act as blueprints, and then create objects from them. OOP 
+simplifies modeling real-world concepts in your programs and enables you to build systems that are more reusable 
+and scalable.
+
+
+classes as blueprints for objects. These objects contain data and the methods needed to manipulate that data.
+**The four key concepts of OOP in Python** are encapsulation, inheritance, abstraction, and polymorphism
+
+**four tenants of OOP:**
+
+1. ***Encapsulation*** allows you to bundle data (attributes) and behaviors (methods) within a class to create a 
+cohesive unit. By defining methods to control access to attributes and its modification, encapsulation helps 
+maintain data integrity and promotes modular, secure code.
+2. ***Inheritance*** enables the creation of hierarchical relationships between classes, allowing a subclass to 
+inherit attributes and methods from a parent class. This promotes code reuse and reduces duplication.
+
+3. ***Abstraction*** focuses on hiding implementation details and exposing only the essential functionality of an 
+object. 
+By enforcing a consistent interface, abstraction simplifies interactions with objects, allowing developers to focus 
+on what an object does rather than how it achieves its functionality.
+4. ***Polymorphism*** allows you to treat objects of different types as instances of the same base type, as long as 
+they implement a common interface or behavior. Python’s duck typing make it especially suited for polymorphism, as 
+it  allows you to access attributes and methods on objects without needing to worry about their actual class
+
+
+>objects are at the center of object-oriented programming in Python. In other programming paradigms, objects only represent the data. In OOP, they additionally inform the overall structure of the program.
+
+
+
+### ***Classes vs Instances***
+
+A class is a blueprint for how to define something. It doesn’t actually contain any data. The Dog class specifies 
+that a name and an age are necessary for defining a dog, but it doesn’t contain the name or age of any specific dog.
+
+While the class is the blueprint, an instance is an object that’s built from a class and contains real data. An 
+instance of the Dog class is not a blueprint anymore. It’s an actual dog with a name, like Miles, who’s four years 
+old.
+
+
+You start all class definitions with the class keyword, then add the name of the class and a colon. Python will 
+consider any code that you indent below the class definition as part of the class’s body.
+
+
+
+On the other hand, class attributes are attributes that have the same value for all class instances. You can define 
+a class attribute by assigning a value to a variable name outside of .__init__().
+
+```python
+
+class Dog:
+    species = "Canis familiaris"
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+
+
+```
+
+You define class attributes directly beneath the first line of the class name and indent them by four spaces. You 
+always need to assign them an initial value. When you create an instance of the class, then Python automatically 
+creates and assigns class attributes to their initial values.
+
+
+
+One of the biggest advantages of using classes to organize data is that instances are guaranteed to have the 
+attributes you expect. All Dog instances have .species, .name, and .age attributes, so you can use those attributes 
+with confidence, knowing that they’ll always return a value.
+
+Although the attributes are guaranteed to exist, their values can change dynamically:
+
+
+```python
+>>> buddy.age = 10
+>>> buddy.age
+10
+
+>>> miles.species = "Felis silvestris"
+>>> miles.species
+'Felis silvestris'
+
+```
+***Instance methods*** are functions that you define inside a class and can only call on an instance of that class. 
+Just like .__init__(), an instance method always takes self as its first parameter.
+
+### ***Inheritance***
+
+Inheritance is the process by which one class takes on the attributes and methods of another. Newly formed classes 
+are called child classes, and the classes that you derive child classes from are called parent classes.
+
+Child classes can override or extend the attributes and methods of parent classes. In other words, child classes 
+inherit all of the parent’s attributes and methods but can also specify attributes and methods that are unique to 
+themselves.
+
+### ***Encapsulation***
+
+Encapsulation refers to the bundling of data and methods within a class. It allows us to control access to class 
+members, making them private or public. This principle enhances data security, maintains code integrity, and 
+reduces dependencies.
+
+In Python, encapsulation is achieved by using the _ prefix for member variables and methods. For example, if we 
+have a Person class.
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    def _get_age(self):
+        return self._age
+
+
+```
+
+Here, the _name and _age attributes are considered private and the _get_age() method is private as well. These are 
+intended to be used only within the class, and not directly accessed or modified by code outside of the class.
+
+
+Encapsulation has several benefits in Python:
+ 1. It allows for code modularity, which makes it easier to change and maintain the codebase.
+ 2. It ensures that the internal state of an object is only modified in a controlled way, which helps to prevent bugs and maintain consistency.
+ 3. It makes the code more robust and secure since it is more difficult for other parts of the program to accidentally or maliciously change the internal state of an object
+ 4. It makes the code more flexible since the internal implementation can be changed without affecting the code that uses the class.
+
+it’s important to note that, in python, encapsulation is not enforced by the interpreter and relies on the 
+programmer to not access private variables or methods directly. It’s more of a convention and a way to signal to 
+others that these methods or attributes are intended to be used only by the class.
+
+### ***Polymorphism***
+
+Polymorphism is the ability of objects to take on many forms. It allows us to define methods in different classes 
+with the same name but different implementations. Polymorphism promotes code flexibility, as objects can be used 
+interchangeably even if they belong to different classes.
+
+
+ polymorphism is achieved through polymorphic functions, which are functions that can work with multiple types of 
+ input. For example, the len() function can be used to find the length of a string, a list, or other types of data.
+
+ Python also supports polymorphism through method overriding and method overloading. Method overriding occurs when a subclass provides a different implementation of a method that is already defined in the parent class. This allows for objects of the subclass to have a different behavior than objects of the parent class.
+
+For example:
+```python
+class Shape:
+    def area(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    def area(self):
+        return self.width * self.height
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+    def area(self):
+        return 3.14 * (self.radius ** 2)
+
+```
+both Rectangle and Circle class inherits from the Shape class and have different implementations for area method. 
+When area is called on an instance of Rectangle and Circle class, it will call the overridden method.
+
+### ***Abstraction***
+
+Abstraction focuses on providing simplified interfaces while hiding complex underlying implementations. By defining 
+abstract classes and methods, we can enforce consistent behavior across subclasses while allowing specific 
+implementations to be developed separately.
+
+refers to the practice of hiding the implementation details of an object from other parts of the program and 
+providing only a simplified public interface to interact with the object.
+
+In Python OOPs concepts, data abstraction is achieved through the use of abstract classes and interfaces.
+An abstract class is a class that defines one or more abstract methods, which are methods that have no 
+implementation. A subclass is required to implement these methods before an instance of the class can be created.
+
+For example:
+
+```python
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+    @abstractmethod
+    def perimeter(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    def area(self):
+        return self.width * self.height
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+```
+
+the Shape class is an abstract class, which has two abstract methods, area and perimeter. The subclass Rectangle 
+implements these methods before an instance of the class can be created.
+
+An interface in python is just an abstract class with no implementations for any of its methods. Python has no 
+inbuilt support for interface but we can use ABC(Abstract base class) from python’s abc module as an interface.
+
+
+
+### ***scope *** && LEGB rule
+
+The scope of a variable in Python determines where in your code that variable is visible and accessible.
+Python has four general scope levels:
+  1. local
+  2. enclosing
+  3. global
+  4. built-in
+
+Python goes through these scopes in order. It follows the LEGB rule, which stands for Local, Enclosing, Global, and 
+Built-in.
+
+
+early programming languages like BASIC only had global names. With this type of name, any part of the program could 
+modify any variable at any time, making large programs difficult to maintain and debug.
+
+For example, if you define a name inside a function, then that name will have a local scope. You can only access 
+the name locally within the function implementation. In contrast, if you define a name at the top level of a 
+module, then that name will have a global scope. You’ll be able to access it from anywhere in your code
+
+#### Scope vs Namespace
+
+The concept of scope is closely related to the concept of namespace. A scope determines the visibility and lifetime 
+of names, while a namespace provides the place where those names are stored.
+
+A namespace is a mapping of names to objects.
+It’s like a dictionary that keeps track of all the names (variables, functions, classes, etc.) in a particular area 
+of the program.
+
+| Feature        | Namespace                               | Scope                                       |
+| -------------- | --------------------------------------- | ------------------------------------------- |
+| What is it?    | A **mapping of names to objects**       | A **region** where a name is **accessible** |
+| Type           | Built-in, Global, Local, Enclosing      | Local, Enclosing, Global, Built-in          |
+| Think of it as | A **container of names** (like a dict)  | **Rules to find those names**               |
+| Example        | `globals()`, `locals()` show namespaces | `x` inside function vs outside function     |
+
+
+
+| Concept   | Analogy                                    |
+| --------- | ------------------------------------------ |
+| Namespace | A **dictionary** storing all the names     |
+| Scope     | The **room** where those names can be used |
+
+---
+
+
+**Local scope** is the body of any Python function or lambda expression. This scope contains the names that you 
+define inside the function. These names are only visible from within the function. Python creates a local scope 
+when you call a function, so you’ll have as many different local scopes as function calls. This is true even if you 
+call the same function multiple times, or recursively. Each call creates a new local scope.
+
+**Enclosing scope** is a scope that exists only for nested functions and is defined by the outer or enclosing 
+function. This scope contains the names that you define within the enclosing function. The names in the enclosing 
+scope are visible from the code of the inner and outer functions.
+
+🔹 What is an Enclosing Function?
+An enclosing function is a function that contains another function inside it.
+
+The outer function is called the enclosing function.
+
+The inner function is called a nested function or inner function.
+
+The enclosing function creates an enclosing scope for the inner one.
+
+**Global scope** is the topmost scope in a Python program or interactive session. This scope contains all of the 
+names that you define at the top level of a script or module. Names in this scope are visible from everywhere in 
+your code.
+
+**Built-in scope** is a special scope that Python creates or loads whenever you run a script or open an interactive 
+session. This scope contains names such as built-in functions, exceptions, and other attributes that are built into 
+Python. Names in this scope are also available from everywhere in your code.
+
+Built-in scope is the widest and final level of scope in Python, containing all the predefined names
+
+Examples include:
+
+Functions: print(), len(), type(), input(), range(), sum()
+
+Constants: True, False, None
+
+Types: int, str, list, dict, float
+
+Exceptions: ValueError, TypeError, ZeroDivisionError
+
+These are always available anywhere in your code, unless you override them locally.
+
+        From the built-in module:
+        import builtins
+---
+
+a given name exists in both the local and the global scope, then you’ll get the value associated with the name in 
+the local scope.
+
+You’ll always have at least two active scopes: the global and built-in ones. These two scopes will always be 
+available for you.
