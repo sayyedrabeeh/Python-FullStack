@@ -814,4 +814,55 @@ of the program.
 | Namespace | A **dictionary** storing all the names     |
 | Scope     | The **room** where those names can be used |
 
+---
 
+
+**Local scope** is the body of any Python function or lambda expression. This scope contains the names that you 
+define inside the function. These names are only visible from within the function. Python creates a local scope 
+when you call a function, so you’ll have as many different local scopes as function calls. This is true even if you 
+call the same function multiple times, or recursively. Each call creates a new local scope.
+
+**Enclosing scope** is a scope that exists only for nested functions and is defined by the outer or enclosing 
+function. This scope contains the names that you define within the enclosing function. The names in the enclosing 
+scope are visible from the code of the inner and outer functions.
+
+🔹 What is an Enclosing Function?
+An enclosing function is a function that contains another function inside it.
+
+The outer function is called the enclosing function.
+
+The inner function is called a nested function or inner function.
+
+The enclosing function creates an enclosing scope for the inner one.
+
+**Global scope** is the topmost scope in a Python program or interactive session. This scope contains all of the 
+names that you define at the top level of a script or module. Names in this scope are visible from everywhere in 
+your code.
+
+**Built-in scope** is a special scope that Python creates or loads whenever you run a script or open an interactive 
+session. This scope contains names such as built-in functions, exceptions, and other attributes that are built into 
+Python. Names in this scope are also available from everywhere in your code.
+
+Built-in scope is the widest and final level of scope in Python, containing all the predefined names
+
+Examples include:
+
+Functions: print(), len(), type(), input(), range(), sum()
+
+Constants: True, False, None
+
+Types: int, str, list, dict, float
+
+Exceptions: ValueError, TypeError, ZeroDivisionError
+
+These are always available anywhere in your code, unless you override them locally.
+
+        From the built-in module:
+        import builtins
+---
+
+a given name exists in both the local and the global scope, then you’ll get the value associated with the name in 
+the local scope.
+
+You’ll always have at least two active scopes: the global and built-in ones. These two scopes will always be 
+available for you.
