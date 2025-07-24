@@ -726,3 +726,46 @@ class Circle(Shape):
 both Rectangle and Circle class inherits from the Shape class and have different implementations for area method. 
 When area is called on an instance of Rectangle and Circle class, it will call the overridden method.
 
+### ***Abstraction***
+
+Abstraction focuses on providing simplified interfaces while hiding complex underlying implementations. By defining 
+abstract classes and methods, we can enforce consistent behavior across subclasses while allowing specific 
+implementations to be developed separately.
+
+refers to the practice of hiding the implementation details of an object from other parts of the program and 
+providing only a simplified public interface to interact with the object.
+
+In Python OOPs concepts, data abstraction is achieved through the use of abstract classes and interfaces.
+An abstract class is a class that defines one or more abstract methods, which are methods that have no 
+implementation. A subclass is required to implement these methods before an instance of the class can be created.
+
+For example:
+
+```python
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+    @abstractmethod
+    def perimeter(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    def area(self):
+        return self.width * self.height
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+```
+
+the Shape class is an abstract class, which has two abstract methods, area and perimeter. The subclass Rectangle 
+implements these methods before an instance of the class can be created.
+
+An interface in python is just an abstract class with no implementations for any of its methods. Python has no 
+inbuilt support for interface but we can use ABC(Abstract base class) from python’s abc module as an interface.
+
