@@ -791,3 +791,27 @@ For example, if you define a name inside a function, then that name will have a 
 the name locally within the function implementation. In contrast, if you define a name at the top level of a 
 module, then that name will have a global scope. You’ll be able to access it from anywhere in your code
 
+#### Scope vs Namespace
+
+The concept of scope is closely related to the concept of namespace. A scope determines the visibility and lifetime 
+of names, while a namespace provides the place where those names are stored.
+
+A namespace is a mapping of names to objects.
+It’s like a dictionary that keeps track of all the names (variables, functions, classes, etc.) in a particular area 
+of the program.
+
+| Feature        | Namespace                               | Scope                                       |
+| -------------- | --------------------------------------- | ------------------------------------------- |
+| What is it?    | A **mapping of names to objects**       | A **region** where a name is **accessible** |
+| Type           | Built-in, Global, Local, Enclosing      | Local, Enclosing, Global, Built-in          |
+| Think of it as | A **container of names** (like a dict)  | **Rules to find those names**               |
+| Example        | `globals()`, `locals()` show namespaces | `x` inside function vs outside function     |
+
+
+
+| Concept   | Analogy                                    |
+| --------- | ------------------------------------------ |
+| Namespace | A **dictionary** storing all the names     |
+| Scope     | The **room** where those names can be used |
+
+
