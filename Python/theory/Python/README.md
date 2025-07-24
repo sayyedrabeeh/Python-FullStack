@@ -656,4 +656,38 @@ Child classes can override or extend the attributes and methods of parent classe
 inherit all of the parent’s attributes and methods but can also specify attributes and methods that are unique to 
 themselves.
 
+### ***Encapsulation***
+
+Encapsulation refers to the bundling of data and methods within a class. It allows us to control access to class 
+members, making them private or public. This principle enhances data security, maintains code integrity, and 
+reduces dependencies.
+
+In Python, encapsulation is achieved by using the _ prefix for member variables and methods. For example, if we 
+have a Person class.
+
+```python
+class Person:
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    def _get_age(self):
+        return self._age
+
+
+```
+
+Here, the _name and _age attributes are considered private and the _get_age() method is private as well. These are 
+intended to be used only within the class, and not directly accessed or modified by code outside of the class.
+
+
+Encapsulation has several benefits in Python:
+ 1. It allows for code modularity, which makes it easier to change and maintain the codebase.
+ 2. It ensures that the internal state of an object is only modified in a controlled way, which helps to prevent bugs and maintain consistency.
+ 3. It makes the code more robust and secure since it is more difficult for other parts of the program to accidentally or maliciously change the internal state of an object
+ 4. It makes the code more flexible since the internal implementation can be changed without affecting the code that uses the class.
+
+it’s important to note that, in python, encapsulation is not enforced by the interpreter and relies on the 
+programmer to not access private variables or methods directly. It’s more of a convention and a way to signal to 
+others that these methods or attributes are intended to be used only by the class.
 
