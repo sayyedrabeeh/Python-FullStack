@@ -990,3 +990,53 @@ derive their values from the surrounding scope. Free variables are essential to 
 “remember” and retain access to external variables, even after the enclosing scope has finished executing. This mechanism enables 
 closures to preserve state between successive calls.
 
+#### The globals() Function
+
+The built-in globals() function returns a namespace dictionary with all the names—and associated objects—that are currently in your 
+global scope.
+
+
+```python
+>>> globals()
+{
+    '__name__': '__main__',
+    '__doc__': None,
+    '__package__': None,
+    ...
+}
+
+>>> number = 42
+
+>>> globals()
+{
+    '__name__': '__main__',
+    '__doc__': None,
+    '__package__': None,
+    ...
+    'number': 42
+}
+
+```
+The first call to globals() returns a dictionary containing the names in your __main__ program. Note that when you assign a new name at 
+the top level of __main__, then the name is added to the dictionary that globals() returns.
+
+
+#### The locals() Function
+
+The built-in locals() function returns a dictionary that holds a copy of the current state of the local namespace. When you call locals
+() in a function block, you get all the names assigned in the local scope down to the point where you call locals().
+
+```python
+>>> def function(arg):
+...     var = 100
+...     print(locals())
+...     another = 200
+...
+
+>>> function(300)
+{'var': 100, 'arg': 300}
+
+```
+
+If you call locals() in the global scope, then you’ll get the same dictionary that you would get if you were to call globals()
+
