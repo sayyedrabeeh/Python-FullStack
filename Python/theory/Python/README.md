@@ -1083,3 +1083,33 @@ print('Adding them up, we get:', sumOf(10, 20, 30))
 Remember, a tuple is an immutable list, so it cannot be changed once created. Tuples are great options for storing data that you don’t 
 want to be modified.
 
+
+# Unpacking
+
+unpacking is the process of extracting values from a sequence and assigning them to multiple variables. We achieve unpacking with the 
+assignment operator on the left side and an iterable object on the left side.
+
+eg:
+```python
+
+myTuple = (1, 2, 3)
+a, b, c = myTuple
+print(myTuple)
+
+```
+
+We can also unpack dictionaries (an unordered collection of data in the format of a key-value pair) like so:
+
+```python
+
+
+myDict = {'fname': 'Jack', 'lname': 'Wallen', 'country': 'USA'}
+fname, name, country = myDict.values()
+print(myDict.values())
+
+# output : dict_values(['Jack', 'Wallen', 'USA'])
+
+```
+
+
+
