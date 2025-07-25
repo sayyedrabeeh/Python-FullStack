@@ -1040,3 +1040,46 @@ The built-in locals() function returns a dictionary that holds a copy of the cur
 
 If you call locals() in the global scope, then you’ll get the same dictionary that you would get if you were to call globals()
 
+#### Packing and Unpacking
+
+By using packing and unpacking you can create assignments with a single statement and catch several values with a single identifier, 
+making your code much easier to read.
+
+Packing is a handy Python tool that provides a dynamic way to pack and unpack values into a single data structure or take them out and 
+assign them to multiple variables. This process greatly improves the reliability and adaptability of your code.
+
+In Python, “packing” refers to the process of putting values into a new tuple or list by separating them with commas. This can be done 
+with an assignment statement where the left-hand side is a tuple or list of variables and the right-hand side is another tuple or list 
+of values.
+
+```python
+
+
+number1 = 1
+number2 = 2
+number3 = 3
+
+	
+myTup = (number1, number2, number3)
+
+myList = [number1, number2, number3]
+
+```
+
+You can also use the * operator (which is used as both power and multiplication operators). Before we see how that works with packing, 
+let me show you how the * operator works. We’ll define a function called sumOf and use the * operator like so:
+
+```python
+
+ 
+def sumOf(*nums):
+    print('Our numbers are:', nums)
+    return sum(nums)
+print('Adding them up, we get:', sumOf(10, 20, 30))
+
+
+```
+
+Remember, a tuple is an immutable list, so it cannot be changed once created. Tuples are great options for storing data that you don’t 
+want to be modified.
+
