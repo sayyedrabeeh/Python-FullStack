@@ -940,3 +940,53 @@ counter. With this tiny change, you map the name counter in the function’s loc
 point on, you can freely modify counter inside update_counter(), and all changes will affect the global variable instead of creating a 
 new local one.
 
+#### The nonlocal Statement
+
+Like global names, nonlocal names can be accessed from inner functions, but not assigned or updated. If you want to modify them, then you 
+need to use the nonlocal statement. With this statement, you can define a series of names that are going to be treated as nonlocal.
+
+```python
+ >>> def function():
+...     number = 42  # A nonlocal variable
+...     def nested():
+...         nonlocal number  # Declare 'number' as nonlocal
+...         number += 42
+...     nested()
+...     print(number)
+...
+
+>>> function()
+84
+```
+
+Unlike global, you can’t use nonlocal outside of a nested or inner function. To be more precise, you can’t use a nonlocal statement in 
+either the global scope or in a local scope.
+
+####  closure.
+
+a closure is a callable that carries information about its enclosing scope, even though that scope has completed its execution.
+
+```python 
+>>> def power_factory(exponent):
+...     def power(base):
+...         return base**exponent
+...     return power
+...
+
+>>> square = power_factory(2)
+>>> square(10)
+100
+>>> cube = power_factory(3)
+>>> cube(10)
+1000
+>>> cube(5)
+125
+>>> square(15)
+225
+```
+
+Variables like exponent that are referenced within a code block but not defined there are known as ***free variables***. These variables 
+derive their values from the surrounding scope. Free variables are essential to how closures function, as they allow a function to 
+“remember” and retain access to external variables, even after the enclosing scope has finished executing. This mechanism enables 
+closures to preserve state between successive calls.
+
