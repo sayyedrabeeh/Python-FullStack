@@ -826,6 +826,16 @@ call the same function multiple times, or recursively. Each call creates a new l
 function. This scope contains the names that you define within the enclosing function. The names in the enclosing 
 scope are visible from the code of the inner and outer functions.
 
+Python creates a local scope. The local scope of outer_func() is also the enclosing scope of inner_func(). From inside inner_func(), this 
+scope is neither the global scope nor the local scope. Instead, it’s a special scope that lies in between those two scopes and is known 
+as the enclosing scope.
+
+All the names you create in the enclosing scope are visible from inside inner_func(), except for those created after you call inner_func
+(). 
+
+Names that you define in the enclosing scope are known as **nonlocal names** because they’re neither local nor global. They’re visible 
+from both the outer and inner functions.
+
 🔹 What is an Enclosing Function?
 An enclosing function is a function that contains another function inside it.
 
@@ -866,3 +876,67 @@ the local scope.
 
 You’ll always have at least two active scopes: the global and built-in ones. These two scopes will always be 
 available for you.
+
+
+The built-in scope is a special scope that’s implemented as a standard library module named builtins. All of Python’s built-in objects 
+live in this module. Python automatically loads these objects when you run the Python interpreter. 
+
+
+#### Modifying the Behavior of a Python Scope.
+
+
+Python provides two keywords that allow you to modify the content of global and nonlocal names.
+
+   1. global
+   2. nonlocal
+
+when you try to assign a value to a global variable inside a function, you create a new local variable in the function’s local scope. You 
+can modify this behavior by using the global statement.
+
+The global statement consists of the global keyword followed by one or more names separated by commas. You can also use multiple global 
+statements with a name or a list of names. All the names that you list in a global statement will be mapped to the global scope.
+
+```python 
+>>> counter = 0  # A global variable
+
+>>> def update_counter():
+...     counter = counter + 1  # Fails trying to update 'counter'
+...
+
+>>> update_counter()
+Traceback (most recent call last):
+    ...
+UnboundLocalError: cannot access local variable 'counter' where
+⮑ it is not associated with a value
+
+```
+Inside update_counter(), you try to update the global counter by using its previous value, 0. However, Python assumes that the counter 
+name is local to update_counter() and raises an UnboundLocalError exception because the name isn’t defined yet, but the code is trying to 
+reuse a previous value.
+
+use global key word 
+
+```python 
+>>> counter = 0  # A global variable
+
+>>> def update_counter():
+...     global counter  # Declares 'counter' as a global variable
+...     counter = counter + 1  # Successfully updates 'counter'
+...
+
+>>> update_counter()
+>>> counter
+1
+>>> update_counter()
+>>> counter
+2
+>>> update_counter()
+>>> counter
+3
+```
+
+In this new version of update_counter(), you add the statement global counter to the body of the function right before you try to change 
+counter. With this tiny change, you map the name counter in the function’s local scope to the same name in the global scope. From this 
+point on, you can freely modify counter inside update_counter(), and all changes will affect the global variable instead of creating a 
+new local one.
+
