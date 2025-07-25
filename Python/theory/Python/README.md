@@ -826,6 +826,16 @@ call the same function multiple times, or recursively. Each call creates a new l
 function. This scope contains the names that you define within the enclosing function. The names in the enclosing 
 scope are visible from the code of the inner and outer functions.
 
+Python creates a local scope. The local scope of outer_func() is also the enclosing scope of inner_func(). From inside inner_func(), this 
+scope is neither the global scope nor the local scope. Instead, it’s a special scope that lies in between those two scopes and is known 
+as the enclosing scope.
+
+All the names you create in the enclosing scope are visible from inside inner_func(), except for those created after you call inner_func
+(). 
+
+Names that you define in the enclosing scope are known as **nonlocal names** because they’re neither local nor global. They’re visible 
+from both the outer and inner functions.
+
 🔹 What is an Enclosing Function?
 An enclosing function is a function that contains another function inside it.
 
@@ -866,3 +876,240 @@ the local scope.
 
 You’ll always have at least two active scopes: the global and built-in ones. These two scopes will always be 
 available for you.
+
+
+The built-in scope is a special scope that’s implemented as a standard library module named builtins. All of Python’s built-in objects 
+live in this module. Python automatically loads these objects when you run the Python interpreter. 
+
+
+#### Modifying the Behavior of a Python Scope.
+
+
+Python provides two keywords that allow you to modify the content of global and nonlocal names.
+
+   1. global
+   2. nonlocal
+
+when you try to assign a value to a global variable inside a function, you create a new local variable in the function’s local scope. You 
+can modify this behavior by using the global statement.
+
+The global statement consists of the global keyword followed by one or more names separated by commas. You can also use multiple global 
+statements with a name or a list of names. All the names that you list in a global statement will be mapped to the global scope.
+
+```python 
+>>> counter = 0  # A global variable
+
+>>> def update_counter():
+...     counter = counter + 1  # Fails trying to update 'counter'
+...
+
+>>> update_counter()
+Traceback (most recent call last):
+    ...
+UnboundLocalError: cannot access local variable 'counter' where
+⮑ it is not associated with a value
+
+```
+Inside update_counter(), you try to update the global counter by using its previous value, 0. However, Python assumes that the counter 
+name is local to update_counter() and raises an UnboundLocalError exception because the name isn’t defined yet, but the code is trying to 
+reuse a previous value.
+
+use global key word 
+
+```python 
+>>> counter = 0  # A global variable
+
+>>> def update_counter():
+...     global counter  # Declares 'counter' as a global variable
+...     counter = counter + 1  # Successfully updates 'counter'
+...
+
+>>> update_counter()
+>>> counter
+1
+>>> update_counter()
+>>> counter
+2
+>>> update_counter()
+>>> counter
+3
+```
+
+In this new version of update_counter(), you add the statement global counter to the body of the function right before you try to change 
+counter. With this tiny change, you map the name counter in the function’s local scope to the same name in the global scope. From this 
+point on, you can freely modify counter inside update_counter(), and all changes will affect the global variable instead of creating a 
+new local one.
+
+#### The nonlocal Statement
+
+Like global names, nonlocal names can be accessed from inner functions, but not assigned or updated. If you want to modify them, then you 
+need to use the nonlocal statement. With this statement, you can define a series of names that are going to be treated as nonlocal.
+
+```python
+ >>> def function():
+...     number = 42  # A nonlocal variable
+...     def nested():
+...         nonlocal number  # Declare 'number' as nonlocal
+...         number += 42
+...     nested()
+...     print(number)
+...
+
+>>> function()
+84
+```
+
+Unlike global, you can’t use nonlocal outside of a nested or inner function. To be more precise, you can’t use a nonlocal statement in 
+either the global scope or in a local scope.
+
+####  closure.
+
+a closure is a callable that carries information about its enclosing scope, even though that scope has completed its execution.
+
+```python 
+>>> def power_factory(exponent):
+...     def power(base):
+...         return base**exponent
+...     return power
+...
+
+>>> square = power_factory(2)
+>>> square(10)
+100
+>>> cube = power_factory(3)
+>>> cube(10)
+1000
+>>> cube(5)
+125
+>>> square(15)
+225
+```
+
+Variables like exponent that are referenced within a code block but not defined there are known as ***free variables***. These variables 
+derive their values from the surrounding scope. Free variables are essential to how closures function, as they allow a function to 
+“remember” and retain access to external variables, even after the enclosing scope has finished executing. This mechanism enables 
+closures to preserve state between successive calls.
+
+#### The globals() Function
+
+The built-in globals() function returns a namespace dictionary with all the names—and associated objects—that are currently in your 
+global scope.
+
+
+```python
+>>> globals()
+{
+    '__name__': '__main__',
+    '__doc__': None,
+    '__package__': None,
+    ...
+}
+
+>>> number = 42
+
+>>> globals()
+{
+    '__name__': '__main__',
+    '__doc__': None,
+    '__package__': None,
+    ...
+    'number': 42
+}
+
+```
+The first call to globals() returns a dictionary containing the names in your __main__ program. Note that when you assign a new name at 
+the top level of __main__, then the name is added to the dictionary that globals() returns.
+
+
+#### The locals() Function
+
+The built-in locals() function returns a dictionary that holds a copy of the current state of the local namespace. When you call locals
+() in a function block, you get all the names assigned in the local scope down to the point where you call locals().
+
+```python
+>>> def function(arg):
+...     var = 100
+...     print(locals())
+...     another = 200
+...
+
+>>> function(300)
+{'var': 100, 'arg': 300}
+
+```
+
+If you call locals() in the global scope, then you’ll get the same dictionary that you would get if you were to call globals()
+
+#### Packing and Unpacking
+
+By using packing and unpacking you can create assignments with a single statement and catch several values with a single identifier, 
+making your code much easier to read.
+
+Packing is a handy Python tool that provides a dynamic way to pack and unpack values into a single data structure or take them out and 
+assign them to multiple variables. This process greatly improves the reliability and adaptability of your code.
+
+In Python, “packing” refers to the process of putting values into a new tuple or list by separating them with commas. This can be done 
+with an assignment statement where the left-hand side is a tuple or list of variables and the right-hand side is another tuple or list 
+of values.
+
+```python
+
+
+number1 = 1
+number2 = 2
+number3 = 3
+
+	
+myTup = (number1, number2, number3)
+
+myList = [number1, number2, number3]
+
+```
+
+You can also use the * operator (which is used as both power and multiplication operators). Before we see how that works with packing, 
+let me show you how the * operator works. We’ll define a function called sumOf and use the * operator like so:
+
+```python
+
+ 
+def sumOf(*nums):
+    print('Our numbers are:', nums)
+    return sum(nums)
+print('Adding them up, we get:', sumOf(10, 20, 30))
+
+
+```
+
+Remember, a tuple is an immutable list, so it cannot be changed once created. Tuples are great options for storing data that you don’t 
+want to be modified.
+
+
+# Unpacking
+
+unpacking is the process of extracting values from a sequence and assigning them to multiple variables. We achieve unpacking with the 
+assignment operator on the left side and an iterable object on the left side.
+
+eg:
+```python
+
+myTuple = (1, 2, 3)
+a, b, c = myTuple
+print(myTuple)
+
+```
+
+We can also unpack dictionaries (an unordered collection of data in the format of a key-value pair) like so:
+
+```python
+
+
+myDict = {'fname': 'Jack', 'lname': 'Wallen', 'country': 'USA'}
+fname, name, country = myDict.values()
+print(myDict.values())
+
+# output : dict_values(['Jack', 'Wallen', 'USA'])
+
+```
+
+
+
