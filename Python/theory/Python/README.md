@@ -1103,7 +1103,7 @@ We can also unpack dictionaries (an unordered collection of data in the format o
 ```python
 
 
-myDict = {'fname': 'Jack', 'lname': 'Wallen', 'country': 'USA'}
+myDict = {'fname': 'Jack', 'lname': 'Wallen', 'country':'USA'}
 fname, name, country = myDict.values()
 print(myDict.values())
 
