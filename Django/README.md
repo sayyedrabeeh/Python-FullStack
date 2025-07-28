@@ -269,3 +269,59 @@ modify your models.
 __init__.py — an empty file created here so that Django/Python will recognize the folder as a Python Package and 
 allow you to use its objects within other parts of the project.
 
+Applications are registered by adding them to the INSTALLED_APPS list in the project settings.
+
+Open the project settings file, django-locallibrary-tutorial/locallibrary/settings.py, and find the definition for 
+the INSTALLED_APPS list. Then add a new line at the end of the list, as shown below.
+
+```python
+
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'catalog',
+    # Add our new application
+    #'catalog.apps.CatalogConfig',  This object was created for us in /catalog/apps.py
+]
+
+```
+We'll use the default SQLite database
+it requires no additional work to set up! You can see how this database is configured in settings.py
+
+```python
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+```
+
+The settings.py file is also used for configuring a number of other settings, but at this point, you probably only 
+want to change the TIME_ZONE — this should be made equal to a string from the standard List of tz database time 
+zones (the TZ column in the table contains the values you want). Change your TIME_ZONE value to one of these 
+strings appropriate for your time zone.
+
+```python
+
+TIME_ZONE = 'Europe/London'
+TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
+
+
+```
+
+'UTC' stands for Coordinated Universal Time — a global time standard with no time zone offset.
+It’s often used as a neutral baseline.
+Useful when your app has users across different time zones or is hosted globally.
+
+
+
