@@ -108,4 +108,84 @@ book_detail indicates that the function is called book_detail() and can be found
 inside a file named views.py).
 
 
-# Handling the request (views.py)
+### Handling the request (views.py)
+
+Views are the heart of the web application, receiving HTTP requests from web clients and returning HTTP responses. 
+In between, they marshal the other resources of the framework to access databases, render templates, etc.
+
+```python
+
+# filename: views.py (Django view functions)
+
+from django.http import HttpResponse
+
+def index(request):
+    # Get an HttpRequest - the request parameter
+    # perform operations using information from the request.
+    # Return HttpResponse
+    return HttpResponse('Hello from Django!')
+```
+
+### Defining data models (models.py)
+
+Django web applications manage and query data through Python objects referred to as models. Models define the 
+structure of stored data, including the field types and possibly also their maximum size, default values, selection 
+list options, help text for documentation, label text for forms, etc.
+
+Once you've chosen what database you want to use, you don't need to talk to it directly at all — you just write 
+your model structure and other code, and Django handles all the "dirty work" of communicating with the database for 
+you.
+
+```python 
+## filename: views.py
+
+from django.shortcuts import render
+from .models import Team
+
+def index(request):
+    list_teams = Team.objects.filter(team_level__exact="U09")
+    context = {'youngest_teams': list_teams}
+    return render(request, '/best/index.html', context)
+
+
+```
+
+
+This function uses the render() function to create the HttpResponse that is sent back to the browser. This function 
+is a shortcut; it creates an HTML file by combining a specified HTML template and some data to insert in the 
+template (provided in the variable named context).
+
+Templates are often used to create HTML, but can also create other types of document. Django supports both its 
+native templating system and another popular Python library called Jinja2 out of the box. 
+
+##### ⚙️ To switch to Jinja2:
+
+```python
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [BASE_DIR / "templates"],
+        'APP_DIRS': True,
+        ...
+    },
+]
+```
+
+Both look similar, but Jinja2 is faster, more expressive, and more flexible.
+Django templates are safer, more limited — by design (less logic in templates, more in views).
+
+You can choose either depending on your style:
+
+    ✅ Django Templates: Clean, minimal logic.
+    🔥 Jinja2: More control, better for power users.
+
+
+**Forms:** HTML Forms are used to collect user data for processing on the server. Django simplifies form creation, 
+validation, and processing.
+**User authentication and permissions:** Django includes a robust user authentication and permission system that 
+has been built with security in mind.
+**Administration site**: The Django administration site is included by default when you create an app using the 
+basic skeleton. It makes it trivially easy to provide an admin page for site administrators to create, edit, and 
+view any data models in your site.
+
