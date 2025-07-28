@@ -189,3 +189,83 @@ has been built with security in mind.
 basic skeleton. It makes it trivially easy to provide an admin page for site administrators to create, edit, and 
 view any data models in your site.
 
+
+##### *Creating the project*
+
+Create the new project using the django-admin startproject command as shown, and then navigate into the project folder:
+
+```python
+django-admin startproject locallibrary
+cd locallibrary
+
+```
+
+The django-admin tool creates a folder/file structure as follows:
+```python
+
+locallibrary/
+    manage.py
+    locallibrary/
+        __init__.py
+        settings.py
+        urls.py
+        wsgi.py
+        asgi.py
+
+
+```
+
+__init__.py is an empty file that instructs Python to treat this directory as a Python package.
+
+**settings.py** contains all the website settings, including registering any applications we create, the location 
+of our static files, database configuration details, etc.
+
+**wsgi.py** is used to help your Django application communicate with the web server. You can treat this as 
+boilerplate.
+
+**asgi.py** is a standard for Python asynchronous web apps and servers to communicate with each other. Asynchronous 
+Server Gateway Interface (ASGI) is the asynchronous successor to Web Server Gateway Interface (WSGI). ASGI provides 
+a standard for both asynchronous and synchronous Python apps, whereas WSGI provided a standard for synchronous apps 
+only. ASGI is backward-compatible with WSGI and supports multiple servers and application frameworks.
+
+The **manage.py** script is used to create applications, work with databases, and start the development web server.
+
+ Make sure to run this command from the same folder as your project's manage.py
+
+ ```python
+# Linux/macOS
+python3 manage.py startapp catalog
+
+# Windows
+py manage.py startapp catalog
+
+
+ ```
+The tool creates a new folder and populates it with files for the different parts of the application (shown in the 
+following example). Most of the files are named after their purpose (e.g., views should be stored in views.py, 
+models in models.py, tests in tests.py, administration site configuration in admin.py, application registration in 
+apps.py).
+
+The updated project directory should now look like this:
+```python
+locallibrary/
+    manage.py
+    locallibrary/
+    catalog/
+        admin.py
+        apps.py
+        models.py
+        tests.py
+        views.py
+        __init__.py
+        migrations/
+
+```
+
+A migrations folder, used to store "migrations" — files that allow you to automatically update your database as you 
+modify your models.
+
+
+__init__.py — an empty file created here so that Django/Python will recognize the folder as a Python Package and 
+allow you to use its objects within other parts of the project.
+
