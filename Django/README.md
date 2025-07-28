@@ -65,3 +65,47 @@ placeholders used to represent actual content. A view can dynamically create an 
 populating it with data from a model. A template can be used to define the structure of any type of file; it 
 doesn't have to be HTML!.
 
+urls.py
+
+```python
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('book/<int:id>/', views.book_detail, name='book_detail'),
+    path('catalog/', include('catalog.urls')),
+    re_path(r'^([0-9]+)/$', views.best),
+]
+
+```
+
+The path() method uses angle brackets to define parts of a URL that will be captured and passed through to the view 
+function as named arguments.
+
+```python
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('user/<int:id>/', views.user_detail, name='user-detail'),
+]
+
+```
+
+accessing  parameter in url :
+
+```python 
+
+from django.http import HttpResponse
+
+def user_detail(request, id):
+    return HttpResponse(f"User ID is: {id}")
+
+```
+
+The second argument is another function that will be called when the pattern is matched. The notation views.
+book_detail indicates that the function is called book_detail() and can be found in a module called views (i.e., 
+inside a file named views.py).
+
+
+# Handling the request (views.py)
