@@ -325,3 +325,54 @@ Useful when your app has users across different time zones or is hosted globally
 
 
 
+##### Model definition
+
+Models are usually defined in an application's models.py file. They are implemented as subclasses of django.db.
+models.Model, and can include fields, methods and metadata. The code fragment below shows a "typical" model, named 
+MyModelName.
+
+```python 
+
+from django.db import models
+from django.urls import reverse
+
+class MyModelName(models.Model):
+    """A typical class defining a model, derived from the Model class."""
+
+    # Fields
+    my_field_name = models.CharField(max_length=20, help_text='Enter field documentation')
+    # …
+
+    # Metadata
+    class Meta:
+        ordering = ['-my_field_name']
+
+    # Methods
+    def get_absolute_url(self):
+        """Returns the URL to access a particular instance of MyModelName."""
+        return reverse('model-detail-view', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the MyModelName object (in Admin site etc.)."""
+        return self.my_field_name
+
+```
+
+#### Fields
+
+A model can have an arbitrary number of fields, of any type — each one represents a column of data that 
+we want to store in one of our database tables. Each database record (row) will consist of one of each 
+field value.
+
+The field types are assigned using specific classes, which determine the type of record that is used to 
+store the data in the database, along with validation criteria to be used when values are received from 
+an HTML form (i.e., what constitutes a valid value). The field types can also take arguments that further 
+specify how the field is stored or can be used.
+
+ The field types can also take arguments that further specify how the field is stored or can be used. In 
+ this case we are giving our field two arguments:
+
+> max_length=20 — States that the maximum length of a value in this field is 20 characters.
+
+>***help_text***='Enter field documentation' — helpful text that may be displayed in a form to help users understand how the field is used.
+
