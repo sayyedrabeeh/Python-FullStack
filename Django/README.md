@@ -422,3 +422,9 @@ class Examplemodel(models.Model):
     
 
 ```
+
+| Relationship | Django Field      | Description                       | Reverse Access                                          |
+| ------------ | ----------------- | --------------------------------- | ------------------------------------------------------- |
+| One-to-Many  | `ForeignKey`      | Many from current → one in target | `related_name='examples'` → `.examples.all()`           |
+| One-to-One   | `OneToOneField`   | Exactly one in both directions    | `.related_object` or `related_name`                     |
+| Many-to-Many | `ManyToManyField` | Many-to-many connections          | `related_name='many_examples'` → `.many_examples.all()` |
