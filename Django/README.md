@@ -325,3 +325,148 @@ Useful when your app has users across different time zones or is hosted globally
 
 
 
+##### Model definition
+
+Models are usually defined in an application's models.py file. They are implemented as subclasses of django.db.
+models.Model, and can include fields, methods and metadata. The code fragment below shows a "typical" model, named 
+MyModelName.
+
+```python 
+
+from django.db import models
+from django.urls import reverse
+
+class MyModelName(models.Model):
+    """A typical class defining a model, derived from the Model class."""
+
+    # Fields
+    my_field_name = models.CharField(max_length=20, help_text='Enter field documentation')
+    # …
+
+    # Metadata
+    class Meta:
+        ordering = ['-my_field_name']
+
+    # Methods
+    def get_absolute_url(self):
+        """Returns the URL to access a particular instance of MyModelName."""
+        return reverse('model-detail-view', args=[str(self.id)])
+
+    def __str__(self):
+        """String for representing the MyModelName object (in Admin site etc.)."""
+        return self.my_field_name
+
+```
+
+#### Fields
+
+A model can have an arbitrary number of fields, of any type — each one represents a column of data that 
+we want to store in one of our database tables. Each database record (row) will consist of one of each 
+field value.
+
+The field types are assigned using specific classes, which determine the type of record that is used to 
+store the data in the database, along with validation criteria to be used when values are received from 
+an HTML form (i.e., what constitutes a valid value). The field types can also take arguments that further 
+specify how the field is stored or can be used.
+
+ The field types can also take arguments that further specify how the field is stored or can be used. In 
+ this case we are giving our field two arguments:
+
+> max_length=20 — States that the maximum length of a value in this field is 20 characters.
+
+>***help_text***='Enter field documentation' — helpful text that may be displayed in a form to help users understand how the field is used.
+
+
+```python
+
+from django.db import models
+
+# Create your models here.
+
+class Examplemodel(models.Model):
+
+    # CharField
+    charfield = models.CharField(max_length=20,help_text='enter any char',blank=True,null=True,default='hi char')
+    textfield = models.TextField(help_text='enter any text',default=' hi text',blank=True,null=True)
+   
+    # NumberField
+   
+    integerfield = models.IntegerField(default=10,blank=True,null=True)
+    floatfield = models.FloatField(default=20.0,null=True,blank=True)
+
+    # BooleanField
+
+    booleanField = models.BooleanField(default=True)
+
+    # Date & Time 
+
+    date = models.DateField(auto_now=False,auto_now_add=False,blank=True,null=True)
+    date_and_time = models.DateTimeField(auto_now=False,auto_now_add=True,blank=True,null=True)
+
+    # Email and url Field 
+
+    email = models.EmailField(max_length=20,null=True,blank=True)
+    url = models.URLField(max_length=100,blank=True,null=True)
+
+    # file and imagefield 
+
+    file = models.FileField(upload_to='upload/',blank=True,null=True)
+    image = models.ImageField(upload_to='upload/',blank=True,null=True)
+
+    # Relationship Fields 
+
+    foriegnkey = models.ForeignKey('Anothermodel' , on_delete= models.CASCADE,related_name='example')
+    one_to_one_field = models.OneToOneField('Anothermodel',on_delete=models.CASCADE)
+    many_to_many_field = models.ManyToManyField('Anothermodel',related_name='example_many')
+
+    
+
+```
+
+| Relationship | Django Field      | Description                       | Reverse Access                                          |
+| ------------ | ----------------- | --------------------------------- | ------------------------------------------------------- |
+| One-to-Many  | `ForeignKey`      | Many from current → one in target | `related_name='examples'` → `.examples.all()`           |
+| One-to-One   | `OneToOneField`   | Exactly one in both directions    | `.related_object` or `related_name`                     |
+| Many-to-Many | `ManyToManyField` | Many-to-many connections          | `related_name='many_examples'` → `.many_examples.all()` |
+
+
+```python
+models.CharField(
+    max_length,               # Required
+    *,                        # Keyword arguments below
+    null=False,
+    blank=False,
+    choices=None,
+    db_column=None,
+    db_index=False,
+    db_tablespace=None,
+    default=UNSPECIFIED,
+    editable=True,
+    error_messages=None,
+    help_text='',
+    primary_key=False,
+    unique=False,
+    unique_for_date=None,
+    unique_for_month=None,
+    unique_for_year=None,
+    verbose_name=None,
+    validators=[],
+)
+
+```
+
+| Argument         | Description                                                    |
+| ---------------- | -------------------------------------------------------------- |
+| **`max_length`** | ✅ Required. Maximum number of characters allowed in the field. |
+
+| Argument       | Description                                                           |
+| -------------- | --------------------------------------------------------------------- |
+| `null`         | If `True`, allows the database to store `NULL`. Default is `False`.   |
+| `blank`        | If `True`, allows the field to be empty in forms. Default is `False`. |
+| `default`      | Sets a default value for the field.                                   |
+| `help_text`    | Adds help text for forms or admin.                                    |
+| `choices`      | Provide a list of `(value, label)` tuples for limited choices.        |
+| `unique`       | If `True`, no two rows can have the same value for this field.        |
+| `primary_key`  | Set this field as the primary key for the model.                      |
+| `verbose_name` | Human-readable name for the field.                                    |
+| `validators`   | List of custom validator functions.                                   |
