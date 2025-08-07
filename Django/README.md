@@ -376,3 +376,49 @@ specify how the field is stored or can be used.
 
 >***help_text***='Enter field documentation' — helpful text that may be displayed in a form to help users understand how the field is used.
 
+
+```python
+
+from django.db import models
+
+# Create your models here.
+
+class Examplemodel(models.Model):
+
+    # CharField
+    charfield = models.CharField(max_length=20,help_text='enter any char',blank=True,null=True,default='hi char')
+    textfield = models.TextField(help_text='enter any text',default=' hi text',blank=True,null=True)
+   
+    # NumberField
+   
+    integerfield = models.IntegerField(default=10,blank=True,null=True)
+    floatfield = models.FloatField(default=20.0,null=True,blank=True)
+
+    # BooleanField
+
+    booleanField = models.BooleanField(default=True)
+
+    # Date & Time 
+
+    date = models.DateField(auto_now=False,auto_now_add=False,blank=True,null=True)
+    date_and_time = models.DateTimeField(auto_now=False,auto_now_add=True,blank=True,null=True)
+
+    # Email and url Field 
+
+    email = models.EmailField(max_length=20,null=True,blank=True)
+    url = models.URLField(max_length=100,blank=True,null=True)
+
+    # file and imagefield 
+
+    file = models.FileField(upload_to='upload/',blank=True,null=True)
+    image = models.ImageField(upload_to='upload/',blank=True,null=True)
+
+    # Relationship Fields 
+
+    foriegnkey = models.ForeignKey('Anothermodel' , on_delete= models.CASCADE,related_name='example')
+    one_to_one_field = models.OneToOneField('Anothermodel',on_delete=models.CASCADE)
+    many_to_many_field = models.ManyToManyField('Anothermodel',related_name='example_many')
+
+    
+
+```
