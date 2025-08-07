@@ -428,3 +428,45 @@ class Examplemodel(models.Model):
 | One-to-Many  | `ForeignKey`      | Many from current → one in target | `related_name='examples'` → `.examples.all()`           |
 | One-to-One   | `OneToOneField`   | Exactly one in both directions    | `.related_object` or `related_name`                     |
 | Many-to-Many | `ManyToManyField` | Many-to-many connections          | `related_name='many_examples'` → `.many_examples.all()` |
+
+
+```python
+models.CharField(
+    max_length,               # Required
+    *,                        # Keyword arguments below
+    null=False,
+    blank=False,
+    choices=None,
+    db_column=None,
+    db_index=False,
+    db_tablespace=None,
+    default=UNSPECIFIED,
+    editable=True,
+    error_messages=None,
+    help_text='',
+    primary_key=False,
+    unique=False,
+    unique_for_date=None,
+    unique_for_month=None,
+    unique_for_year=None,
+    verbose_name=None,
+    validators=[],
+)
+
+```
+
+| Argument         | Description                                                    |
+| ---------------- | -------------------------------------------------------------- |
+| **`max_length`** | ✅ Required. Maximum number of characters allowed in the field. |
+
+| Argument       | Description                                                           |
+| -------------- | --------------------------------------------------------------------- |
+| `null`         | If `True`, allows the database to store `NULL`. Default is `False`.   |
+| `blank`        | If `True`, allows the field to be empty in forms. Default is `False`. |
+| `default`      | Sets a default value for the field.                                   |
+| `help_text`    | Adds help text for forms or admin.                                    |
+| `choices`      | Provide a list of `(value, label)` tuples for limited choices.        |
+| `unique`       | If `True`, no two rows can have the same value for this field.        |
+| `primary_key`  | Set this field as the primary key for the model.                      |
+| `verbose_name` | Human-readable name for the field.                                    |
+| `validators`   | List of custom validator functions.                                   |
