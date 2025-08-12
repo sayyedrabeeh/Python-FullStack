@@ -470,3 +470,80 @@ models.CharField(
 | `primary_key`  | Set this field as the primary key for the model.                      |
 | `verbose_name` | Human-readable name for the field.                                    |
 | `validators`   | List of custom validator functions.                                   |
+
+
+#### Admin
+
+The Django admin application can use your models to automatically build a site area that you can 
+use to create, view, update, and delete records. This can save you a lot of time during 
+development, making it very easy to test your models.
+
+##### Registering models
+
+eg:
+```python
+from .models import Author, Genre, Book, BookInstance, Language
+
+admin.site.register(Book)
+admin.site.register(Author)
+admin.site.register(Genre)
+admin.site.register(BookInstance)
+admin.site.register(Language)
+```
+
+This is the simplest way of registering a model, or models, with the site. The admin site is highly 
+customizable.
+
+##### Creating a superuser
+
+to log into the admin site, we need a user account with Staff status enabled. In order to view and 
+create records we also need this user to have permissions to manage all our objects. You can create 
+a "superuser" account that has full access to the site and all needed permissions using manage.py.
+
+Call the following command, in the same directory as manage.py, to create the superuser. You will 
+be prompted to enter a username, email address, and strong password.
+
+```bash
+python manage.py createsuperuser
+
+```
+
+To login to the site, open the /admin URL (e.g., http://127.0.0.1:8000/admin) and enter your new 
+superuser userid and password credentials. 
+
+To change how a model is displayed in the admin interface you define a ModelAdmin class (which 
+describes the layout) and register it with the model.
+
+Now add a new AuthorAdmin and registration as shown below.
+```python
+
+# Define the admin class
+class AuthorAdmin(admin.ModelAdmin):
+    pass
+
+# Register the admin class with the associated model
+admin.site.register(Author, AuthorAdmin)
+
+
+```
+
+use the @register decorator to register the models (this does exactly the same thing as the admin.
+site.register()).
+
+```python
+
+# Register the Admin classes for Book using the decorator
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    pass
+
+# Register the Admin classes for BookInstance using the decorator
+@admin.register(BookInstance)
+class BookInstanceAdmin(admin.ModelAdmin):
+    pass
+
+```
+
+
+Currently all of our admin classes are empty (see pass) so the admin behavior will be unchanged! We 
+can now extend these to define our model-specific admin behavior.
