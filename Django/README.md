@@ -547,3 +547,25 @@ class BookInstanceAdmin(admin.ModelAdmin):
 
 Currently all of our admin classes are empty (see pass) so the admin behavior will be unchanged! We 
 can now extend these to define our model-specific admin behavior.
+
+
+Replace your AuthorAdmin class with the code below. The field names to be displayed in the list are 
+declared in a tuple in the required order, as shown (these are the same names as specified in your 
+original model).
+
+```python
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('last_name', 'first_name', 'date_of_birth', 'date_of_death')
+
+```
+
+Once you've got a lot of items in a list, it can be useful to be able to filter which items are 
+displayed. This is done by listing fields in the list_filter attribute. Replace your current 
+BookInstanceAdmin class with the code fragment below.
+
+```python
+class BookInstanceAdmin(admin.ModelAdmin):
+    list_filter = ('status', 'due_back')
+
+```
+
