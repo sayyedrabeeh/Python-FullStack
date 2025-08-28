@@ -361,3 +361,132 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(n³) < O(2ⁿ) < O(n!)
 
 ---
 
+ 
+---
+
+#  **Linear Search**
+
+###  Idea
+
+* Look at each element in the list one by one.
+* Compare with the target.
+* If found → return index.
+* If not found after checking all → return `-1`.
+
+    👉 Works on **unsorted or sorted arrays**.
+
+---
+
+### code
+
+```
+linear_search(A, n, x):
+    for i = 0 to n-1:
+        if A[i] == x:
+            return i
+    return -1
+```
+
+---
+
+###  Python Code
+
+```python
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i
+    return -1
+```
+
+---
+
+###  Complexity
+
+* **Best case (Ω(1))** → Element is at first position.
+* **Worst case (O(n))** → Element is last or not present.
+* **Average case (Θ(n))** → Element is somewhere in middle.
+
+    👉 **Space Complexity** = O(1) (no extra memory).
+
+---
+
+#  **Binary Search**
+
+###  Idea
+
+* Works only on **sorted arrays**.
+* Compare middle element with target.
+* If target == mid → found.
+* If target < mid → search in left half.
+* If target > mid → search in right half.
+* Repeat until found or subarray becomes empty.
+
+    👉 Divide the search space by 2 each step.
+
+---
+
+###  Pseudocode
+
+```
+binary_search(A, n, x):
+    low = 0
+    high = n-1
+    while low <= high:
+        mid = (low + high) // 2
+        if A[mid] == x:
+            return mid
+        else if A[mid] < x:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+```
+
+---
+
+###  Python Code
+
+```python
+def binary_search(arr, target):
+    low, high = 0, len(arr)-1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+```
+
+---
+
+###  Complexity
+
+* **Best case (Ω(1))** → Target found at middle on first check.
+* **Worst case (O(log n))** → Need to divide log₂n times.
+* **Average case (Θ(log n))** → Logarithmic growth.
+
+    👉 **Space Complexity** = O(1) (iterative) or O(log n) (recursive due to call stack).
+
+---
+
+#  **Comparison Table: Linear Search vs Binary Search**
+
+| Feature           | Linear Search              | Binary Search         |
+| ----------------- | -------------------------- | --------------------- |
+| Input Requirement | Works on unsorted & sorted | Requires sorted array |
+| Best Case         | O(1)                       | O(1)                  |
+| Worst Case        | O(n)                       | O(log n)              |
+| Average Case      | O(n)                       | O(log n)              |
+| Space             | O(1)                       | O(1) iterative        |
+| Approach          | Sequential                 | Divide & Conquer      |
+
+---
+
+* **Linear Search** = sequential checking.
+* **Binary Search** = halving the search space each step.
+
+---
