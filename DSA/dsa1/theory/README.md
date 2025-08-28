@@ -874,4 +874,254 @@ def fibonacci(n):
 * Dynamic Programming problems (Knapsack, LCS, etc.)
 
 --
+ 
 
+
+#  **Bubble Sort **
+
+---
+
+
+We want to **sort an array** into ascending (or descending) order.
+👉 First principle: If the array is not sorted, some numbers are **out of order**.
+
+Example: `[5, 3, 8, 4, 2]`
+
+Notice `5 > 3` → they’re **out of order**.
+
+---
+
+##  The Core Idea (Inspiration)
+
+* If we repeatedly **compare adjacent elements** and **swap them when out of order**, the **largest element “bubbles” to the end** in each pass.
+* Do this for all elements → array becomes sorted.
+
+That’s why it’s called **Bubble Sort**.
+
+---
+
+##  Step-by-Step Example
+
+### Pass 1:
+
+Array: `[5, 3, 8, 4, 2]`
+
+* Compare 5 & 3 → swap → `[3, 5, 8, 4, 2]`
+* Compare 5 & 8 → no swap → `[3, 5, 8, 4, 2]`
+* Compare 8 & 4 → swap → `[3, 5, 4, 8, 2]`
+* Compare 8 & 2 → swap → `[3, 5, 4, 2, 8]`
+
+👉 Largest (`8`) is now at the **end**.
+
+---
+
+### Pass 2:
+
+Array: `[3, 5, 4, 2, 8]`
+
+* Compare 3 & 5 → no swap → `[3, 5, 4, 2, 8]`
+* Compare 5 & 4 → swap → `[3, 4, 5, 2, 8]`
+* Compare 5 & 2 → swap → `[3, 4, 2, 5, 8]`
+
+👉 `5` is now in the **second last place**.
+
+---
+
+### Pass 3:
+
+Array: `[3, 4, 2, 5, 8]`
+
+* Compare 3 & 4 → no swap
+* Compare 4 & 2 → swap → `[3, 2, 4, 5, 8]`
+
+👉 `4` is in place.
+
+---
+
+### Pass 4:
+
+Array: `[3, 2, 4, 5, 8]`
+
+* Compare 3 & 2 → swap → `[2, 3, 4, 5, 8]`
+
+👉 Sorted ✅
+
+---
+
+##  Algorithm (Pseudocode)
+
+```
+bubble_sort(A, n):
+    for i = 0 to n-1:
+        for j = 0 to n-i-2:
+            if A[j] > A[j+1]:
+                swap(A[j], A[j+1])
+```
+
+---
+
+##  Python Code
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(n - i - 1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+```
+
+---
+
+##  Optimization (Early Stopping)
+
+👉 If no swaps happen in a pass, the array is already sorted.
+
+```python
+def bubble_sort_optimized(arr):
+    n = len(arr)
+    for i in range(n):
+        swapped = False
+        for j in range(n - i - 1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+                swapped = True
+        if not swapped:   # no swaps = sorted
+            break
+    return arr
+```
+
+---
+
+##  Complexity Analysis
+
+* **Best Case (Ω(n))**: Array already sorted → only 1 pass (with optimized version).
+* **Worst Case (O(n²))**: Array sorted in reverse → maximum swaps.
+* **Average Case (Θ(n²))**: Roughly half elements swapped each pass.
+* **Space Complexity**: O(1) → sorting is in-place.
+
+---
+
+##  Real-World Analogy
+
+Imagine students standing in a line by height:
+
+* Compare neighbors → if taller before shorter → swap.
+* Repeat passes until tallest is at the end, then next tallest, etc.
+
+---
+ 
+
+ 
+
+#  Insertion Sort 
+
+---
+
+## 1. **Core Intuition (Real-Life Analogy)**
+
+Imagine you are **arranging playing cards in your hand** one by one:
+
+* You start with the first card (already sorted).
+* Take the next card and **insert** it into its correct position among the already sorted cards.
+* Repeat for all cards until the hand is sorted.
+
+This is exactly what **insertion sort** does.
+
+---
+
+## 2. **Algorithm Idea**
+
+* Divide the array into two parts:
+
+  * **Sorted part** (initially just the first element).
+  * **Unsorted part** (the rest).
+* Take elements from the unsorted part one by one.
+* Insert each into the correct position in the sorted part (by shifting elements if needed).
+
+---
+
+## 3. **Steps from Scratch**
+
+Suppose array = `[5, 3, 4, 1, 2]`
+
+1. Start with the first element `[5]` (already sorted).
+2. Take `3` → compare with `5` → `3 < 5` → insert before `5`.
+   New array: `[3, 5, 4, 1, 2]`
+3. Take `4` → compare with `5` → `4 < 5`, shift `5`. Compare with `3` → `4 > 3`. Insert after `3`.
+   New array: `[3, 4, 5, 1, 2]`
+4. Take `1` → compare with `5` → shift. Compare with `4` → shift. Compare with `3` → shift. Insert at start.
+   New array: `[1, 3, 4, 5, 2]`
+5. Take `2` → compare with `5` → shift. Compare with `4` → shift. Compare with `3` → shift. Compare with `1` → stop. Insert after `1`.
+   Final array: `[1, 2, 3, 4, 5]`
+
+---
+
+## 4. **Pseudocode (First Principles)**
+
+```
+InsertionSort(arr, n):
+    for i from 1 to n-1:
+        key = arr[i]              # Pick current element
+        j = i - 1                 # Index of last sorted element
+
+        while j >= 0 and arr[j] > key:
+            arr[j+1] = arr[j]     # Shift element right
+            j = j - 1
+
+        arr[j+1] = key            # Insert key at correct position
+```
+
+---
+
+## 5. **Dry Run**
+
+Array = `[7, 4, 5, 2]`
+
+* **i=1**: key=4 → compare with 7 → shift 7 → insert 4 → `[4, 7, 5, 2]`
+* **i=2**: key=5 → compare with 7 → shift 7 → insert 5 → `[4, 5, 7, 2]`
+* **i=3**: key=2 → shift 7, 5, 4 → insert 2 → `[2, 4, 5, 7]`
+
+ Sorted.
+
+---
+
+## 6. **Complexity Analysis**
+
+* **Best case (already sorted):**
+  Only 1 comparison per element → **O(n)**
+* **Worst case (reverse sorted):**
+  Each element compared with all previous → **O(n²)**
+* **Average case:** \~ **O(n²)**
+* **Space Complexity:** **O(1)** (in-place sorting, no extra memory).
+
+---
+
+## 7. **Recursive Version (from First Principles)**
+
+We can also define Insertion Sort recursively:
+
+* Sort the first `n-1` elements recursively.
+* Insert the last element into the correct position in the sorted array.
+
+### Recursive Pseudocode:
+
+```
+RecursiveInsertionSort(arr, n):
+    if n <= 1:
+        return
+
+    RecursiveInsertionSort(arr, n-1)
+
+    last = arr[n-1]
+    j = n-2
+
+    while j >= 0 and arr[j] > last:
+        arr[j+1] = arr[j]
+        j = j - 1
+
+    arr[j+1] = last
+```
+
+---
