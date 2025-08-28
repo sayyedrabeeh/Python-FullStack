@@ -1124,4 +1124,257 @@ RecursiveInsertionSort(arr, n):
     arr[j+1] = last
 ```
 
+ 
 ---
+
+#  Selection Sort
+
+---
+
+## 1. What is Selection Sort?
+
+Selection Sort is a **comparison-based sorting algorithm**.
+It works by **dividing the array into two parts**:
+
+1. A sorted portion (at the beginning).
+2. An unsorted portion (the rest of the array).
+
+At each step:
+
+* You **find the minimum element** from the unsorted portion.
+* You **swap it with the first element of the unsorted portion**.
+* This expands the sorted portion by one element.
+
+---
+
+## 2. Step-by-Step 
+
+Imagine you have an **unsorted array**:
+
+```
+[29, 10, 14, 37, 13]
+```
+
+* Step 1: Look at the whole array. The **minimum** is `10`.
+  Swap `10` with the first element `29`.
+  → `[10, 29, 14, 37, 13]` (now `10` is in the right place).
+
+* Step 2: Now ignore the first element (sorted). Find the min in `[29, 14, 37, 13]`.
+  Min = `13`. Swap `13` with `29`.
+  → `[10, 13, 14, 37, 29]`.
+
+* Step 3: Ignore first 2 elements. Min in `[14, 37, 29]` = `14`.
+  Already in place, so no swap.
+  → `[10, 13, 14, 37, 29]`.
+
+* Step 4: Ignore first 3. Min in `[37, 29]` = `29`. Swap `29` with `37`.
+  → `[10, 13, 14, 29, 37]`.
+
+* Step 5: Only one element left, already sorted.
+
+ Final sorted array: `[10, 13, 14, 29, 37]`.
+
+---
+
+## 3. Algorithm (in words)
+
+1. Start with the first element of the array.
+2. Search through the rest of the array to find the smallest element.
+3. Swap the smallest element with the first element.
+4. Move the boundary of the sorted portion by one step forward.
+5. Repeat steps 2–4 until the array is sorted.
+
+---
+
+## 4. Pseudocode
+
+```
+for i = 0 to n-2:
+    min_index = i
+    for j = i+1 to n-1:
+        if arr[j] < arr[min_index]:
+            min_index = j
+    swap(arr[i], arr[min_index])
+```
+
+---
+
+## 5. Example in Python
+
+```python
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+    return arr
+
+print(selection_sort([29, 10, 14, 37, 13]))
+```
+
+Output:
+
+```
+[10, 13, 14, 29, 37]
+```
+
+---
+
+## 6. Complexity Analysis
+
+* **Best Case:** O(n²) (still compares all elements, no shortcuts).
+* **Worst Case:** O(n²).
+* **Average Case:** O(n²).
+* **Space Complexity:** O(1) (in-place).
+* **Stability:** ❌ Not stable (swapping can disturb order of equal elements).
+
+---
+
+## 7. First-Principles Understanding
+
+Why does this work?
+
+* Every time we find the **smallest element in the unsorted part**, we are ensuring that at least **one element is guaranteed to be in its final correct position** after each iteration.
+* Repeating this n times guarantees the whole array becomes sorted.
+
+---
+ 
+---
+
+# 🔹 Quick Sort
+
+## 1. **What is Quick Sort?**
+
+Quick Sort is a **divide-and-conquer sorting algorithm**.
+Instead of sorting the whole array directly, it:
+
+1. **Divides**: Picks a "pivot" element and rearranges the array so that:
+
+   * All elements smaller than the pivot go to its left.
+   * All elements greater than the pivot go to its right.
+     (This step is called **partitioning**.)
+2. **Conquers**: Recursively applies the same process on left and right sub-arrays.
+3. **Combines**: Since partitioning places pivot in correct position, we just merge the results (no extra merging needed like Merge Sort).
+
+---
+
+## 2. **First Principle Idea**
+
+Imagine sorting a stack of exam papers:
+
+* You pick **one paper as reference** (pivot).
+* You move all papers with **lower marks** to the left pile, and **higher marks** to the right pile.
+* Now the pivot paper is in its final sorted position.
+* You **repeat recursively** for left and right piles until every pile has 1 or 0 papers.
+
+This is exactly Quick Sort.
+
+---
+
+## 3. **Step-by-Step Process**
+
+Example: Sort `[10, 7, 8, 9, 1, 5]`
+
+1. Choose **pivot** (say last element `5`).
+2. Partition:
+
+   * Compare each element with pivot `5`.
+   * Move smaller ones before pivot → `[1, 5, 10, 7, 8, 9]`.
+   * Pivot (`5`) is now in its correct place.
+3. Recurse:
+
+   * Left: `[1]` (already sorted).
+   * Right: `[10, 7, 8, 9]` → repeat partitioning.
+
+Eventually: `[1, 5, 7, 8, 9, 10]`.
+
+---
+
+## 4. **Algorithm (First Principle Pseudocode)**
+
+### Partition Function:
+
+```
+partition(A, low, high):
+    pivot = A[high]           # pick last element
+    i = low - 1               # place for smaller elements
+    for j from low to high-1:
+        if A[j] <= pivot:     # element should go to left side
+            i = i + 1
+            swap A[i] and A[j]
+    swap A[i+1] and A[high]   # place pivot at correct pos
+    return i+1                # pivot index
+```
+
+### Quick Sort Function:
+
+```
+quickSort(A, low, high):
+    if low < high:
+        pi = partition(A, low, high)   # pivot index
+        quickSort(A, low, pi-1)        # sort left subarray
+        quickSort(A, pi+1, high)       # sort right subarray
+```
+
+---
+
+## 5. **Complexity Analysis**
+
+* **Best Case (balanced splits):**
+  Every partition divides array \~half → **O(n log n)**.
+* **Worst Case (already sorted, bad pivot):**
+  Partition divides array into (n-1 and 0) each time → **O(n²)**.
+* **Average Case:**
+  Random pivot makes splits balanced on average → **O(n log n)**.
+* **Space Complexity:**
+
+  * In-place sorting → **O(1)** extra memory.
+  * Recursion stack → **O(log n)** (best), **O(n)** (worst).
+
+---
+
+## 6. **Python Implementation (From Scratch)**
+
+```python
+def partition(arr, low, high):
+    pivot = arr[high]  # last element as pivot
+    i = low - 1        # pointer for smaller elements
+    
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    
+    arr[i+1], arr[high] = arr[high], arr[i+1]
+    return i + 1
+
+def quick_sort(arr, low, high):
+    if low < high:
+        pi = partition(arr, low, high)   # pivot index
+        quick_sort(arr, low, pi-1)       # left side
+        quick_sort(arr, pi+1, high)      # right side
+
+# Example
+arr = [10, 7, 8, 9, 1, 5]
+quick_sort(arr, 0, len(arr)-1)
+print("Sorted:", arr)
+```
+
+✅ Output: `Sorted: [1, 5, 7, 8, 9, 10]`
+
+---
+
+## 7. **Key Insights**
+
+* Quick Sort is **faster in practice than Merge Sort** for small-to-medium datasets (because it sorts in-place).
+* Pivot selection is crucial:
+
+  * Bad pivot = worst case (`O(n²)`).
+  * Randomized pivot selection avoids this problem.
+* Recursive → naturally elegant, but tail recursion optimizations can make it more iterative.
+
+---
+ 
