@@ -23,4 +23,36 @@ for i in (a,b,c,d,e):
 
 print('largest :',l)
 print('third :',tl)
-        
+
+
+
+"""
+
+let a=0
+let b=3
+let c = 2
+let d=31
+let f =39
+let lar = a
+let sec = -Infinity
+let thd = -Infinity
+function find(num){
+    if(num>lar){
+        thd = sec
+        sec = lar
+        lar = num
+    }else if(num>sec){
+        thd = sec
+        sec = num
+    }else if(num>thd){
+        thd = num
+    }
+}
+find(b)
+find(c)
+find(d)
+find(f)
+console.log(lar)
+console.log(thd)
+
+"""        
