@@ -294,3 +294,167 @@ Order of serving: 10 → 20 → 30 → 40. (FIFO ✅)
 
 ---
  
+
+
+ 
+---
+
+# 🔹 Hash Table 
+
+## 1. What is a Hash Table?
+
+* A **Hash Table** (or Hash Map) is a **data structure** that stores **key-value pairs**.
+* Instead of searching for a key by scanning the whole collection (like in arrays or linked lists), a hash table uses a **hash function** to quickly find where the key should be stored.
+
+👉 Think of it like a dictionary:
+
+* Key = word
+* Value = meaning
+
+When you want to find a word, you don’t scan all words—you jump directly to the section where it belongs (like alphabetical indexing). That’s exactly what a hash function does.
+
+---
+
+## 2. Core Idea
+
+* Store elements in an **array** (called a hash table).
+* Use a **hash function** `h(key)` to convert the key into an **index** of the array.
+* Place the value at that index.
+
+Example:
+
+```txt
+Hash function: h(key) = key % 10
+Table size = 10
+
+Insert keys: 7, 27, 37
+h(7) = 7 % 10 = 7
+h(27) = 27 % 10 = 7  <-- collision
+h(37) = 37 % 10 = 7  <-- collision
+```
+
+👉 Problem: **Collisions** happen when two keys map to the same index.
+👉 Solution: Collision resolution strategies (explained below).
+
+---
+
+## 3. Operations on Hash Tables
+
+1. **Insert(key, value)** → put a key-value pair in the table.
+2. **Search(key)** → find the value associated with the key.
+3. **Delete(key)** → remove the key-value pair.
+
+ If no collisions:
+
+* Average Time = **O(1)** (constant time)
+* Space = O(n)
+
+❌ If collisions are not handled:
+
+* Worst Case = **O(n)** (like searching in a linked list).
+
+---
+
+## 4. Collision Handling Techniques (Types of Hash Tables)
+
+### (a) **Open Hashing (Chaining)**
+
+* Each table index stores a **linked list** (or dynamic structure).
+* If multiple keys hash to the same index, they are stored in the list at that index.
+
+Example:
+
+```txt
+Index 7 → [7 → 27 → 37]
+```
+
+Pros: Simple, unlimited elements per index.
+Cons: Needs extra memory for linked lists.
+
+---
+
+### (b) **Closed Hashing (Open Addressing)**
+
+Instead of linked lists, we **find another empty slot** in the table.
+
+#### 1. **Linear Probing**
+
+* If `h(key)` is occupied, check next index `(h(key)+1) % size`.
+* Continue until an empty slot is found.
+
+Example:
+
+```txt
+Keys: 7, 27 (hash to same index 7)
+7 goes to index 7
+27 goes to index 8 (next available)
+```
+
+Problem: **Clustering** (many consecutive filled slots).
+
+---
+
+#### 2. **Quadratic Probing**
+
+* Instead of checking next slot, check squares: `(h(key)+i^2) % size`.
+
+Example:
+
+```txt
+Try index 7 → occupied
+Try 7+1^2=8 → maybe empty
+Try 7+2^2=11 → maybe empty
+```
+
+Less clustering, but can fail if table is too full.
+
+---
+
+#### 3. **Double Hashing**
+
+* Use a second hash function when collision occurs.
+* Formula: `(h1(key) + i*h2(key)) % size`.
+
+Example:
+
+```txt
+h1(27) = 7
+h2(27) = 3
+Probing sequence = 7, 10, 13, ...
+```
+
+Best open addressing method.
+
+---
+
+## 5. Complexity
+
+| Operation | Average Case | Worst Case |
+| --------- | ------------ | ---------- |
+| Insert    | O(1)         | O(n)       |
+| Search    | O(1)         | O(n)       |
+| Delete    | O(1)         | O(n)       |
+
+> Worst case happens if all keys collide into one chain or if probing fills the table.
+
+---
+
+## 6. Real-World Uses
+
+* **Databases** → indexing rows by primary key.
+* **Compilers** → symbol tables (variables → memory locations).
+* **Caches** → store recently used data.
+* **Dictionaries** in Python, **HashMap** in Java, **Objects** in JS.
+
+---
+
+✅ **Summary (First Principles)**
+
+* Hash table = array + hash function.
+* Key → hash function → index.
+* Handle collisions using **chaining** or **open addressing**.
+* Average O(1), worst O(n).
+* Real-world: dictionaries, caches, symbol tables.
+
+---
+ 
