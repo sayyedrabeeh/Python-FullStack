@@ -489,4 +489,389 @@ def binary_search(arr, target):
 * **Linear Search** = sequential checking.
 * **Binary Search** = halving the search space each step.
 
+
 ---
+
+#  **Linked List **
+
+---
+
+##  What is a Linked List?
+
+* A **linear data structure** where elements (called **nodes**) are stored in **non-contiguous memory locations**.
+* Each node has:
+
+  1. **Data** → actual value
+  2. **Pointer/Reference** → address of next node
+
+👉 Unlike **arrays**, linked lists don’t require contiguous memory.
+
+---
+
+##  Types of Linked Lists
+
+###  **Singly Linked List (SLL)**
+
+* Each node points to the next node.
+* Last node points to `NULL`.
+
+```
+Head → [Data|Next] → [Data|Next] → NULL
+```
+
+###  **Doubly Linked List (DLL)**
+
+* Each node points to **next** and **previous** node.
+
+```
+NULL ← [Prev|Data|Next] ↔ [Prev|Data|Next] → NULL
+```
+
+###  **Circular Linked List**
+
+* Last node points back to head.
+* Can be singly or doubly.
+
+```
+Head → [Data|Next] → [Data|Next] → … → Head
+```
+
+---
+
+##  Operations on Linked List
+
+We’ll do **Insertion, Deletion, Traversal, and Recursion** from first principles.
+
+---
+
+###  Node Definition (Python)
+
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None   # for singly linked list
+```
+
+---
+
+###  Traversal (Iterative)
+
+```python
+def traverse(head):
+    current = head
+    while current:
+        print(current.data, end=" -> ")
+        current = current.next
+    print("NULL")
+```
+
+---
+
+###  Traversal (Recursive)
+
+```python
+def traverse_recursive(node):
+    if node is None:
+        print("NULL")
+        return
+    print(node.data, end=" -> ")
+    traverse_recursive(node.next)
+```
+
+---
+
+##  Insertion
+
+### 1. Insert at Beginning
+
+```python
+def insert_at_beginning(head, data):
+    new_node = Node(data)
+    new_node.next = head
+    return new_node   # new head
+```
+
+---
+
+### 2. Insert at End
+
+```python
+def insert_at_end(head, data):
+    new_node = Node(data)
+    if head is None:
+        return new_node
+    current = head
+    while current.next:
+        current = current.next
+    current.next = new_node
+    return head
+```
+
+---
+
+### 3. Insert After a Node
+
+```python
+def insert_after(prev_node, data):
+    if prev_node is None:
+        print("Previous node cannot be NULL")
+        return
+    new_node = Node(data)
+    new_node.next = prev_node.next
+    prev_node.next = new_node
+```
+
+---
+
+##  Deletion
+
+### 1. Delete First Node
+
+```python
+def delete_first(head):
+    if head is None:
+        return None
+    return head.next
+```
+
+---
+
+### 2. Delete Last Node
+
+```python
+def delete_last(head):
+    if head is None or head.next is None:
+        return None
+    current = head
+    while current.next.next:
+        current = current.next
+    current.next = None
+    return head
+```
+
+---
+
+### 3. Delete by Value
+
+```python
+def delete_value(head, key):
+    if head is None:
+        return None
+    if head.data == key:
+        return head.next
+    current = head
+    while current.next and current.next.data != key:
+        current = current.next
+    if current.next:
+        current.next = current.next.next
+    return head
+```
+
+---
+
+##  Recursion in Linked List
+
+###  Count Nodes (Recursive)
+
+```python
+def count_nodes(node):
+    if node is None:
+        return 0
+    return 1 + count_nodes(node.next)
+```
+
+---
+
+###  Search in Linked List (Recursive)
+
+```python
+def search(node, key):
+    if node is None:
+        return False
+    if node.data == key:
+        return True
+    return search(node.next, key)
+```
+
+---
+
+###  Reverse Linked List (Recursive)
+
+```python
+def reverse_recursive(head):
+    if head is None or head.next is None:
+        return head
+    new_head = reverse_recursive(head.next)
+    head.next.next = head
+    head.next = None
+    return new_head
+```
+
+---
+
+##  Complexity Analysis
+
+| Operation           | Singly LL | Doubly LL           |
+| ------------------- | --------- | ------------------- |
+| Traverse            | O(n)      | O(n)                |
+| Insert at beginning | O(1)      | O(1)                |
+| Insert at end       | O(n)      | O(1) if tail stored |
+| Insert after node   | O(1)      | O(1)                |
+| Delete first        | O(1)      | O(1)                |
+| Delete last         | O(n)      | O(1) if tail stored |
+| Search              | O(n)      | O(n)                |
+
+    👉 Recursion usually adds **O(n) stack space**.
+---
+
+
+
+
+ 
+
+---
+
+#  Recursion 
+---
+
+##  What is Recursion?
+
+**Definition**: A function calling itself **directly or indirectly** to solve a smaller version of the same problem.
+
+* Every recursive solution has two parts:
+
+  1. **Base Case** → A condition where recursion stops (otherwise it goes infinite).
+  2. **Recursive Case** → The function reduces the problem into a smaller subproblem and calls itself.
+
+---
+
+##  How Recursion Works (Step by Step)
+
+Think of recursion like a **stack of unfinished tasks**:
+
+1. Each time a recursive call is made, the current function call is **paused** and pushed onto the **call stack**.
+2. The recursion continues until the **base case** is reached.
+3. Then, the functions start **returning results back up the stack**.
+
+👉 Recursion is deeply connected with **stack data structure**.
+
+---
+
+##  Example 1: Factorial
+
+**Definition**: `n! = n × (n-1) × (n-2) × … × 1`
+
+###  Step-by-Step Thought Process
+
+* `5! = 5 × 4!`
+* `4! = 4 × 3!`
+* `3! = 3 × 2!`
+* `2! = 2 × 1!`
+* `1! = 1` (**base case**)
+
+---
+
+###  Code
+
+```python
+def factorial(n):
+    if n == 0 or n == 1:   # Base case
+        return 1
+    return n * factorial(n-1)  # Recursive case
+```
+
+###  Execution for factorial(4)
+
+```
+factorial(4) 
+= 4 * factorial(3) 
+= 4 * (3 * factorial(2)) 
+= 4 * (3 * (2 * factorial(1))) 
+= 4 * (3 * (2 * 1)) 
+= 24
+```
+
+---
+
+##  Example 2: Fibonacci
+
+**Definition**: `Fib(n) = Fib(n-1) + Fib(n-2)`
+
+* Base Cases: `Fib(0)=0, Fib(1)=1`
+
+```python
+def fibonacci(n):
+    if n == 0: return 0
+    if n == 1: return 1
+    return fibonacci(n-1) + fibonacci(n-2)
+```
+
+👉 Note: This is elegant but inefficient (`O(2ⁿ)`). We can optimize with DP (memoization).
+
+---
+
+##  Types of Recursion
+
+1. **Direct Recursion** → Function calls itself directly.
+
+   ```python
+   def f(): 
+       f()
+   ```
+
+2. **Indirect Recursion** → Two or more functions call each other.
+
+   ```python
+   def A(): B()
+   def B(): A()
+   ```
+
+3. **Tail Recursion** → Recursive call is the last operation.
+
+   * Easier to optimize (like loops).
+
+4. **Non-Tail Recursion** → Work remains after recursive call (e.g., factorial).
+
+---
+
+##  Recursion vs Iteration
+
+| Feature     | Recursion           | Iteration        |
+| ----------- | ------------------- | ---------------- |
+| Uses        | Function call stack | Loop constructs  |
+| Space       | More (stack frames) | Less (constant)  |
+| Readability | Cleaner, elegant    | Sometimes messy  |
+| Performance | Can be slower       | Usually faster   |
+| Best for    | Divide & Conquer    | Repetitive tasks |
+
+---
+
+##  Complexity Analysis
+
+* **Factorial Recursive**:
+
+  * Time = O(n) (n calls)
+  * Space = O(n) (stack depth)
+
+* **Fibonacci Recursive**:
+
+  * Time = O(2ⁿ) (bad brute force)
+  * Space = O(n) (stack depth)
+
+👉 Recursion is powerful, but we must analyze **time and space trade-offs**.
+
+---
+
+##  Real-World Examples of Recursion
+
+* File system traversal (folders inside folders)
+* Tree/Graph traversals (DFS)
+* Divide and Conquer algorithms:
+
+  * Merge Sort
+  * Quick Sort
+* Dynamic Programming problems (Knapsack, LCS, etc.)
+
+--
+
