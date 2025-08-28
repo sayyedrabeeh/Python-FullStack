@@ -153,3 +153,144 @@ Stacks themselves are always **LIFO**, but variations exist depending on context
 ---
 
  
+
+---
+
+#  Queue 
+
+### 1. What is a Queue?
+
+* A **Queue** is a **linear data structure** that follows the principle:
+  👉 **FIFO (First In, First Out)**
+
+  * The **element inserted first** is the **first to be removed**.
+  * Imagine people waiting in line at a ticket counter. The one who comes first gets served first.
+
+---
+
+### 2. Representation
+
+* **Abstract view**:
+
+  * Insert at **rear (enqueue)**.
+  * Remove from **front (dequeue)**.
+* **Implementation**:
+
+  * Using **arrays**.
+  * Using **linked lists**.
+  * Advanced: using **stacks** or **priority logic**.
+
+---
+
+### 3. Operations on Queue
+
+1. **Enqueue (Insert)** → Add an element at the rear.
+
+   * Check if queue is full (for arrays).
+   * Place element at `rear + 1`.
+   * Update `rear`.
+
+2. **Dequeue (Remove)** → Remove an element from the front.
+
+   * Check if queue is empty.
+   * Remove element at `front`.
+   * Update `front + 1`.
+
+3. **Peek/Front** → View the front element without removing.
+
+4. **isEmpty** → Check if no elements.
+
+5. **isFull** → Check if the queue is full (in array case).
+
+---
+
+#  Types of Queues
+
+
+### 1. **Simple Queue (Linear Queue)**
+
+* Normal queue, works with FIFO.
+* Problem: When elements are dequeued, **free space is wasted** (because front keeps moving).
+
+Example:
+
+```
+Initial: [1, 2, 3, 4, 5]  (front=0, rear=4)
+After dequeue 2: [X, 2, 3, 4, 5] (front=1, rear=4)
+But index 0 is wasted.
+```
+
+---
+
+### 2. **Circular Queue**
+
+* Improvement over simple queue.
+* After reaching end, it **wraps around** to use free space.
+* Implemented using modulo arithmetic:
+  `rear = (rear + 1) % size`
+
+---
+
+### 3. **Double-Ended Queue (Deque)**
+
+* Insert/Delete can happen **from both ends**.
+* Two types:
+
+  * **Input restricted deque** → Insert at one end only, delete from both.
+  * **Output restricted deque** → Delete at one end only, insert from both.
+
+---
+
+### 4. **Priority Queue**
+
+* Each element has a **priority**.
+* Higher priority elements are dequeued first.
+* If same priority → process in FIFO order.
+* Example: In hospital ER, a critical patient is treated before others.
+
+---
+
+### 5. **Circular Deque**
+
+* Combination of circular queue + deque → can insert/delete at both ends in circular manner.
+
+---
+
+# 🔹 Queue Complexities (from first principles)
+
+* **Enqueue** → O(1)
+* **Dequeue** → O(1)
+* **Peek** → O(1)
+* **Search** → O(n)
+
+Implementation matters:
+
+* Using **array** → Fixed size, overflow possible.
+* Using **linked list** → Dynamic size, no overflow.
+
+---
+
+# 🔹 Queue Example (Step-by-Step)
+
+### Example: Simple queue (size = 5)
+
+```
+Enqueue 10 → [10]
+Enqueue 20 → [10, 20]
+Enqueue 30 → [10, 20, 30]
+Dequeue → remove 10 → [20, 30]
+Enqueue 40 → [20, 30, 40]
+```
+
+Order of serving: 10 → 20 → 30 → 40. (FIFO ✅)
+
+---
+
+👉 So in summary:
+
+* **Queue = FIFO structure.**
+* **Operations = Enqueue, Dequeue, Peek, isEmpty, isFull.**
+* **Types = Simple, Circular, Deque, Priority, Circular Deque.**
+
+---
+ 
