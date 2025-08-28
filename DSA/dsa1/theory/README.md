@@ -155,3 +155,209 @@ This is the **mathematics of DSA** → How fast & memory efficient an algorithm 
 
 ---
 
+ 
+---
+
+#  **Asymptotic Analysis in DSA**
+
+---
+
+##  What is Asymptotic Analysis?
+
+* **Definition**: It is the mathematical way of analyzing the performance (time or space) of an algorithm when the input size `n` grows **very large**.
+* Instead of exact execution time, we focus on **growth rate**.
+
+    Why? Because hardware, compilers, programming languages differ, but **growth trends stay same**.
+
+---
+
+##  Asymptotic Notations
+
+These notations describe **upper bound, lower bound, and tight bound** of an algorithm’s complexity.
+
+###  **Big-O (O-notation)**
+
+* **Upper bound** → Worst-case performance
+* Example: If an algorithm takes at most `3n² + 2n + 5` steps → O(n²)
+* Meaning: It **won’t take longer** than this in big picture.
+
+---
+
+###  **Big-Omega (Ω-notation)**
+
+* **Lower bound** → Best-case performance
+* Example: Binary Search best case = Ω(1) (element found in first try).
+
+---
+
+###  **Big-Theta (Θ-notation)**
+
+* **Tight bound** → Average case or exact growth rate (both upper & lower)
+* Example: Merge Sort = Θ(n log n)
+
+---
+
+###  Little-o (o-notation)
+
+* Strict upper bound, but not tight.
+* Example: Linear search = o(n²)
+
+---
+
+###  Little-omega (ω-notation)
+
+* Strict lower bound, but not tight.
+
+---
+
+##  Best, Worst & Average Cases
+
+* **Best Case** → Minimum steps an algorithm will take.
+
+  * Example: Linear Search best case = O(1) (first element is target).
+
+* **Worst Case** → Maximum steps it will take.
+
+  * Example: Linear Search worst case = O(n) (target at last or not present).
+
+* **Average Case** → Expected steps in random scenario.
+
+  * Example: Linear Search average = O(n/2) ≈ O(n).
+
+        👉 In interviews, we mostly discuss **worst case** because it gives guarantee.
+
+---
+
+## Types of Time Complexities
+
+
+---
+
+###  **Constant Time – O(1)**
+
+* Time does not depend on input size.
+
+```python
+def get_first(arr):
+    return arr[0]   # Always 1 step
+```
+
+* Examples: Accessing array element, hash lookup.
+
+---
+
+###  **Logarithmic Time – O(log n)**
+
+* Input size reduces **by half each step**.
+
+```python
+def binary_search(arr, x):
+    low, high = 0, len(arr)-1
+    while low <= high:
+        mid = (low + high)//2
+        if arr[mid] == x: return mid
+        elif arr[mid] < x: low = mid + 1
+        else: high = mid - 1
+    return -1
+```
+
+* Example: Binary Search, Tree height operations.
+
+👉 `log₂n` means how many times can you divide `n` by 2 before reaching 1.
+
+---
+
+###  **Linear Time – O(n)**
+
+* Grows proportionally with input.
+
+```python
+def sum_arr(arr):
+    s = 0
+    for x in arr:
+        s += x
+    return s
+```
+
+* Example: Traversing array, linked list.
+
+---
+
+###  **Linearithmic (Log-linear) – O(n log n)**
+
+* Combination of linear + logarithmic.
+* Example: Merge Sort, Quick Sort average case, Heap Sort.
+
+👉 Common in **divide & conquer algorithms**.
+
+---
+
+###  **Quadratic Time – O(n²)**
+
+* Time grows as square of input size.
+
+```python
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+```
+
+* Example: Bubble Sort, Insertion Sort, Selection Sort, Matrix multiplication.
+
+---
+
+###  **Cubic Time – O(n³)**
+
+* Three nested loops.
+
+```python
+for i in range(n):
+    for j in range(n):
+        for k in range(n):
+            print(i, j, k)
+```
+
+* Example: 3D matrix operations, Floyd-Warshall algorithm.
+
+---
+
+###  **Exponential Time – O(2ⁿ)**
+
+* Doubles with each additional element.
+* Example: Recursive Fibonacci, Traveling Salesman brute force.
+
+---
+
+###  **Factorial Time – O(n!)**
+
+* Grows super fast.
+* Example: Generating all permutations of `n` elements.
+
+---
+
+##  Graph of Growth Rates
+
+From fastest to slowest:
+
+```
+O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(n³) < O(2ⁿ) < O(n!)
+```
+
+👉 Even small `n` makes exponential/factorial algorithms impossible.
+
+---
+
+##  Real-World Analogy
+
+* **O(1)**: Taking a book from a shelf (instant).
+* **O(log n)**: Finding a word in a dictionary (divide and search).
+* **O(n)**: Reading all pages of a book.
+* **O(n log n)**: Sorting library books efficiently.
+* **O(n²)**: Comparing every student with every other student.
+* **O(2ⁿ)**: Trying every possible combination of clothes.
+
+---
+
