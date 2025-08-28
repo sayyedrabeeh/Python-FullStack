@@ -1336,7 +1336,7 @@ quickSort(A, low, high):
 
 ---
 
-## 6. **Python Implementation (From Scratch)**
+## 6. **Python Implementation  **
 
 ```python
 def partition(arr, low, high):
@@ -1376,5 +1376,124 @@ print("Sorted:", arr)
   * Randomized pivot selection avoids this problem.
 * Recursive → naturally elegant, but tail recursion optimizations can make it more iterative.
 
+ 
 ---
+
+# 🔹 Merge Sort
+
+### 1. **The Problem**
+
+We want to sort an array of size `n`.
+
+* Naïve methods like **Bubble, Insertion, Selection sort** take **O(n²)** in the worst case.
+* Can we do better? Yes — by using a **Divide and Conquer strategy**.
+
+---
+
+### 2. **The Core Idea (Divide & Conquer)**
+
+Merge Sort is based on **three steps**:
+
+1. **Divide** → Split the array into two halves.
+
+   * Keep dividing until each subarray has **1 element** (a single element is always sorted).
+
+2. **Conquer (Sort)** → Recursively sort each half.
+
+3. **Combine (Merge)** → Merge two sorted halves into one sorted array.
+
+👉 Key trick: Merging two **sorted arrays** can be done in **O(n)** (linear time).
+
+---
+
+### 3. **Step-by-Step Example**
+
+Suppose we want to sort:
+`[38, 27, 43, 3, 9, 82, 10]`
+
+1. Divide into halves:
+
+   * `[38, 27, 43, 3]` and `[9, 82, 10]`
+
+2. Divide further until single elements:
+
+   * `[38] [27] [43] [3] [9] [82] [10]`
+
+3. Merge back step by step:
+
+   * Merge `[38]` and `[27]` → `[27, 38]`
+   * Merge `[43]` and `[3]` → `[3, 43]`
+   * Merge `[9]` and `[82]` → `[9, 82]`
+   * Merge `[27, 38]` and `[3, 43]` → `[3, 27, 38, 43]`
+   * Merge `[9, 82]` and `[10]` → `[9, 10, 82]`
+   * Merge `[3, 27, 38, 43]` and `[9, 10, 82]` → `[3, 9, 10, 27, 38, 43, 82]`
+
+✅ Fully sorted array.
+
+---
+
+### 4. **Algorithm (Recursive Pseudocode)**
+
+```text
+MERGE_SORT(A):
+    if size of A ≤ 1:
+        return A
+    
+    mid = length(A) / 2
+    left = MERGE_SORT(A[0:mid])
+    right = MERGE_SORT(A[mid:])
+    
+    return MERGE(left, right)
+
+MERGE(left, right):
+    create empty result array
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] ≤ right[j]:
+            append left[i] to result
+            i++
+        else:
+            append right[j] to result
+            j++
+    
+    append remaining elements of left (if any)
+    append remaining elements of right (if any)
+    
+    return result
+```
+
+---
+
+### 5. **Complexity Analysis**
+
+#### 🔹 Time Complexity
+
+* Dividing step → O(log n) levels (because we keep halving).
+* At each level, merging takes **O(n)** (since we merge all elements once).
+* Total = O(n log n).
+
+✅ Best Case = **O(n log n)**
+✅ Worst Case = **O(n log n)**
+✅ Average Case = **O(n log n)**
+
+#### 🔹 Space Complexity
+
+* Needs **O(n)** extra space (for temporary arrays during merging).
+* Recursive stack = **O(log n)**.
+* Total = **O(n)**.
+
+---
+
+### 6. **Why Merge Sort is Important**
+
+* One of the **first efficient sorting algorithms** you learn.
+* Stable sort (preserves relative order of equal elements).
+* Preferred when:
+
+  * Large data sets.
+  * Stability is required.
+  * Linked lists (since merging is easy without shifting elements).
+
+---
+
  
