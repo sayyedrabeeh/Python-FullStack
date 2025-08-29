@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom/client';
 // import Calc from './react2/calculator_usecontext';
 // import Addtwonum from './react2/usememo';
 // import Todo from './react2/todolist';
-
+import App from './react3/pratical/counter';
 
 import { Provider } from 'react-redux'
 
@@ -33,11 +33,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    {/* <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
       <CounterDisplay/>
       </PersistGate>
-    </Provider>
+    </Provider> */}
+    <App/>
+
   </React.StrictMode>
 );
  
