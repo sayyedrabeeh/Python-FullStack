@@ -1112,5 +1112,114 @@ print(myDict.values())
 ```
 
 
+ 
+---
+
+## 🔹 1. Python 2.x — `print` as a **statement**
+
+In Python 2, `print` is a **language construct (statement)**, not a function.
+That means the Python interpreter directly translates it into bytecode instructions without calling a function.
+
+Example:
+
+```python
+print "Hello"
+print "Value:", 10
+```
+
+Internally:
+
+* The CPython **parser** treats `print` like `if`, `for`, or `return`.
+* It has **special bytecode instructions** (`PRINT_ITEM`, `PRINT_NEWLINE`).
+* So `print "Hello"` compiles into:
+
+  ```
+  LOAD_CONST "Hello"
+  PRINT_ITEM
+  PRINT_NEWLINE
+  ```
+* Since it’s not a function, you can’t do things like:
+
+  ```python
+  print("Hello")   # works only if you import `print_function` from __future__
+  ```
+
+⚠️ Problem: Because it’s a statement, it’s less flexible (can’t be passed as an argument, can’t use `sep`, `end`, etc.).
+
+---
+
+## 🔹 2. Python 3.x — `print()` as a **function**
+
+In Python 3, `print` was turned into a **built-in function** defined in `builtins.py`.
+
+Signature:
+
+```python
+print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)
+```
+
+How it works internally:
+
+1. **`*objects`** → takes any number of arguments (`print(1, "hi", [1,2])`).
+2. For each object, it calls `str()` (actually `PyObject_Str` at C level).
+3. Joins them with `sep` (default `" "`).
+4. Appends `end` (default `"\n"`).
+5. Writes the final string to `file` (default `sys.stdout`).
+6. If `flush=True`, flushes the buffer immediately.
+
+So internally `print("Hello", 123)` does:
+
+* Call `PyObject_Str("Hello")` → `"Hello"`
+* Call `PyObject_Str(123)` → `"123"`
+* Join with `" "` → `"Hello 123"`
+* Add `"\n"` → `"Hello 123\n"`
+* Call `sys.stdout.write("Hello 123\n")`
+
+That’s why it can handle **any datatype** — because every object in Python implements `__str__()` or `__repr__()`.
+
+---
+
+## 🔹 3. Why this change?
+
+* **Consistency**: Everything else (like `len`, `type`, `max`) was already a function. `print` was an oddball.
+* **Flexibility**: Now you can do:
+
+  ```python
+  x = print  # pass around like any function
+  x("Hello")
+  ```
+* **Extensibility**: Keyword arguments like `sep`, `end`, `file` make printing more powerful.
+* **Cleaner Grammar**: Removing special-case print statement made Python grammar simpler.
+
+---
+
+## 🔹 4. Side-by-side Example
+
+Python 2.x:
+
+```python
+print "Hello", 123   # automatically space-separated
+```
+
+Python 3.x:
+
+```python
+print("Hello", 123, sep=" ", end="\n")
+```
+
+Internally:
+
+* Python 2 → custom **bytecode instructions**
+* Python 3 → normal **function call** to `builtins.print`
+
+---
+
+✅ So in short:
+
+* **Python 2.x**: `print` is a *statement*, handled by the compiler with its own bytecode.
+* **Python 3.x**: `print` is a *built-in function*, implemented in C (`bltinmodule.c`), which internally calls `sys.stdout.write()` after converting all datatypes to string.
+
+---
+ 
 
 
