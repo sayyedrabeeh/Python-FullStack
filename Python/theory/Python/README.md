@@ -1223,3 +1223,97 @@ Internally:
  
 
 
+ 
+
+### 1. `print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)`
+
+* It can take **any number of positional arguments** (`*objects`).
+* All extra formatting is handled with keyword arguments.
+
+---
+
+### 2. For each object → convert to string
+
+* Internally, it calls **`str(obj)`**, which at the C level is `PyObject_Str()`.
+* That means:
+
+  * If the object defines `__str__()`, that method is used.
+  * If not, it falls back to `__repr__()`.
+
+Example:
+
+```python
+class Demo:
+    def __str__(self):
+        return "str version"
+    def __repr__(self):
+        return "repr version"
+
+print(Demo())   # prints: str version
+```
+
+---
+
+### 3. Join with `sep`
+
+* All converted strings are concatenated using `sep`.
+* Default is a **space (`" "`)**.
+
+```python
+print(1, "hi", [1, 2])
+# internally → "1" + " " + "hi" + " " + "[1, 2]"
+```
+
+---
+
+### 4. Append `end`
+
+* The final string is appended with `end`.
+* Default is **newline (`"\n"`)**.
+
+```python
+print("hello", end="!!")
+# prints: hello!!
+```
+
+---
+
+### 5. Write to `file`
+
+* By default, the stream is `sys.stdout` (the terminal).
+* But you can redirect:
+
+```python
+with open("out.txt", "w") as f:
+    print("hello file", file=f)
+```
+
+---
+
+### 6. Flush if needed
+
+* Normally, output is **buffered** (not written immediately).
+* If `flush=True`, it calls `sys.stdout.flush()`, forcing data to be written.
+
+```python
+import time
+print("Loading...", end="", flush=True)
+time.sleep(2)
+print("done")
+```
+
+---
+
+### 🔍 At C level in CPython
+
+The actual function is implemented in **`bltinmodule.c`** as `builtin_print`. Roughly, the steps are:
+
+1. Collect arguments.
+2. Call `PyObject_Str()` on each.
+3. Build a single Unicode string using `sep` and `end`.
+4. Call the stream’s `.write()` method.
+5. If `flush=True`, call `.flush()`.
+
+---
+
+ 
