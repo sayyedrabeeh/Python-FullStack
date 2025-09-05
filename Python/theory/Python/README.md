@@ -1316,4 +1316,64 @@ The actual function is implemented in **`bltinmodule.c`** as `builtin_print`. Ro
 
 ---
 
+Good question 👍 Let’s break it down:
+
+---
+
+### 🔹 In **Python**
+
+```python
+1num = 10   # ❌ INVALID
+```
+
+This will raise a **SyntaxError** because in Python, **variable names cannot start with a digit**.
+Rules for identifiers (variable names) in Python:
+
+1. Must start with a **letter (a–z, A–Z)** or **underscore `_`**.
+2. Can contain **letters, digits, and underscores** after the first character.
+3. Cannot use reserved keywords (`if`, `class`, `for`, etc.).
+
+✅ Valid Python examples:
+
+```python
+num1 = 10
+_num = 10
+num_1 = 10
+```
+
+---
+
+### 🔹 In **JavaScript**
+
+```javascript
+let 1num = 10;   // ❌ INVALID
+```
+
+Same rule: variable names **cannot start with digits** in JavaScript either.
+
+✅ Valid JavaScript examples:
+
+```javascript
+let num1 = 10;
+let _num = 10;
+let num_1 = 10;
+```
+
+---
+
+### ⚡ Difference
+
+So both Python and JavaScript **do not allow variable names to start with a number**.
+
+👉 The only difference:
+
+* In **JS**, you can also use `$` in variable names:
+
+```javascript
+let $price = 100;  // ✅ valid in JS
+```
+
+* In **Python**, `$` is **not allowed** in identifiers.
+
+---
  
