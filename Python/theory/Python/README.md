@@ -1998,3 +1998,109 @@ It’s a syntax for writing grammars (rules that describe how code should look).
 
 ---
  
+
+---
+
+##  What is Constant Folding?
+
+**Constant folding** is a compiler optimization technique where the compiler **pre-computes constant expressions at compile time** instead of runtime.
+
+ In short:
+If an expression involves **only constants**, the compiler evaluates it **once** and replaces it with the result.
+
+---
+
+##  Example in Python
+
+```python
+x = 10 * 20
+```
+
+Without optimization:
+
+* At runtime, Python would multiply `10 * 20` every time.
+
+With **constant folding**:
+
+* The compiler already knows `10 * 20 = 200`.
+* So it directly stores:
+
+```python
+x = 200
+```
+
+---
+
+##  Why is this useful?
+
+* **Faster execution** → saves CPU cycles at runtime.
+* **Smaller code** → no need to keep unnecessary calculations.
+
+---
+
+##  More Examples
+
+1. Arithmetic:
+
+```python
+y = (2 + 3) * 4
+```
+
+Compiler folds →
+
+```python
+y = 20
+```
+
+2. Strings:
+
+```python
+msg = "Hello, " + "World!"
+```
+
+Constant folded →
+
+```python
+msg = "Hello, World!"
+```
+
+3. Boolean logic:
+
+```python
+flag = True or False
+```
+
+Constant folded →
+
+```python
+flag = True
+```
+
+---
+
+## 🔹 In Python Internals
+
+* Python’s **bytecode compiler** performs constant folding.
+* If you disassemble with `dis` module:
+
+```python
+import dis
+
+def f():
+    return 2 + 3
+
+print(dis.dis(f))
+```
+
+You’ll see that Python **does not emit an `ADD` instruction** — it just loads the constant `5`.
+
+---
+
+---
+
+So:
+**Constant folding = pre-calculating constant expressions at compile time** so runtime is faster.
+
+---
+
+
