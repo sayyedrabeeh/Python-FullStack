@@ -1370,10 +1370,148 @@ So both Python and JavaScript **do not allow variable names to start with a numb
 * In **JS**, you can also use `$` in variable names:
 
 ```javascript
-let $price = 100;  // ✅ valid in JS
+let $price = 100;  //  valid in JS
 ```
 
 * In **Python**, `$` is **not allowed** in identifiers.
 
 ---
+ 
+
+### 1. Variables are identifiers
+
+A variable name is just an **identifier** — a label that the compiler/interpreter uses to recognize something (like a memory location).
+
+Identifiers must follow **rules** so that the compiler/lexer (the part of the language that reads raw code) can tell them apart from numbers, keywords, and operators.
+
+---
+
+### 2. Why can’t they start with a digit?
+
+Imagine you write this:
+
+```python
+123abc = 5
+```
+
+When Python (or any language) reads it, the **lexer** first scans from left to right.
+
+* It sees `123` → and immediately decides: “This is a **number literal**.”
+* Then it sees `abc` right after the number. To the lexer, this looks like **two tokens**:
+
+  * A number (`123`)
+  * An identifier (`abc`)
+
+So it **can’t combine** them into one identifier — otherwise, it would be impossible to distinguish between:
+
+* A number followed by a variable:
+
+  ```python
+  123 abc   # error, but could mean "number 123, then variable abc"
+  ```
+
+* A variable that starts with digits:
+
+  ```python
+  123abc    # ambiguous – is it a number or variable name?
+  ```
+
+This ambiguity is why digits **can appear later** in a variable (like `var1`, `x123`), but not at the start.
+
+---
+
+### 3. Why letters/underscore are allowed first?
+
+Because they **cannot be confused with numeric literals**.
+
+* `_myVar` → clearly an identifier
+* `myVar1` → clearly an identifier
+* `123` → clearly a number
+
+---
+
+  **In short:**
+A variable name can’t start with a number because the **lexer/tokenizer would confuse it with a numeric literal**. Allowing digits only after the first character avoids this conflict.
+
+---
+
+ 
+
+---
+
+### 1. What is a **Lexer**?
+
+A **lexer** (short for *lexical analyzer*) is the first stage of a programming language interpreter or compiler.
+Its job:
+
+* Take raw source code (plain text)
+* Break it into **tokens** → the smallest meaningful pieces, like keywords, identifiers, numbers, operators, etc.
+
+This process is called **lexical analysis**.
+
+---
+
+### 2. Example
+
+Suppose you write this code:
+
+```python
+x = 10 + 20
+```
+
+The **lexer** scans it left to right and produces tokens:
+
+```
+IDENTIFIER(x)
+OPERATOR(=)
+NUMBER(10)
+OPERATOR(+)
+NUMBER(20)
+```
+
+Notice: the lexer **doesn’t care about meaning or correctness yet** — it just groups characters into categories.
+
+---
+
+### 3. Why needed?
+
+Without a lexer, the compiler/interpreter would just see this as a long string of characters:
+
+```
+x=10+20
+```
+
+It would be impossible to parse or understand without first chopping it into **tokens**.
+
+---
+
+ 
+
+When the lexer sees `123abc`:
+
+1. It first matches `123` → **NUMBER token**.
+2. Then sees `abc` → **IDENTIFIER token**.
+3. So it becomes:
+
+   ```
+   NUMBER(123) IDENTIFIER(abc)
+   ```
+
+   instead of a single identifier.
+
+That’s why `123abc` is invalid as a variable.
+
+---
+
+### 5. Difference between **lexer** and **parser**
+
+* **Lexer** → breaks code into tokens (`x`, `=`, `123`)
+* **Parser** → takes those tokens and checks grammar/structure (`assignment statement`, `expression`)
+
+---
+
+  So, the **lexer** is like the person who first splits a sentence into words before someone else checks grammar.
+
+---
+
  
