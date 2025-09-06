@@ -1513,5 +1513,274 @@ That’s why `123abc` is invalid as a variable.
   So, the **lexer** is like the person who first splits a sentence into words before someone else checks grammar.
 
 ---
+ 
+
+## 1. What is a **Parser**?
+
+A **parser** is the stage that comes **after the lexer** in a compiler or interpreter.
+
+* The **lexer** gives tokens (like "words").
+* The **parser** takes those tokens and checks whether they form a **valid sentence** according to the programming language’s grammar.
+
+So the parser is all about **syntax**.
+
+---
+
+## 2. Example
+
+Take this Python line:
+
+```python
+x = 10 + 20
+```
+
+* **Lexer output (tokens):**
+
+  ```
+  IDENTIFIER(x), OPERATOR(=), NUMBER(10), OPERATOR(+), NUMBER(20)
+  ```
+
+* **Parser checks grammar:**
+
+  * Is `IDENTIFIER` valid on the left of `=`? ✅
+  * Is `NUMBER(10) + NUMBER(20)` a valid expression? ✅
+  * Full sentence = "assignment statement" ✅
+
+So it passes parsing.
+
+---
+
+## 3. When it fails
+
+Example:
+
+```python
+x = + * 10
+```
+
+* **Lexer** says:
+
+  ```
+  IDENTIFIER(x), OPERATOR(=), OPERATOR(+), OPERATOR(*), NUMBER(10)
+  ```
+
+* **Parser** checks grammar and says ❌:
+
+  * `+ * 10` is not a valid expression in Python’s grammar.
+
+So you get a **SyntaxError** (parser error).
+
+---
+
+## 4. Analogy (real-world)
+
+* **Lexer** = Splits a sentence into words.
+  `"The cat runs"` → `[The] [cat] [runs]`.
+
+* **Parser** = Checks if the sentence is grammatically correct.
+
+  * ✅ "The cat runs." → correct grammar
+  * ❌ "Cat the runs." → wrong grammar
+
+---
+
+## 5. Together
+
+1. **Lexer** → tokenizes (breaks text into tokens).
+2. **Parser** → organizes tokens by grammar rules into a structure (often a **parse tree** or **abstract syntax tree (AST)**).
+
+---
+
+👉 Example AST for `x = 10 + 20` would look like:
+
+```
+Assignment
+ ├── Variable: x
+ └── Expression
+      ├── Number: 10
+      ├── Operator: +
+      └── Number: 20
+```
+
+---
 
  
+**AST (Abstract Syntax Tree)**
+
+---
+
+## 1. What is an AST?
+
+An **Abstract Syntax Tree (AST)** is a tree-like data structure that the parser builds after checking grammar.
+It represents the **hierarchical structure** of your program — not just the words, but their meaning in context.
+
+👉 Why “abstract”?
+Because it ignores unnecessary details (like parentheses, commas, or keywords) and only keeps the **logical structure** of the code.
+
+---
+
+## 2. Example
+
+Take this code:
+
+```python
+x = 10 + 20
+```
+
+### Step 1: Lexer
+
+```
+IDENTIFIER(x), OPERATOR(=), NUMBER(10), OPERATOR(+), NUMBER(20)
+```
+
+### Step 2: Parser checks grammar
+
+✅ Assignment is valid.
+
+### Step 3: AST (tree structure)
+
+```
+Assignment
+ ├── Variable: x
+ └── BinaryOperation (+)
+       ├── Number: 10
+       └── Number: 20
+```
+
+---
+
+## 3. Why AST is important?
+
+* **Compiler/interpreter** uses AST to understand *what to do*.
+* Tools like **linters, formatters, IDEs, and analyzers** use AST to reason about code.
+* AST is **easier to process** than raw tokens.
+
+---
+
+## 4. Real Python Example
+
+Python has a built-in `ast` module to see the AST:
+
+```python
+import ast
+import astpretty
+
+code = "x = 10 + 20"
+tree = ast.parse(code)
+astpretty.pprint(tree)
+```
+
+Output (simplified):
+
+```
+Module(
+  body=[
+    Assign(
+      targets=[Name(id='x')],
+      value=BinOp(
+        left=Constant(value=10),
+        op=Add(),
+        right=Constant(value=20)
+      )
+    )
+  ]
+)
+```
+
+  This is the AST — a tree structure the interpreter works with.
+
+---
+
+## 5. Analogy
+
+Think of:
+
+* **Lexer** = splitting into words
+* **Parser** = grammar check
+* **AST** = meaning diagram
+
+Sentence: *“The cat eats fish”*
+
+AST version:
+
+```
+Sentence
+ ├── Subject: cat
+ ├── Verb: eats
+ └── Object: fish
+```
+
+---
+
+⚡ So in short:
+
+* AST = **structured tree of code meaning**
+* Used internally by compilers/interpreters to generate machine code or bytecode
+
+---
+  
+---
+
+## 1. Lexer vs Tokenization
+
+* **Tokenization** → the *process* of splitting source code into tokens.
+* **Lexer (lexical analyzer)** → the *component/tool* that performs tokenization.
+
+ In simple words:
+
+* **Lexer = the machine**
+* **Tokenization = the job it does**
+
+---
+
+## 2. Example
+
+Source code:
+
+```python
+y = x + 42
+```
+
+### Step 1: Lexer runs
+
+The **lexer** scans the string character by character.
+
+### Step 2: Tokenization happens
+
+It produces tokens:
+
+```
+IDENTIFIER(y)
+OPERATOR(=)
+IDENTIFIER(x)
+OPERATOR(+)
+NUMBER(42)
+```
+
+---
+
+## 3. What comes next?
+
+* After tokenization, the **parser** takes those tokens.
+* Parser checks grammar → builds AST.
+
+---
+
+## 4. Analogy (real world)
+
+Think of a newspaper:
+
+* **Lexer** = the person with scissors ✂️ who cuts the article into words.
+* **Tokenization** = the act of cutting it into words.
+* **Parser** = English teacher who checks if the sentence makes sense.
+* **AST** = sentence diagram (subject → verb → object).
+
+---
+
+ So, lexer and tokenization are not two different *things* —
+
+* Lexer = the **tool**
+* Tokenization = the **process** the lexer performs
+
+---
+
