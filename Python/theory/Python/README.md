@@ -1784,3 +1784,217 @@ Think of a newspaper:
 
 ---
 
+ 
+## 1. Where does the lexer exist?
+
+The **lexer** isn’t a separate program you run.
+It’s **built inside every programming language’s compiler or interpreter**.
+
+* In **Python** → The CPython interpreter has its own lexer implemented in C (`Parser/tokenizer.c` in the CPython source code).
+* In **Java** → The `javac` compiler has a built-in lexer.
+* In **C/C++** → GCC/Clang have built-in lexers.
+* If you build your own language, you usually write or use a lexer library (like **Lex/Flex**, **ANTLR**, **PLY** in Python).
+
+So, you don’t install it separately — it’s part of the language’s “engine”.
+
+---
+
+## 2. How it works (Python example)
+
+When you run:
+
+```bash
+python myscript.py
+```
+
+Steps inside CPython:
+
+1. **Source code (text)** → sent to **lexer**.
+2. **Lexer (tokenizer)** → splits into tokens.
+3. **Parser** → checks grammar and builds AST.
+4. **Compiler** → converts AST into **bytecode**.
+5. **Python Virtual Machine (PVM)** → executes bytecode.
+
+---
+
+## 3. If *you* want to use a lexer
+
+You can use tools:
+
+* **Built-in** → Python’s `tokenize` module lets you see tokens.
+* **Libraries** →
+
+  * `PLY` (Python Lex-Yacc)
+  * `ANTLR` (general parser/lexer generator)
+  * `Flex`/`Lex` (classic C lexer generators).
+
+---
+
+## 4. Analogy
+
+Think of the **lexer** like the **scanner** inside a printer.
+
+* You don’t see it, but it’s always there, breaking a page into digital pieces before further processing.
+
+---
+
+✅ So:
+
+* The **tool (lexer)** is *inside the interpreter/compiler*.
+* You don’t normally run it by itself.
+* You can *see its output* using debugging tools (like Python’s `tokenize` or `ast` modules).
+
+---
+ 
+
+
+## 1. What is EBNF?
+
+**EBNF** = **Extended Backus–Naur Form**.
+It’s a notation (a formal language) used to **describe the grammar of programming languages**.
+
+👉 Think of it as a “blueprint language” that explains how valid code must look.
+
+---
+
+## 2. The Basics of EBNF
+
+Here’s the meaning of symbols used in EBNF:
+
+| Symbol  | Meaning                      | Example                              |                                  |                           |       |
+| ------- | ---------------------------- | ------------------------------------ | -------------------------------- | ------------------------- | ----- |
+| `::=`   | “is defined as”              | \`digit ::= "0"                      | "1"                              | ...                       | "9"\` |
+| \`      | \`                           | OR (choice)                          | \`"+"                            | "-"\` means plus OR minus |       |
+| `[]`    | Optional (0 or 1 times)      | `[ "-" ] digit` → optional minus     |                                  |                           |       |
+| `{}`    | Repetition (0 or more times) | `{ digit }` → many digits allowed    |                                  |                           |       |
+| `()`    | Grouping                     | \`("a"                               | "b") "c"`→ either`"ac"`or`"bc"\` |                           |       |
+| `"` `"` | Literal symbols              | `"if"` means the actual keyword `if` |                                  |                           |       |
+
+---
+
+## 3. Example in EBNF
+
+Let’s define an **integer**:
+
+```ebnf
+integer ::= [ "-" ] digit { digit }
+digit   ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+```
+
+This means:
+
+* An integer may start with an optional `-`
+* Must have at least one digit
+* Can have more digits after
+
+✅ Valid: `123`, `-99`, `0`
+❌ Invalid: `--5`, `12a`
+
+---
+
+## 4. Python Expression in EBNF
+
+Simplified grammar for arithmetic expressions:
+
+```ebnf
+expression ::= term { ("+" | "-") term }
+term       ::= factor { ("*" | "/") factor }
+factor     ::= number | identifier | "(" expression ")"
+```
+
+So:
+
+* `2 + 3` → fits
+* `2 + (3 * 4)` → fits
+* `* 5` → ❌ doesn’t fit
+
+---
+
+## 5. Why it’s useful
+
+* **Language designers** use EBNF to define Python, C, Java, etc.
+* **Parsers** are often auto-generated from EBNF rules (ANTLR, PLY, etc).
+* It makes the rules **unambiguous** — no guesswork.
+
+---
+
+✅ In short:
+**EBNF = a formal way to write grammar rules.**
+It’s like math for describing programming language syntax.
+
+---
+ 
+ 
+> **What is EBNF style? And what is the name of that grammar?**
+ 
+---
+
+## 1. What is EBNF style?
+
+* **EBNF** = **Extended Backus–Naur Form**.
+* It’s a **notation** (like a special mini-language) for writing grammar rules of programming languages.
+* Called *“style”* because different languages use slightly different flavors (classic **BNF**, **EBNF**, or custom notations).
+
+👉 **BNF** was the original (Backus–Naur Form), created in the 1960s for ALGOL.
+👉 **EBNF** added more convenience (optional parts, repetitions, grouping).
+
+So when you see “EBNF style,” it means the grammar is written in **formal production rules** like:
+
+```ebnf
+rule ::= option1 | option2
+```
+
+instead of English sentences.
+
+---
+
+## 2. What is the name of that grammar?
+
+Every programming language has its **own grammar**, written using EBNF (or a close variant).
+
+Examples:
+
+* **Python** → defined in *Python Grammar* (file: `Grammar/python.gram` in CPython).
+* **JavaScript** → defined in the *ECMAScript Grammar* (ECMA-262 spec).
+* **Java** → defined in the *Java Language Specification Grammar*.
+* **C/C++** → defined in the *ISO C/C++ Grammar*.
+
+So the **grammar name** usually matches the language →
+👉 “Python Grammar,” “ECMAScript Grammar,” “Java Grammar,” etc.
+
+---
+
+## 3. Example of EBNF vs English
+
+Let’s define an **if statement**:
+
+* In **English**:
+  “An `if` statement begins with the keyword `if`, followed by a condition in parentheses, followed by a block of statements. It may optionally contain an `else` block.”
+
+* In **EBNF style**:
+
+  ```ebnf
+  if_stmt ::= "if" "(" expression ")" statement [ "else" statement ]
+  ```
+
+Notice how compact and precise EBNF is.
+
+---
+
+## 4. Why languages use EBNF-style grammar?
+
+* **Unambiguous**: computers can generate parsers automatically.
+* **Formal**: no confusion compared to English descriptions.
+* **Standardized**: most programming language grammars are published in BNF/EBNF.
+
+---
+
+✅ **Summary:**
+
+* **EBNF style** = a formal way of writing grammar rules.
+* The **name of that grammar** is usually just the language’s grammar (Python Grammar, ECMAScript Grammar, Java Grammar, etc.), written in EBNF (or a close variant).
+🔑 EBNF is not a syntax for writing code.
+It’s a syntax for writing grammars (rules that describe how code should look).
+
+---
+ 
