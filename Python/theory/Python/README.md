@@ -2104,3 +2104,82 @@ So:
 ---
 
 
+ **“Does Python do constant folding for *every* operation?”**
+
+Short answer: **No.**
+Python does constant folding **only for some operations**, not all. Let me explain clearly.
+
+---
+
+##  When Python Does Constant Folding
+
+Python folds **simple, safe, deterministic expressions** at compile time.
+Examples:
+
+1. **Arithmetic with literals**
+
+   ```python
+   x = 2 + 3 * 4   # folded to 14
+   ```
+2. **Boolean logic with constants**
+
+   ```python
+   y = True and False  # folded to False
+   ```
+3. **String concatenation**
+
+   ```python
+   msg = "Hello, " "World!"   # folded to "Hello, World!"
+   ```
+4. **Tuples/lists/sets of constants**
+
+   ```python
+   t = (1, 2, 3, 4)   # stored directly as a constant tuple
+   ```
+
+---
+
+## 🔹 When Python Does NOT Fold
+
+1. **Operations with variables**
+
+   ```python
+   a = 10
+   b = 20
+   x = a + b   # not folded (depends on runtime values)
+   ```
+2. **Functions / Non-deterministic operations**
+
+   ```python
+   import random
+   x = random.randint(1, 10) + 2  # must run at runtime
+   ```
+3. **Floating-point edge cases**
+
+   ```python
+   x = 1.0 / 0.0   # would raise error, so not folded
+   ```
+4. **Mutable objects**
+
+   ```python
+   lst = [1, 2] + [3, 4]  # not folded, list is mutable
+   ```
+
+---
+
+## 🔹 Why Not Fold Everything?
+
+* **Safety**: Some operations may cause errors or side effects (`1/0`, `open("file")`).
+* **Mutability**: If the object can change (like lists, dicts), folding it would be wrong.
+* **Runtime values**: If it depends on user input, environment, or randomness, the compiler can’t predict it.
+
+---
+
+ So:
+
+* Python **does constant folding only for safe, literal constant expressions**.
+* Not for every operation.
+
+---
+
+ 
