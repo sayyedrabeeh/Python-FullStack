@@ -1112,5 +1112,1074 @@ print(myDict.values())
 ```
 
 
+ 
+---
+
+## 🔹 1. Python 2.x — `print` as a **statement**
+
+In Python 2, `print` is a **language construct (statement)**, not a function.
+That means the Python interpreter directly translates it into bytecode instructions without calling a function.
+
+Example:
+
+```python
+print "Hello"
+print "Value:", 10
+```
+
+Internally:
+
+* The CPython **parser** treats `print` like `if`, `for`, or `return`.
+* It has **special bytecode instructions** (`PRINT_ITEM`, `PRINT_NEWLINE`).
+* So `print "Hello"` compiles into:
+
+  ```
+  LOAD_CONST "Hello"
+  PRINT_ITEM
+  PRINT_NEWLINE
+  ```
+* Since it’s not a function, you can’t do things like:
+
+  ```python
+  print("Hello")   # works only if you import `print_function` from __future__
+  ```
+
+⚠️ Problem: Because it’s a statement, it’s less flexible (can’t be passed as an argument, can’t use `sep`, `end`, etc.).
+
+---
+
+## 🔹 2. Python 3.x — `print()` as a **function**
+
+In Python 3, `print` was turned into a **built-in function** defined in `builtins.py`.
+
+Signature:
+
+```python
+print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)
+```
+
+How it works internally:
+
+1. **`*objects`** → takes any number of arguments (`print(1, "hi", [1,2])`).
+2. For each object, it calls `str()` (actually `PyObject_Str` at C level).
+3. Joins them with `sep` (default `" "`).
+4. Appends `end` (default `"\n"`).
+5. Writes the final string to `file` (default `sys.stdout`).
+6. If `flush=True`, flushes the buffer immediately.
+
+So internally `print("Hello", 123)` does:
+
+* Call `PyObject_Str("Hello")` → `"Hello"`
+* Call `PyObject_Str(123)` → `"123"`
+* Join with `" "` → `"Hello 123"`
+* Add `"\n"` → `"Hello 123\n"`
+* Call `sys.stdout.write("Hello 123\n")`
+
+That’s why it can handle **any datatype** — because every object in Python implements `__str__()` or `__repr__()`.
+
+---
+
+## 🔹 3. Why this change?
+
+* **Consistency**: Everything else (like `len`, `type`, `max`) was already a function. `print` was an oddball.
+* **Flexibility**: Now you can do:
+
+  ```python
+  x = print  # pass around like any function
+  x("Hello")
+  ```
+* **Extensibility**: Keyword arguments like `sep`, `end`, `file` make printing more powerful.
+* **Cleaner Grammar**: Removing special-case print statement made Python grammar simpler.
+
+---
+
+## 🔹 4. Side-by-side Example
+
+Python 2.x:
+
+```python
+print "Hello", 123   # automatically space-separated
+```
+
+Python 3.x:
+
+```python
+print("Hello", 123, sep=" ", end="\n")
+```
+
+Internally:
+
+* Python 2 → custom **bytecode instructions**
+* Python 3 → normal **function call** to `builtins.print`
+
+---
+
+✅ So in short:
+
+* **Python 2.x**: `print` is a *statement*, handled by the compiler with its own bytecode.
+* **Python 3.x**: `print` is a *built-in function*, implemented in C (`bltinmodule.c`), which internally calls `sys.stdout.write()` after converting all datatypes to string.
+
+---
+ 
 
 
+ 
+
+### 1. `print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)`
+
+* It can take **any number of positional arguments** (`*objects`).
+* All extra formatting is handled with keyword arguments.
+
+---
+
+### 2. For each object → convert to string
+
+* Internally, it calls **`str(obj)`**, which at the C level is `PyObject_Str()`.
+* That means:
+
+  * If the object defines `__str__()`, that method is used.
+  * If not, it falls back to `__repr__()`.
+
+Example:
+
+```python
+class Demo:
+    def __str__(self):
+        return "str version"
+    def __repr__(self):
+        return "repr version"
+
+print(Demo())   # prints: str version
+```
+
+---
+
+### 3. Join with `sep`
+
+* All converted strings are concatenated using `sep`.
+* Default is a **space (`" "`)**.
+
+```python
+print(1, "hi", [1, 2])
+# internally → "1" + " " + "hi" + " " + "[1, 2]"
+```
+
+---
+
+### 4. Append `end`
+
+* The final string is appended with `end`.
+* Default is **newline (`"\n"`)**.
+
+```python
+print("hello", end="!!")
+# prints: hello!!
+```
+
+---
+
+### 5. Write to `file`
+
+* By default, the stream is `sys.stdout` (the terminal).
+* But you can redirect:
+
+```python
+with open("out.txt", "w") as f:
+    print("hello file", file=f)
+```
+
+---
+
+### 6. Flush if needed
+
+* Normally, output is **buffered** (not written immediately).
+* If `flush=True`, it calls `sys.stdout.flush()`, forcing data to be written.
+
+```python
+import time
+print("Loading...", end="", flush=True)
+time.sleep(2)
+print("done")
+```
+
+---
+
+### 🔍 At C level in CPython
+
+The actual function is implemented in **`bltinmodule.c`** as `builtin_print`. Roughly, the steps are:
+
+1. Collect arguments.
+2. Call `PyObject_Str()` on each.
+3. Build a single Unicode string using `sep` and `end`.
+4. Call the stream’s `.write()` method.
+5. If `flush=True`, call `.flush()`.
+
+---
+
+Good question 👍 Let’s break it down:
+
+---
+
+### 🔹 In **Python**
+
+```python
+1num = 10   # ❌ INVALID
+```
+
+This will raise a **SyntaxError** because in Python, **variable names cannot start with a digit**.
+Rules for identifiers (variable names) in Python:
+
+1. Must start with a **letter (a–z, A–Z)** or **underscore `_`**.
+2. Can contain **letters, digits, and underscores** after the first character.
+3. Cannot use reserved keywords (`if`, `class`, `for`, etc.).
+
+✅ Valid Python examples:
+
+```python
+num1 = 10
+_num = 10
+num_1 = 10
+```
+
+---
+
+### 🔹 In **JavaScript**
+
+```javascript
+let 1num = 10;   // ❌ INVALID
+```
+
+Same rule: variable names **cannot start with digits** in JavaScript either.
+
+✅ Valid JavaScript examples:
+
+```javascript
+let num1 = 10;
+let _num = 10;
+let num_1 = 10;
+```
+
+---
+
+### ⚡ Difference
+
+So both Python and JavaScript **do not allow variable names to start with a number**.
+
+👉 The only difference:
+
+* In **JS**, you can also use `$` in variable names:
+
+```javascript
+let $price = 100;  //  valid in JS
+```
+
+* In **Python**, `$` is **not allowed** in identifiers.
+
+---
+ 
+
+### 1. Variables are identifiers
+
+A variable name is just an **identifier** — a label that the compiler/interpreter uses to recognize something (like a memory location).
+
+Identifiers must follow **rules** so that the compiler/lexer (the part of the language that reads raw code) can tell them apart from numbers, keywords, and operators.
+
+---
+
+### 2. Why can’t they start with a digit?
+
+Imagine you write this:
+
+```python
+123abc = 5
+```
+
+When Python (or any language) reads it, the **lexer** first scans from left to right.
+
+* It sees `123` → and immediately decides: “This is a **number literal**.”
+* Then it sees `abc` right after the number. To the lexer, this looks like **two tokens**:
+
+  * A number (`123`)
+  * An identifier (`abc`)
+
+So it **can’t combine** them into one identifier — otherwise, it would be impossible to distinguish between:
+
+* A number followed by a variable:
+
+  ```python
+  123 abc   # error, but could mean "number 123, then variable abc"
+  ```
+
+* A variable that starts with digits:
+
+  ```python
+  123abc    # ambiguous – is it a number or variable name?
+  ```
+
+This ambiguity is why digits **can appear later** in a variable (like `var1`, `x123`), but not at the start.
+
+---
+
+### 3. Why letters/underscore are allowed first?
+
+Because they **cannot be confused with numeric literals**.
+
+* `_myVar` → clearly an identifier
+* `myVar1` → clearly an identifier
+* `123` → clearly a number
+
+---
+
+  **In short:**
+A variable name can’t start with a number because the **lexer/tokenizer would confuse it with a numeric literal**. Allowing digits only after the first character avoids this conflict.
+
+---
+
+ 
+
+---
+
+### 1. What is a **Lexer**?
+
+A **lexer** (short for *lexical analyzer*) is the first stage of a programming language interpreter or compiler.
+Its job:
+
+* Take raw source code (plain text)
+* Break it into **tokens** → the smallest meaningful pieces, like keywords, identifiers, numbers, operators, etc.
+
+This process is called **lexical analysis**.
+
+---
+
+### 2. Example
+
+Suppose you write this code:
+
+```python
+x = 10 + 20
+```
+
+The **lexer** scans it left to right and produces tokens:
+
+```
+IDENTIFIER(x)
+OPERATOR(=)
+NUMBER(10)
+OPERATOR(+)
+NUMBER(20)
+```
+
+Notice: the lexer **doesn’t care about meaning or correctness yet** — it just groups characters into categories.
+
+---
+
+### 3. Why needed?
+
+Without a lexer, the compiler/interpreter would just see this as a long string of characters:
+
+```
+x=10+20
+```
+
+It would be impossible to parse or understand without first chopping it into **tokens**.
+
+---
+
+ 
+
+When the lexer sees `123abc`:
+
+1. It first matches `123` → **NUMBER token**.
+2. Then sees `abc` → **IDENTIFIER token**.
+3. So it becomes:
+
+   ```
+   NUMBER(123) IDENTIFIER(abc)
+   ```
+
+   instead of a single identifier.
+
+That’s why `123abc` is invalid as a variable.
+
+---
+
+### 5. Difference between **lexer** and **parser**
+
+* **Lexer** → breaks code into tokens (`x`, `=`, `123`)
+* **Parser** → takes those tokens and checks grammar/structure (`assignment statement`, `expression`)
+
+---
+
+  So, the **lexer** is like the person who first splits a sentence into words before someone else checks grammar.
+
+---
+ 
+
+## 1. What is a **Parser**?
+
+A **parser** is the stage that comes **after the lexer** in a compiler or interpreter.
+
+* The **lexer** gives tokens (like "words").
+* The **parser** takes those tokens and checks whether they form a **valid sentence** according to the programming language’s grammar.
+
+So the parser is all about **syntax**.
+
+---
+
+## 2. Example
+
+Take this Python line:
+
+```python
+x = 10 + 20
+```
+
+* **Lexer output (tokens):**
+
+  ```
+  IDENTIFIER(x), OPERATOR(=), NUMBER(10), OPERATOR(+), NUMBER(20)
+  ```
+
+* **Parser checks grammar:**
+
+  * Is `IDENTIFIER` valid on the left of `=`? ✅
+  * Is `NUMBER(10) + NUMBER(20)` a valid expression? ✅
+  * Full sentence = "assignment statement" ✅
+
+So it passes parsing.
+
+---
+
+## 3. When it fails
+
+Example:
+
+```python
+x = + * 10
+```
+
+* **Lexer** says:
+
+  ```
+  IDENTIFIER(x), OPERATOR(=), OPERATOR(+), OPERATOR(*), NUMBER(10)
+  ```
+
+* **Parser** checks grammar and says ❌:
+
+  * `+ * 10` is not a valid expression in Python’s grammar.
+
+So you get a **SyntaxError** (parser error).
+
+---
+
+## 4. Analogy (real-world)
+
+* **Lexer** = Splits a sentence into words.
+  `"The cat runs"` → `[The] [cat] [runs]`.
+
+* **Parser** = Checks if the sentence is grammatically correct.
+
+  * ✅ "The cat runs." → correct grammar
+  * ❌ "Cat the runs." → wrong grammar
+
+---
+
+## 5. Together
+
+1. **Lexer** → tokenizes (breaks text into tokens).
+2. **Parser** → organizes tokens by grammar rules into a structure (often a **parse tree** or **abstract syntax tree (AST)**).
+
+---
+
+👉 Example AST for `x = 10 + 20` would look like:
+
+```
+Assignment
+ ├── Variable: x
+ └── Expression
+      ├── Number: 10
+      ├── Operator: +
+      └── Number: 20
+```
+
+---
+
+ 
+**AST (Abstract Syntax Tree)**
+
+---
+
+## 1. What is an AST?
+
+An **Abstract Syntax Tree (AST)** is a tree-like data structure that the parser builds after checking grammar.
+It represents the **hierarchical structure** of your program — not just the words, but their meaning in context.
+
+👉 Why “abstract”?
+Because it ignores unnecessary details (like parentheses, commas, or keywords) and only keeps the **logical structure** of the code.
+
+---
+
+## 2. Example
+
+Take this code:
+
+```python
+x = 10 + 20
+```
+
+### Step 1: Lexer
+
+```
+IDENTIFIER(x), OPERATOR(=), NUMBER(10), OPERATOR(+), NUMBER(20)
+```
+
+### Step 2: Parser checks grammar
+
+✅ Assignment is valid.
+
+### Step 3: AST (tree structure)
+
+```
+Assignment
+ ├── Variable: x
+ └── BinaryOperation (+)
+       ├── Number: 10
+       └── Number: 20
+```
+
+---
+
+## 3. Why AST is important?
+
+* **Compiler/interpreter** uses AST to understand *what to do*.
+* Tools like **linters, formatters, IDEs, and analyzers** use AST to reason about code.
+* AST is **easier to process** than raw tokens.
+
+---
+
+## 4. Real Python Example
+
+Python has a built-in `ast` module to see the AST:
+
+```python
+import ast
+import astpretty
+
+code = "x = 10 + 20"
+tree = ast.parse(code)
+astpretty.pprint(tree)
+```
+
+Output (simplified):
+
+```
+Module(
+  body=[
+    Assign(
+      targets=[Name(id='x')],
+      value=BinOp(
+        left=Constant(value=10),
+        op=Add(),
+        right=Constant(value=20)
+      )
+    )
+  ]
+)
+```
+
+  This is the AST — a tree structure the interpreter works with.
+
+---
+
+## 5. Analogy
+
+Think of:
+
+* **Lexer** = splitting into words
+* **Parser** = grammar check
+* **AST** = meaning diagram
+
+Sentence: *“The cat eats fish”*
+
+AST version:
+
+```
+Sentence
+ ├── Subject: cat
+ ├── Verb: eats
+ └── Object: fish
+```
+
+---
+
+⚡ So in short:
+
+* AST = **structured tree of code meaning**
+* Used internally by compilers/interpreters to generate machine code or bytecode
+
+---
+  
+---
+
+## 1. Lexer vs Tokenization
+
+* **Tokenization** → the *process* of splitting source code into tokens.
+* **Lexer (lexical analyzer)** → the *component/tool* that performs tokenization.
+
+ In simple words:
+
+* **Lexer = the machine**
+* **Tokenization = the job it does**
+
+---
+
+## 2. Example
+
+Source code:
+
+```python
+y = x + 42
+```
+
+### Step 1: Lexer runs
+
+The **lexer** scans the string character by character.
+
+### Step 2: Tokenization happens
+
+It produces tokens:
+
+```
+IDENTIFIER(y)
+OPERATOR(=)
+IDENTIFIER(x)
+OPERATOR(+)
+NUMBER(42)
+```
+
+---
+
+## 3. What comes next?
+
+* After tokenization, the **parser** takes those tokens.
+* Parser checks grammar → builds AST.
+
+---
+
+## 4. Analogy (real world)
+
+Think of a newspaper:
+
+* **Lexer** = the person with scissors ✂️ who cuts the article into words.
+* **Tokenization** = the act of cutting it into words.
+* **Parser** = English teacher who checks if the sentence makes sense.
+* **AST** = sentence diagram (subject → verb → object).
+
+---
+
+ So, lexer and tokenization are not two different *things* —
+
+* Lexer = the **tool**
+* Tokenization = the **process** the lexer performs
+
+---
+
+ 
+## 1. Where does the lexer exist?
+
+The **lexer** isn’t a separate program you run.
+It’s **built inside every programming language’s compiler or interpreter**.
+
+* In **Python** → The CPython interpreter has its own lexer implemented in C (`Parser/tokenizer.c` in the CPython source code).
+* In **Java** → The `javac` compiler has a built-in lexer.
+* In **C/C++** → GCC/Clang have built-in lexers.
+* If you build your own language, you usually write or use a lexer library (like **Lex/Flex**, **ANTLR**, **PLY** in Python).
+
+So, you don’t install it separately — it’s part of the language’s “engine”.
+
+---
+
+## 2. How it works (Python example)
+
+When you run:
+
+```bash
+python myscript.py
+```
+
+Steps inside CPython:
+
+1. **Source code (text)** → sent to **lexer**.
+2. **Lexer (tokenizer)** → splits into tokens.
+3. **Parser** → checks grammar and builds AST.
+4. **Compiler** → converts AST into **bytecode**.
+5. **Python Virtual Machine (PVM)** → executes bytecode.
+
+---
+
+## 3. If *you* want to use a lexer
+
+You can use tools:
+
+* **Built-in** → Python’s `tokenize` module lets you see tokens.
+* **Libraries** →
+
+  * `PLY` (Python Lex-Yacc)
+  * `ANTLR` (general parser/lexer generator)
+  * `Flex`/`Lex` (classic C lexer generators).
+
+---
+
+## 4. Analogy
+
+Think of the **lexer** like the **scanner** inside a printer.
+
+* You don’t see it, but it’s always there, breaking a page into digital pieces before further processing.
+
+---
+
+✅ So:
+
+* The **tool (lexer)** is *inside the interpreter/compiler*.
+* You don’t normally run it by itself.
+* You can *see its output* using debugging tools (like Python’s `tokenize` or `ast` modules).
+
+---
+ 
+
+
+## 1. What is EBNF?
+
+**EBNF** = **Extended Backus–Naur Form**.
+It’s a notation (a formal language) used to **describe the grammar of programming languages**.
+
+👉 Think of it as a “blueprint language” that explains how valid code must look.
+
+---
+
+## 2. The Basics of EBNF
+
+Here’s the meaning of symbols used in EBNF:
+
+| Symbol  | Meaning                      | Example                              |                                  |                           |       |
+| ------- | ---------------------------- | ------------------------------------ | -------------------------------- | ------------------------- | ----- |
+| `::=`   | “is defined as”              | \`digit ::= "0"                      | "1"                              | ...                       | "9"\` |
+| \`      | \`                           | OR (choice)                          | \`"+"                            | "-"\` means plus OR minus |       |
+| `[]`    | Optional (0 or 1 times)      | `[ "-" ] digit` → optional minus     |                                  |                           |       |
+| `{}`    | Repetition (0 or more times) | `{ digit }` → many digits allowed    |                                  |                           |       |
+| `()`    | Grouping                     | \`("a"                               | "b") "c"`→ either`"ac"`or`"bc"\` |                           |       |
+| `"` `"` | Literal symbols              | `"if"` means the actual keyword `if` |                                  |                           |       |
+
+---
+
+## 3. Example in EBNF
+
+Let’s define an **integer**:
+
+```ebnf
+integer ::= [ "-" ] digit { digit }
+digit   ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+```
+
+This means:
+
+* An integer may start with an optional `-`
+* Must have at least one digit
+* Can have more digits after
+
+✅ Valid: `123`, `-99`, `0`
+❌ Invalid: `--5`, `12a`
+
+---
+
+## 4. Python Expression in EBNF
+
+Simplified grammar for arithmetic expressions:
+
+```ebnf
+expression ::= term { ("+" | "-") term }
+term       ::= factor { ("*" | "/") factor }
+factor     ::= number | identifier | "(" expression ")"
+```
+
+So:
+
+* `2 + 3` → fits
+* `2 + (3 * 4)` → fits
+* `* 5` → ❌ doesn’t fit
+
+---
+
+## 5. Why it’s useful
+
+* **Language designers** use EBNF to define Python, C, Java, etc.
+* **Parsers** are often auto-generated from EBNF rules (ANTLR, PLY, etc).
+* It makes the rules **unambiguous** — no guesswork.
+
+---
+
+✅ In short:
+**EBNF = a formal way to write grammar rules.**
+It’s like math for describing programming language syntax.
+
+---
+ 
+ 
+> **What is EBNF style? And what is the name of that grammar?**
+ 
+---
+
+## 1. What is EBNF style?
+
+* **EBNF** = **Extended Backus–Naur Form**.
+* It’s a **notation** (like a special mini-language) for writing grammar rules of programming languages.
+* Called *“style”* because different languages use slightly different flavors (classic **BNF**, **EBNF**, or custom notations).
+
+👉 **BNF** was the original (Backus–Naur Form), created in the 1960s for ALGOL.
+👉 **EBNF** added more convenience (optional parts, repetitions, grouping).
+
+So when you see “EBNF style,” it means the grammar is written in **formal production rules** like:
+
+```ebnf
+rule ::= option1 | option2
+```
+
+instead of English sentences.
+
+---
+
+## 2. What is the name of that grammar?
+
+Every programming language has its **own grammar**, written using EBNF (or a close variant).
+
+Examples:
+
+* **Python** → defined in *Python Grammar* (file: `Grammar/python.gram` in CPython).
+* **JavaScript** → defined in the *ECMAScript Grammar* (ECMA-262 spec).
+* **Java** → defined in the *Java Language Specification Grammar*.
+* **C/C++** → defined in the *ISO C/C++ Grammar*.
+
+So the **grammar name** usually matches the language →
+👉 “Python Grammar,” “ECMAScript Grammar,” “Java Grammar,” etc.
+
+---
+
+## 3. Example of EBNF vs English
+
+Let’s define an **if statement**:
+
+* In **English**:
+  “An `if` statement begins with the keyword `if`, followed by a condition in parentheses, followed by a block of statements. It may optionally contain an `else` block.”
+
+* In **EBNF style**:
+
+  ```ebnf
+  if_stmt ::= "if" "(" expression ")" statement [ "else" statement ]
+  ```
+
+Notice how compact and precise EBNF is.
+
+---
+
+## 4. Why languages use EBNF-style grammar?
+
+* **Unambiguous**: computers can generate parsers automatically.
+* **Formal**: no confusion compared to English descriptions.
+* **Standardized**: most programming language grammars are published in BNF/EBNF.
+
+---
+
+✅ **Summary:**
+
+* **EBNF style** = a formal way of writing grammar rules.
+* The **name of that grammar** is usually just the language’s grammar (Python Grammar, ECMAScript Grammar, Java Grammar, etc.), written in EBNF (or a close variant).
+🔑 EBNF is not a syntax for writing code.
+It’s a syntax for writing grammars (rules that describe how code should look).
+
+---
+ 
+
+---
+
+##  What is Constant Folding?
+
+**Constant folding** is a compiler optimization technique where the compiler **pre-computes constant expressions at compile time** instead of runtime.
+
+ In short:
+If an expression involves **only constants**, the compiler evaluates it **once** and replaces it with the result.
+
+---
+
+##  Example in Python
+
+```python
+x = 10 * 20
+```
+
+Without optimization:
+
+* At runtime, Python would multiply `10 * 20` every time.
+
+With **constant folding**:
+
+* The compiler already knows `10 * 20 = 200`.
+* So it directly stores:
+
+```python
+x = 200
+```
+
+---
+
+##  Why is this useful?
+
+* **Faster execution** → saves CPU cycles at runtime.
+* **Smaller code** → no need to keep unnecessary calculations.
+
+---
+
+##  More Examples
+
+1. Arithmetic:
+
+```python
+y = (2 + 3) * 4
+```
+
+Compiler folds →
+
+```python
+y = 20
+```
+
+2. Strings:
+
+```python
+msg = "Hello, " + "World!"
+```
+
+Constant folded →
+
+```python
+msg = "Hello, World!"
+```
+
+3. Boolean logic:
+
+```python
+flag = True or False
+```
+
+Constant folded →
+
+```python
+flag = True
+```
+
+---
+
+## 🔹 In Python Internals
+
+* Python’s **bytecode compiler** performs constant folding.
+* If you disassemble with `dis` module:
+
+```python
+import dis
+
+def f():
+    return 2 + 3
+
+print(dis.dis(f))
+```
+
+You’ll see that Python **does not emit an `ADD` instruction** — it just loads the constant `5`.
+
+---
+
+---
+
+So:
+**Constant folding = pre-calculating constant expressions at compile time** so runtime is faster.
+
+---
+
+
+ **“Does Python do constant folding for *every* operation?”**
+
+Short answer: **No.**
+Python does constant folding **only for some operations**, not all. Let me explain clearly.
+
+---
+
+##  When Python Does Constant Folding
+
+Python folds **simple, safe, deterministic expressions** at compile time.
+Examples:
+
+1. **Arithmetic with literals**
+
+   ```python
+   x = 2 + 3 * 4   # folded to 14
+   ```
+2. **Boolean logic with constants**
+
+   ```python
+   y = True and False  # folded to False
+   ```
+3. **String concatenation**
+
+   ```python
+   msg = "Hello, " "World!"   # folded to "Hello, World!"
+   ```
+4. **Tuples/lists/sets of constants**
+
+   ```python
+   t = (1, 2, 3, 4)   # stored directly as a constant tuple
+   ```
+
+---
+
+## 🔹 When Python Does NOT Fold
+
+1. **Operations with variables**
+
+   ```python
+   a = 10
+   b = 20
+   x = a + b   # not folded (depends on runtime values)
+   ```
+2. **Functions / Non-deterministic operations**
+
+   ```python
+   import random
+   x = random.randint(1, 10) + 2  # must run at runtime
+   ```
+3. **Floating-point edge cases**
+
+   ```python
+   x = 1.0 / 0.0   # would raise error, so not folded
+   ```
+4. **Mutable objects**
+
+   ```python
+   lst = [1, 2] + [3, 4]  # not folded, list is mutable
+   ```
+
+---
+
+## 🔹 Why Not Fold Everything?
+
+* **Safety**: Some operations may cause errors or side effects (`1/0`, `open("file")`).
+* **Mutability**: If the object can change (like lists, dicts), folding it would be wrong.
+* **Runtime values**: If it depends on user input, environment, or randomness, the compiler can’t predict it.
+
+---
+
+ So:
+
+* Python **does constant folding only for safe, literal constant expressions**.
+* Not for every operation.
+
+---
+
+ 
