@@ -2180,6 +2180,60 @@ Examples:
 * Python **does constant folding only for safe, literal constant expressions**.
 * Not for every operation.
 
+
 ---
 
+## 1. In Python: **Everything is an object**
+
+* `int`, `float`, `str`, `list`, `dict`, even functions and classes → all are objects.
+* That means they all live in the **heap** and have methods/attributes.
+
+  ```python
+  x = 5
+  print(type(x))   # <class 'int'>
+  print(dir(x))    # shows methods like __add__, __sub__, ...
+  ```
+
+So, unlike **C** (where `int` is just raw bits in memory) or **Java** (where `int` is primitive, but `Integer` is object), Python doesn’t separate **primitives vs objects at runtime**.
+
+---
+
+## 2. Why people still say *primitive* in Python?
+
+This is more of a **theory/classification for understanding**.
+
+* Some types are **fundamental, immutable, and directly represent values** → `int`, `float`, `bool`, `str`.
+  → These are *called* “primitive” in learning material.
+* Other types are **collections or user-defined** → `list`, `dict`, `set`, class instances.
+  → These are considered “non-primitive”.
+
+So it’s **not about implementation**, but about **conceptual simplicity**:
+
+* `int = atomic value` (5 just means “five”)
+* `list = collection of objects` (`[1,2,3]` is built from smaller values)
+
+---
+
+## 3. How CPython really does it 
+
+* `int`, `float`, etc. are implemented as **classes in C** inside CPython.
+* Example: `int` is really `PyLongObject` in C.
+* When you write `x = 5`, CPython creates an object of type `int`.
+* So technically, **Python has no real primitives**. It just has **immutable objects** (like int, str) and **mutable objects** (like list, dict).
+
+---
+
+## 4. Final Answer 
+* In **strict computer science**: everything in Python is **object**, no true primitives.
+* In **teaching/classification**:
+
+  * **Primitive (basic, atomic)**: `int`, `float`, `str`, `bool`, `complex`.
+  * **Non-primitive (composite, user-defined)**: `list`, `tuple`, `dict`, `set`, classes.
+
+---
+
+ So:
+`int` is **object** in implementation, but often called **primitive** in classification (because it’s simple, immutable, and represents a single value, not a structure).
+
+---
  
