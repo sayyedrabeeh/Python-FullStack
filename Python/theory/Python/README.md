@@ -2397,3 +2397,95 @@ To avoid duplicates → you’d write extra code.
 To store key-value → you’d use two lists, which is messy.
 
 So Python gives us specialized tools → makes our life easier and programs faster.
+
+ 
+
+---
+
+# 🔹 1. What is **Interning / Caching**?
+
+* **Interning** (or caching) = the interpreter **reuses objects instead of creating new ones**.
+* This saves **memory** and improves **performance**, because small, common values are used very often.
+
+---
+
+# 🔹 2. **Integer Interning in Python**
+
+In **CPython** (the default Python interpreter):
+
+* Integers in the range **-5 to 256** are **pre-allocated** at startup.
+* Any time you use an integer in this range, Python **reuses the same object** from memory.
+
+ Example:
+
+```python
+a = 100
+b = 100
+print(a is b)   # True  (same object, cached)
+
+x = 1000
+y = 1000
+print(x is y)   # False (different objects, not cached)
+```
+
+---
+
+# 🔹 3. **Why only -5 to 256?**
+
+* These small numbers are used *very frequently* in Python programs (indexes, loop counters, common values).
+* Pre-allocating them saves time and memory.
+* Larger integers are less common, so Python creates new objects for them.
+
+---
+
+# 🔹 4. **String Interning**
+
+Python also interns (caches) **some strings**:
+
+* Short strings
+* Identifiers (variable names, keywords, etc.)
+* Strings that look like valid Python identifiers (`"hello"`, `"abc"`)
+
+👉 Example:
+
+```python
+s1 = "hello"
+s2 = "hello"
+print(s1 is s2)   # True (interned)
+
+s3 = "hello world!"
+s4 = "hello world!"
+print(s3 is s4)   # Might be False (not always interned)
+```
+
+⚡ You can force interning using `sys.intern()`:
+
+```python
+import sys
+a = sys.intern("big string with spaces")
+b = sys.intern("big string with spaces")
+print(a is b)   # True
+```
+
+---
+
+# 🔹 5. **Object Interning in General**
+
+So interning in Python happens for:
+
+* **Integers** → `-5 to 256` cached
+* **Strings** → some automatically, others via `sys.intern()`
+* **Booleans** → `True` and `False` are singletons (only one copy exists)
+* **None** → also a singleton (only one `None` in memory)
+
+---
+
+# 🔹 6. ✅ Summary
+
+* **Integer caching**: Python reuses ints `-5` to `256`.
+* **String interning**: Python may reuse certain strings.
+* **Object interning**: General idea → reuse objects to save memory.
+* Everything else → Python creates fresh objects.
+
+---
+ 
