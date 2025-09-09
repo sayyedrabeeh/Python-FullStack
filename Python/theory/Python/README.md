@@ -2488,4 +2488,38 @@ So interning in Python happens for:
 * Everything else → Python creates fresh objects.
 
 ---
- 
+### 🔹 2. Why sometimes 1000 is 1000 gives True?
+
+When you type it directly in the same line or code block, Python’s compiler optimizes it by constant folding.
+Example:
+```python
+
+print(1000 is 1000)  # True
+
+```
+
+Here, the compiler sees both 1000 are the same constant → it reuses one object.
+
+But if you assign separately:
+```python
+
+x = 1000
+y = 1000
+print(x is y)  # False (most of the time)
+
+```
+
+Two different integer objects are created in memory, so is returns False.
+
+So the result depends on where and how the value is created.
+
+### 🔹 Difference between Constant Folding vs Deduplication
+
+Constant Folding: evaluate expressions at compile time.
+    
+    Example: (10 + 20) → replaced with 30.
+
+Deduplication: reuse the same literal object instead of creating duplicates.
+    
+    Example: 1000 appearing twice → one object stored in co_consts.
+
