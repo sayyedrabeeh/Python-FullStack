@@ -2180,6 +2180,346 @@ Examples:
 * Python **does constant folding only for safe, literal constant expressions**.
 * Not for every operation.
 
+
 ---
 
+## 1. In Python: **Everything is an object**
+
+* `int`, `float`, `str`, `list`, `dict`, even functions and classes → all are objects.
+* That means they all live in the **heap** and have methods/attributes.
+
+  ```python
+  x = 5
+  print(type(x))   # <class 'int'>
+  print(dir(x))    # shows methods like __add__, __sub__, ...
+  ```
+
+So, unlike **C** (where `int` is just raw bits in memory) or **Java** (where `int` is primitive, but `Integer` is object), Python doesn’t separate **primitives vs objects at runtime**.
+
+---
+
+## 2. Why people still say *primitive* in Python?
+
+This is more of a **theory/classification for understanding**.
+
+* Some types are **fundamental, immutable, and directly represent values** → `int`, `float`, `bool`, `str`.
+  → These are *called* “primitive” in learning material.
+* Other types are **collections or user-defined** → `list`, `dict`, `set`, class instances.
+  → These are considered “non-primitive”.
+
+So it’s **not about implementation**, but about **conceptual simplicity**:
+
+* `int = atomic value` (5 just means “five”)
+* `list = collection of objects` (`[1,2,3]` is built from smaller values)
+
+---
+
+## 3. How CPython really does it 
+
+* `int`, `float`, etc. are implemented as **classes in C** inside CPython.
+* Example: `int` is really `PyLongObject` in C.
+* When you write `x = 5`, CPython creates an object of type `int`.
+* So technically, **Python has no real primitives**. It just has **immutable objects** (like int, str) and **mutable objects** (like list, dict).
+
+---
+
+## 4. Final Answer 
+* In **strict computer science**: everything in Python is **object**, no true primitives.
+* In **teaching/classification**:
+
+  * **Primitive (basic, atomic)**: `int`, `float`, `str`, `bool`, `complex`.
+  * **Non-primitive (composite, user-defined)**: `list`, `tuple`, `dict`, `set`, classes.
+
+---
+
+ So:
+`int` is **object** in implementation, but often called **primitive** in classification (because it’s simple, immutable, and represents a single value, not a structure).
+
+---
+
+Yes — all data types are non-primitive, because:
+
+Every value is an object (stored in the heap).
+
+Even int, float, str, bool are instances of their classes (int, float, str, bool).
+
+
  
+---
+
+## 1. **Data Type**
+
+ A **data type** tells the computer **what kind of value** you are storing and **what operations** you can do on it.
+It is about **the nature of data**.
+
+### Examples in Python:
+
+```python
+x = 10        # int → can do +, -, *, /
+y = 3.14      # float → can do decimal math
+z = "hello"   # str → can do concatenation, slicing
+b = True      # bool → can do logical operations
+```
+
+So:
+
+* **int** → whole numbers
+* **float** → decimal numbers
+* **str** → sequence of characters
+* **bool** → True/False
+
+ Data types = **define a value’s type + allowed operations**.
+
+---
+
+## 2. **Data Structure**
+
+ A **data structure** is a way to **organize and store multiple values** in memory, often using data types inside it.
+It is about **how data is arranged**.
+
+### Examples in Python:
+
+```python
+arr = [1, 2, 3, 4]                # list → stores multiple ints
+tup = (1, 2, 3)                   # tuple → ordered collection
+s = {1, 2, 3}                     # set → unique values
+d = {"name": "Ali", "age": 20}    # dict → key-value pairs
+```
+
+ Data structures = **containers built using data types**.
+
+---
+
+## 3. **Key Difference**
+
+| Aspect            | Data Type                     | Data Structure                                 |
+| ----------------- | ----------------------------- | ---------------------------------------------- |
+| Meaning           | Kind of value (what it is)    | Way of organizing values (how stored)          |
+| Size              | Holds **single value**        | Holds **multiple values**                      |
+| Examples (Python) | `int`, `float`, `str`, `bool` | `list`, `tuple`, `dict`, `set`                 |
+| Usage             | For basic operations          | For organizing, searching, storing many values |
+
+---
+
+## 4. Simple Analogy
+
+* **Data type** = ingredient (like *sugar*, *flour*, *egg*)
+* **Data structure** = recipe (like *cake*, *bread*) built by combining ingredients
+
+So in Python:
+
+* `10` (int) = data type
+* `[10, 20, 30]` (list of ints) = data structure
+
+---
+
+ Final takeaway:
+
+* **Data type = what kind of single value**
+* **Data structure = how we organize many values (using data types inside them)**
+
+---
+
+We have many **data structures** in Python (list, tuple, set, dict, etc.) because **different problems need different tools**.
+No single data structure is perfect for everything. Each one is optimized for **speed**, **memory**, or **specific use cases**.
+
+---
+
+### 🔹 1. **List**
+
+* **What it is:** Ordered, changeable, allows duplicates.
+* **Why use it:** When you want to store items in sequence and access them by index.very fast (O(1)).
+Searching for an item is slower (O(n)).
+* **Example:** A playlist of songs. You care about the order:
+
+  ```python
+  songs = ["Song1", "Song2", "Song3"]
+  ```
+
+---
+
+### 🔹 2. **Tuple**
+
+* **What it is:** Ordered, **immutable** (cannot change), allows duplicates.Why?
+Safer (data won’t accidentally change).
+Faster (less overhead).
+* **Why use it:** When you want fixed data that should not change (safer, faster than lists).
+* **Example:** Storing GPS coordinates (latitude, longitude) which should stay constant:
+
+  ```python
+  location = (10.123, 76.543)
+  ```
+
+---
+
+### 🔹 3. **Set**
+
+* **What it is:** Unordered, unique elements, no duplicates.
+* **Why use it:** When you care about uniqueness, or need fast membership checking (`in`).
+* **Example:** Collecting unique visitors to a website:
+
+  ```python
+  visitors = {"Alice", "Bob", "Charlie"}
+  ```
+
+---
+
+### 🔹 4. **Dictionary**
+
+* **What it is:** Key–Value pairs, unordered, keys must be unique.
+* **Why use it:** When you want to quickly look up values by a key (like a real-life dictionary).
+* **Example:** Storing user profiles:
+
+  ```python
+  user = {"name": "Alice", "age": 25, "city": "Delhi"}
+  ```
+
+---
+
+###  **Why so many?**
+
+Because:
+
+* **List** → good for ordered collections with duplicates.
+* **Tuple** → good for fixed, unchangeable collections.
+* **Set** → good for uniqueness and fast checks.
+* **Dict** → good for mapping relationships (like a phonebook).
+
+If Python had only `list`, you could **simulate** sets and dicts using lists, but it would be **slower** and **inefficient**.
+So Python gives **specialized structures** to make your life easier and your code faster.
+ 
+If Python gave only list:
+
+To check if something exists → you’d have to scan one by one (slow).
+
+To avoid duplicates → you’d write extra code.
+
+To store key-value → you’d use two lists, which is messy.
+
+So Python gives us specialized tools → makes our life easier and programs faster.
+
+ 
+
+---
+
+# 🔹 1. What is **Interning / Caching**?
+
+* **Interning** (or caching) = the interpreter **reuses objects instead of creating new ones**.
+* This saves **memory** and improves **performance**, because small, common values are used very often.
+
+---
+
+# 🔹 2. **Integer Interning in Python**
+
+In **CPython** (the default Python interpreter):
+
+* Integers in the range **-5 to 256** are **pre-allocated** at startup.
+* Any time you use an integer in this range, Python **reuses the same object** from memory.
+
+ Example:
+
+```python
+a = 100
+b = 100
+print(a is b)   # True  (same object, cached)
+
+x = 1000
+y = 1000
+print(x is y)   # False (different objects, not cached)
+```
+
+---
+
+# 🔹 3. **Why only -5 to 256?**
+
+* These small numbers are used *very frequently* in Python programs (indexes, loop counters, common values).
+* Pre-allocating them saves time and memory.
+* Larger integers are less common, so Python creates new objects for them.
+
+---
+
+# 🔹 4. **String Interning**
+
+Python also interns (caches) **some strings**:
+
+* Short strings
+* Identifiers (variable names, keywords, etc.)
+* Strings that look like valid Python identifiers (`"hello"`, `"abc"`)
+
+👉 Example:
+
+```python
+s1 = "hello"
+s2 = "hello"
+print(s1 is s2)   # True (interned)
+
+s3 = "hello world!"
+s4 = "hello world!"
+print(s3 is s4)   # Might be False (not always interned)
+```
+
+⚡ You can force interning using `sys.intern()`:
+
+```python
+import sys
+a = sys.intern("big string with spaces")
+b = sys.intern("big string with spaces")
+print(a is b)   # True
+```
+
+---
+
+# 🔹 5. **Object Interning in General**
+
+So interning in Python happens for:
+
+* **Integers** → `-5 to 256` cached
+* **Strings** → some automatically, others via `sys.intern()`
+* **Booleans** → `True` and `False` are singletons (only one copy exists)
+* **None** → also a singleton (only one `None` in memory)
+
+---
+
+# 🔹 6. ✅ Summary
+
+* **Integer caching**: Python reuses ints `-5` to `256`.
+* **String interning**: Python may reuse certain strings.
+* **Object interning**: General idea → reuse objects to save memory.
+* Everything else → Python creates fresh objects.
+
+---
+### 🔹 2. Why sometimes 1000 is 1000 gives True?
+
+When you type it directly in the same line or code block, Python’s compiler optimizes it by constant folding.
+Example:
+```python
+
+print(1000 is 1000)  # True
+
+```
+
+Here, the compiler sees both 1000 are the same constant → it reuses one object.
+
+But if you assign separately:
+```python
+
+x = 1000
+y = 1000
+print(x is y)  # False (most of the time)
+
+```
+
+Two different integer objects are created in memory, so is returns False.
+
+So the result depends on where and how the value is created.
+
+### 🔹 Difference between Constant Folding vs Deduplication
+
+Constant Folding: evaluate expressions at compile time.
+    
+    Example: (10 + 20) → replaced with 30.
+
+Deduplication: reuse the same literal object instead of creating duplicates.
+    
+    Example: 1000 appearing twice → one object stored in co_consts.
+
