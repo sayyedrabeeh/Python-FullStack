@@ -118,4 +118,57 @@ Graphs are everywhere — they model **connections**.
 
 ---
 
+```python
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        self.graph[v].append(u)  # undirected
+
+    def show_graph(self):
+        for node in self.graph:
+            print(node, "->", self.graph[node])
+
+def bfs(graph, start):
+    visited = set()
+    queue = [start]   # simple list used as queue
+    while queue:
+        node = queue.pop(0)   # remove first element
+        if node not in visited:
+            print(node, end=" ")
+            visited.add(node)
+            queue.extend(graph[node])
+
+def dfs(graph, node, visited=None):
+    if visited is None:
+        visited = set()
+    if node not in visited:
+        print(node, end=" ")
+        visited.add(node)
+        for neighbor in graph[node]:
+            dfs(graph, neighbor, visited)
+
+
+# ---------- Example ----------
+g = Graph()
+g.add_edge("A", "B")
+g.add_edge("A", "C")
+g.add_edge("B", "D")
+g.add_edge("C", "D")
+
+print("Graph:")
+g.show_graph()
+
+print("\nBFS Traversal:")
+bfs(g.graph, "A")
+
+print("\nDFS Traversal:")
+dfs(g.graph, "A")
+```
  
