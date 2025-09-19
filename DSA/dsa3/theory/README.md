@@ -284,4 +284,94 @@ D -> []
 
  So answer: If a graph has both **directed** and **undirected** edges, it’s called a **Mixed Graph**.
 
-D 
+---
+
+##  1. **Undirected Graph**
+
+* All edges are **two-way**.
+* If there is an edge between `A` and `B`, you can go both ways (`A ↔ B`).
+* Example: **Facebook friendships**.
+
+---
+
+##  2. **Directed Graph (Digraph)**
+
+* All edges are **one-way**.
+* If there is an edge from `A` to `B` (`A → B`), it doesn’t mean `B → A`.
+* Example: **Twitter follows**.
+
+---
+
+##  3. **Mixed Graph**
+
+* Some edges are **directed**, some are **undirected**.
+* Example: **Road networks** (some roads are one-way, others are two-way).
+
+---
+
+ So, **based on direction**, the types of graphs are:
+
+1. **Undirected Graph**
+2. **Directed Graph (Digraph)**
+3. **Mixed Graph**
+
+---
+ 
+ 
+---
+
+##  Types of Graphs Based on Weights
+
+### 1. **Weighted Graph**
+
+* Each edge has a **weight (cost/value)**.
+* Weight could mean: distance, time, cost, capacity, etc.
+* Example: **Google Maps** → Cities are nodes, roads are edges, distance/time is weight.
+
+**Example Representation:**
+
+```
+A --5-- B
+B --2-- C
+A --8-- C
+```
+
+Adjacency list with weights:
+
+```
+A -> [(B, 5), (C, 8)]
+B -> [(A, 5), (C, 2)]
+C -> [(A, 8), (B, 2)]
+```
+
+---
+
+### 2. **Unweighted Graph**
+
+* All edges are treated as equal (no weights).
+* Used when we only care about **connections**, not cost.
+* Example: **Facebook friendships** → all connections are equal.
+
+**Example Representation:**
+
+```
+A -- B -- C
+```
+
+Adjacency list:
+
+```
+A -> [B]
+B -> [A, C]
+C -> [B]
+```
+
+---
+
+ So, based on weights, graphs are:
+
+1. **Weighted Graph** → edges have values.
+2. **Unweighted Graph** → edges have no values.
+
+---
+ 
