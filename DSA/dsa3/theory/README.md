@@ -92,7 +92,7 @@ Uses:
 
 ---
 
-## 🔹 How Graphs Are Used in Practice
+##  How Graphs Are Used in Practice
 
 * **Representation in code:**
 
@@ -123,52 +123,165 @@ class Graph:
     def __init__(self):
         self.graph = {}
 
-    def add_edge(self, u, v):
-        if u not in self.graph:
-            self.graph[u] = []
-        if v not in self.graph:
-            self.graph[v] = []
+    def add_node(self,node):
+        if node not in self.graph:
+            self.graph[node] = []
+
+    def add_edge(self,u,v,undirected=True):
+        self.add_node(u)        
+        self.add_node(v)
         self.graph[u].append(v)
-        self.graph[v].append(u)  # undirected
+        if undirected:
+            self.graph[v].append(u)
 
-    def show_graph(self):
-        for node in self.graph:
-            print(node, "->", self.graph[node])
-
-def bfs(graph, start):
-    visited = set()
-    queue = [start]   # simple list used as queue
-    while queue:
-        node = queue.pop(0)   # remove first element
-        if node not in visited:
-            print(node, end=" ")
-            visited.add(node)
-            queue.extend(graph[node])
-
-def dfs(graph, node, visited=None):
-    if visited is None:
-        visited = set()
-    if node not in visited:
-        print(node, end=" ")
-        visited.add(node)
-        for neighbor in graph[node]:
-            dfs(graph, neighbor, visited)
+    def remove_edge(self,u,v,undeirected=True):
+        if u in self.graph and v in self.graph[u]:
+            self.graph[u].remove(v)
+        if undeirected and v in self.graph and u in self.graph[v]:
+            self.graph[v].remove(u)
 
 
-# ---------- Example ----------
+    def remove_node(self,node):
+        if node in self.graph:
+            del self.graph[node]
+        for i in self.graph:
+            if node in self.graph[i]:
+                self.graph[i].remove(node)
+
 g = Graph()
-g.add_edge("A", "B")
-g.add_edge("A", "C")
-g.add_edge("B", "D")
-g.add_edge("C", "D")
+g.add_edge(1, 2)
+g.add_edge(1, 3)
+g.add_edge(2, 4)
+g.add_edge(3, 5)
+g.add_edge(5, 6)
 
 print("Graph:")
-g.show_graph()
+g.print_graph()
+g.remove_edge(1, 2)
+print("\nGraph after removing edge 1-2:")
+g.print_graph()
 
-print("\nBFS Traversal:")
-bfs(g.graph, "A")
-
-print("\nDFS Traversal:")
-dfs(g.graph, "A")
+g.remove_node(5)
+print("\nGraph after removing node 5:")
+g.print_graph()
 ```
  
+Graphs are mainly divided into **two types based on direction of edges**:
+
+---
+
+##  1. **Undirected Graph**
+
+* Edges **do not have direction**.
+* If there is an edge between `A` and `B`, you can move both ways (`A ↔ B`).
+* Example: **Facebook friendships** (if you’re my friend, I’m also your friend).
+
+**Representation:**
+
+```
+A ----- B
+ \     /
+   \  /
+     C
+```
+
+Adjacency List:
+
+```
+A -> [B, C]
+B -> [A, C]
+C -> [A, B]
+```
+
+---
+
+##  2. **Directed Graph (Digraph)**
+
+* Edges **have direction**.
+* If there is an edge from `A → B`, it doesn’t mean `B → A`.
+* Example: **Twitter follows** (if I follow you, you may not follow me).
+
+**Representation:**
+
+```
+A → B
+↑   ↓
+C ← D
+```
+
+Adjacency List:
+
+```
+A -> [B]
+B -> [D]
+C -> [A]
+D -> [C]
+```
+
+---
+
+ So, based on direction, we have:
+
+1. **Undirected Graph** → edges are two-way.
+2. **Directed Graph** → edges are one-way.
+
+---
+ 
+---
+
+##  Mixed Graph
+
+A **mixed graph** is a graph where:
+
+* Some edges are **directed** (one-way).
+* Some edges are **undirected** (two-way).
+
+ Example:
+
+* Suppose you have 4 nodes: `A, B, C, D`
+* `A → B` (directed edge)
+* `B ↔ C` (undirected edge)
+* `C → D` (directed edge)
+
+**Visual:**
+
+```
+A → B ↔ C → D
+```
+
+---
+
+##  Where do we see mixed graphs?
+
+* **Road networks**:
+
+  * Some roads are **one-way** (directed).
+  * Some roads are **two-way** (undirected).
+* **Workflow systems**:
+
+  * Some tasks must be done in strict order (directed).
+  * Others can be interchangeable (undirected).
+
+---
+
+##  Representation
+
+You usually handle it like this:
+
+* Store **directed edges** separately.
+* Store **undirected edges** separately.
+
+Example adjacency list:
+
+```
+A -> [B]         (directed: A → B)
+B -> [A, C]      (undirected: B ↔ C)
+C -> [B, D]
+D -> []
+```
+
+---
+
+ So answer: If a graph has both **directed** and **undirected** edges, it’s called a **Mixed Graph**.
+
+D 
