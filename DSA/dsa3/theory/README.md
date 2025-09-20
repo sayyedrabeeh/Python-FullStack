@@ -636,3 +636,139 @@ def is_cyclic(gr):
 print('Cycle Exists? -> ',is_cyclic(gr))
 
 ```
+### cycle dectetion in dericted Graph
+
+```python
+
+gr = {
+    'A':['B'],
+    'B':['C'],
+    'C':['A'],
+}
+
+def is_cyclic_until(gr,node,visited,recstack):
+    visited[node] = True
+    recstack[node] = True
+    for i in gr.get(node,[]):
+        if not visited.get(i,False):
+            if is_cyclic_until(gr,i,visited,recstack):
+                return True
+        elif recstack.get(i,False):
+            return True
+    recstack[node] = False
+    return False
+    
+    
+def is_cyclic(gr):
+    visited = {}
+    recstack = {}
+    for i in gr:
+        if not visited.get(i,False):
+            if is_cyclic_until(gr,i,visited,recstack):
+                return True
+    return False
+print('cycle exist ? ---> ',is_cyclic(gr))
+            
+ ```
+
+  **types of graphs based on representation**graph *is***how we store it in memory**. The two most common representations are:
+
+---
+
+#  1. **Adjacency Matrix**
+
+* It’s a **2D array (N×N)** where `N` = number of nodes.
+* If there is an edge from node `u` to node `v`, then `matrix[u][v] = 1` (or weight, if weighted).
+* If no edge, then `matrix[u][v] = 0`.
+
+ **Pros**
+
+* Easy to implement.
+* Checking if an edge exists between `u` and `v` is **O(1)**.
+* Works well for **dense graphs** (lots of edges).
+
+ **Cons**
+
+* Uses **O(N²) space**, even if graph has few edges.
+* Traversing neighbors takes **O(N)** per node.
+
+### Example
+
+Graph:
+
+```
+A — B
+|   |
+C — D
+```
+
+Adjacency matrix (assuming A=0, B=1, C=2, D=3):
+
+```
+    A B C D
+A [ 0 1 1 0 ]
+B [ 1 0 0 1 ]
+C [ 1 0 0 1 ]
+D [ 0 1 1 0 ]
+```
+
+---
+
+#  2. **Adjacency List**
+
+* Each node has a list of its neighbors.
+* Stored as a **dictionary of lists** (or array of linked lists).
+
+ **Pros**
+
+* Space efficient: uses **O(N + E)** where `E` = number of edges.
+* Fast to traverse all neighbors.
+* Better for **sparse graphs** (few edges).
+
+ **Cons**
+
+* Checking if an edge exists between `u` and `v` can take **O(degree(u))**.
+
+### Example (same graph)
+
+Adjacency list:
+
+```python
+{
+  'A': ['B','C'],
+  'B': ['A','D'],
+  'C': ['A','D'],
+  'D': ['B','C']
+}
+```
+
+---
+
+#  3. (Less Common) **Edge List**
+
+* Just store all edges as pairs `(u,v)` (or `(u,v,w)` for weighted).
+* Example:
+
+  ```python
+  edges = [
+    ('A','B'),
+    ('A','C'),
+    ('B','D'),
+    ('C','D')
+  ]
+  ```
+* Simple, but not efficient for most algorithms. Mostly used for input/output.
+
+---
+
+#  Summary
+
+| Representation       | Space  | Edge Check | Traverse Neighbors | Best for                     |
+| -------------------- | ------ | ---------- | ------------------ | ---------------------------- |
+| **Adjacency Matrix** | O(N²)  | O(1)       | O(N)               | Dense graphs                 |
+| **Adjacency List**   | O(N+E) | O(degree)  | O(degree)          | Sparse graphs                |
+| **Edge List**        | O(E)   | O(E)       | O(E)               | Input/output, Kruskal’s algo |
+
+---
+ 
+    
