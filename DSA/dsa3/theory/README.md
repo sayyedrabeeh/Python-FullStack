@@ -771,4 +771,58 @@ Adjacency list:
 
 ---
  
+    ```python
+
+    class Graph:
+    def __init__(self):
+        self.nodes = []
+        self.matrix = []
+    def add_node(self,node):
+        if node not in self.nodes:
+            self.nodes.append(node)
+            size = len(self.nodes)
+            for row in self.matrix:
+                row.append(0)
+            self.matrix.append([0] * size )
+    def add_edge(self,u,v,undirected =  True):
+        if u not in self.nodes:
+            self.add_node(u)
+        if v not in self.nodes:
+            self.add_node(v)
+        i,j = self.nodes.index(u),self.nodes.index(v)
+        self.matrix[i][j]=1
+        if undirected:
+            self.matrix[i][j]=1
+            
+    def remove_node(u,v,undirected=True):
+        if u in self.nodes and v in self.nodes: 
+            i,j = self.nodes.index(u),self.nodes.index(v)
+            self.matrix[i][j] = 0
+            if undirected:
+                self.matrix[i][j]=0
+            
+    def remove_node(self,node):
+        if node in self.nodes:
+            id = self.node.index(node)
+            self.nodes.pop(id)
+            self.matrix.pop(id)
+            for row in self.matrix:
+                row.pop(id)
+    def show(self):
+        print('  ', '  '.join(self.nodes))
+        for i,row in enumerate(self.matrix):
+            print(self.nodes[i],row)
+g = Graph()
+g.add_edge('A','B')
+g.add_edge('A','C')
+g.add_edge('B','C')
+g.add_edge('D','A')
+g.show()
+            
+            
+            
+            
+            
+            ```
+
     
