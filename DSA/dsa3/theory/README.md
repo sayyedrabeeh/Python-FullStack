@@ -534,4 +534,72 @@ D -> ['C', 'A', 'B']
 * Second is **Disconnected** (two separate components).
 * Third is **Complete** (every node connected to every other).
 
+# **graph types based on cycle presence**.
+
+---
+
+#  1. **Cyclic Graph**
+
+* A graph that contains **at least one cycle** (a closed loop).
+* You can start at a node, follow edges, and come back to the same node without repeating an edge.
+* Applies to both **directed** and **undirected** graphs.
+
+ Example (Cycle exists A–B–C–A):
+
+```
+A —— B
+ \    |
+   \  |
+     C
+```
+
+ Real-world analogy:
+
+* Road network where you can drive in a loop and return to the start.
+
+---
+
+#  2. **Acyclic Graph**
+
+* A graph with **no cycles**.
+* You cannot start at a node and come back to it by following edges.
+
+ Example:
+
+```
+A —— B —— C —— D
+```
+
+ Real-world analogy:
+
+* Family tree (no way to loop back to ancestors).
+
+---
+
+#  3. **Special Case: DAG (Directed Acyclic Graph)**
+
+* A **Directed Graph** with **no cycles**.
+* Very important in **Computer Science**.
+
+ Examples:
+
+* Task scheduling (you cannot do task B before task A if A → B).
+* Git commit history.
+
+```
+A → B → C → D
+```
+
+---
+
+#  Summary:
+
+Based on cycle presence, we mainly classify graphs into:
+
+1. **Cyclic Graph** → Has at least one cycle.
+2. **Acyclic Graph** → No cycles.
+
+   * If it’s **directed** → called a **DAG (Directed Acyclic Graph)**.
+
+---
  
