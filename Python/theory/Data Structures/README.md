@@ -34,20 +34,20 @@ multi-line"""
 
 ##  Strings Are **Immutable**
 
-> ❗ In Python, **you cannot change a string after it’s created**.
+>  In Python, **you cannot change a string after it’s created**.
 
 ###  Example:
 
 ```python
 s = "hello"
-s[0] = "H"  # ❌ Error! Strings are immutable
+s[0] = "H"  #  Error! Strings are immutable
 ```
 
  Instead, you create a new string:
 
 ```python
 s = "hello"
-s = "H" + s[1:]  # ➡️ 'Hello'
+s = "H" + s[1:]  #  'Hello'
 ```
 
 ###  Why immutability matters:
@@ -100,16 +100,16 @@ name = "Sayyed"
 msg = "Hello, " + name
 
 # Repetition
-echo = "Hi! " * 3  # ➡️ "Hi! Hi! Hi! "
+echo = "Hi! " * 3  #  "Hi! Hi! Hi! "
 
 # f-strings (Python 3.6+)
 age = 25
-print(f"I am {age} years old")  # ➡️ "I am 25 years old"
+print(f"I am {age} years old")  #  "I am 25 years old"
 ```
 
 ---
 
-## 📌 Real Use Cases
+##  Real Use Cases
 
 | Use Case               | Example                                 |
 | ---------------------- | --------------------------------------- |
@@ -120,7 +120,7 @@ print(f"I am {age} years old")  # ➡️ "I am 25 years old"
 
 ---
 
-## ❗ Common Mistakes
+##  Common Mistakes
 
 | Mistake                              | Fix                                 |
 | ------------------------------------ | ----------------------------------- |
@@ -130,7 +130,7 @@ print(f"I am {age} years old")  # ➡️ "I am 25 years old"
 
 ---
 
-## ✅ Summary
+##  Summary
 
 | Feature          | Notes                                  |
 | ---------------- | -------------------------------------- |
@@ -165,7 +165,7 @@ my_list = [1, 2, 3, "hello", True]
 ```python
 my_list = [1, 2, 3]
 my_list[0] = 100
-print(my_list)  # ➡️ [100, 2, 3]
+print(my_list)  #  [100, 2, 3]
 ```
 
 Unlike **strings or tuples**, lists are **mutable**.
@@ -188,7 +188,7 @@ print(nums[::2])   # [10, 30, 50] (step = 2)
 
 ---
 
-## 🛠 Common List Methods
+##  Common List Methods
 
 Here's a list of **most commonly used list methods** with examples:
 
@@ -209,7 +209,7 @@ Here's a list of **most commonly used list methods** with examples:
 
 ---
 
-## ✅ Example
+##  Example
 
 ```python
 fruits = ["apple", "banana", "cherry"]
@@ -232,7 +232,7 @@ print(fruits[1:3])            # ['grape', 'cherry']
 
 ---
 
-## ❗ Common Mistakes
+##  Common Mistakes
 
 | Mistake                                | Fix                                 |
 | -------------------------------------- | ----------------------------------- |
@@ -242,7 +242,7 @@ print(fruits[1:3])            # ['grape', 'cherry']
 
 ---
 
-## ✅ Summary Table
+##  Summary Table
 
 | Feature    | Description                             |
 | ---------- | --------------------------------------- |
@@ -296,32 +296,32 @@ for x in range(5):
 
 ---
 
-### ✅ With `if` condition
+###  With `if` condition
 
 ```python
 even = [x for x in range(10) if x % 2 == 0]
-print(even)  # ➡️ [0, 2, 4, 6, 8]
+print(even)  #  [0, 2, 4, 6, 8]
 ```
 
 ---
 
-### ✅ With `if...else` (inline condition)
+###  With `if...else` (inline condition)
 
 ```python
 labels = ["even" if x % 2 == 0 else "odd" for x in range(5)]
-print(labels)  # ➡️ ['even', 'odd', 'even', 'odd', 'even']
+print(labels)  #  ['even', 'odd', 'even', 'odd', 'even']
 ```
 
 ---
 
 ##   Real-World Examples
 
-### 🔹 Remove vowels from a string:
+###  Remove vowels from a string:
 
 ```python
 text = "hello world"
 no_vowels = [char for char in text if char not in "aeiou"]
-print("".join(no_vowels))  # ➡️ hll wrld
+print("".join(no_vowels))  #  hll wrld
 ```
 
 ---
@@ -331,19 +331,19 @@ print("".join(no_vowels))  # ➡️ hll wrld
 ```python
 matrix = [[1, 2], [3, 4], [5, 6]]
 flat = [num for row in matrix for num in row]
-print(flat)  # ➡️ [1, 2, 3, 4, 5, 6]
+print(flat)  #  [1, 2, 3, 4, 5, 6]
 ```
 
 ---
 
-## ⚠️ When **not** to use it
+##  When **not** to use it
 
 Avoid when:
 
 * The logic is too complex (deep nesting, too many conditions)
 * Readability becomes worse
 
-> ✅ Rule: Use list comprehension when you can read it **out loud in one line**.
+>  Rule: Use list comprehension when you can read it **out loud in one line**.
 
 ---
 
@@ -387,16 +387,16 @@ t1 = (1, 2, 3)
 t2 = ("a", True, 5.6)
 ```
 
-### ⚠️ Single-element tuple:
+###  Single-element tuple:
 
 ```python
-t = (5)       # ❌ Not a tuple (just an int)
-t = (5,)      # ✅ This is a tuple
+t = (5)       #  Not a tuple (just an int)
+t = (5,)      #  This is a tuple
 ```
 
 ---
 
-## ✅ Why Use Tuples?
+##  Why Use Tuples?
 
 * Faster than lists
 * Use less memory
@@ -425,17 +425,17 @@ You **can't** change or delete elements.
 
 ```python
 t = (1, 2, 3)
-t[0] = 100    # ❌ Error
-del t[1]      # ❌ Error
+t[0] = 100    #  Error
+del t[1]      #  Error
 ```
 
 ---
 
-## 🧩 Nested Tuples
+##  Nested Tuples
 
 > A **nested tuple** is a tuple that contains **another tuple (or more)**.
 
-### 🧪 Example:
+###  Example:
 
 ```python
 nested = (1, 2, (3, 4, (5, 6)))
@@ -451,7 +451,7 @@ print(nested[2][2][1])  # 6
 
 ---
 
-## 🔁 Tuple Unpacking
+##  Tuple Unpacking
 
 You can extract values directly:
 
@@ -464,7 +464,7 @@ print(age)   # 22
 
 ---
 
-## ✅ Summary Table
+##  Summary Table
 
 | Feature          | Description          |
 | ---------------- | -------------------- |

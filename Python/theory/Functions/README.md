@@ -127,7 +127,7 @@ q, r = divide(10, 3)
 print(q, r)  # ➡️ 3 1
 ```
 
-✔️ Python returns multiple values as a **tuple**, and you can **unpack** them.
+
 
 ---
 
