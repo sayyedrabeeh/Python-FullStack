@@ -602,4 +602,37 @@ Based on cycle presence, we mainly classify graphs into:
    * If it’s **directed** → called a **DAG (Directed Acyclic Graph)**.
 
 ---
- 
+
+### cycle dectetion in undericted Graph
+
+```python
+
+gr = {
+    'A':['B'],
+    'B':['A','C'],
+    'C':['B'],
+}
+
+def  is_cyclic_until(node,visited,parent,gr):
+    visited[node] = True
+    for neghbour in gr[node]:
+        if not visited.get(neghbour,False):
+            if is_cyclic_until(neghbour,visited,node,gr):
+                return True
+        elif parent != neghbour:
+            return True
+    return False
+    
+    
+    
+def is_cyclic(gr):
+    visited = {}
+    for node in gr:
+        if not visited.get(node,False):
+            if is_cyclic_until(node,visited,-1,gr):
+                return True
+    return False
+    
+print('Cycle Exists? -> ',is_cyclic(gr))
+
+```
