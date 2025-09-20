@@ -375,3 +375,163 @@ C -> [B]
 
 ---
  
+ # **types of graphs based on connectivity**  
+
+---
+
+#  1. **Connected Graph**
+
+ A graph is **connected** if there is a path between **any two nodes**.
+
+* You can travel from one node to any other node.
+* Applies to **undirected graphs**.
+
+ Example:
+
+```
+A — B — C
+|       |
+D — — — E
+```
+
+* From `A`, you can reach `E` (through B → C → E or A → D → E).
+* No isolated parts → so it’s **connected**.
+
+---
+
+#  2. **Disconnected Graph**
+
+ A graph is **disconnected** if it has **two or more components** (separate parts).
+
+* Some nodes cannot be reached from others.
+
+ Example:
+
+```
+A — B     C — D
+```
+
+* Here `(A, B)` is one component, `(C, D)` is another.
+* There is no edge connecting the two groups → **disconnected graph**.
+
+---
+
+#  3. **Complete Graph (Kₙ)**
+
+ A graph is **complete** if **every node is connected to every other node**.
+
+* Denoted as `Kₙ` where `n = number of vertices`.
+* Maximum number of edges.
+* Always **connected**.
+
+ Example: Complete graph with 4 nodes (K₄):
+
+```
+   A —— B
+   |\  /|
+   | \/ |
+   | /\ |
+   |/  \|
+   C —— D
+```
+
+* Each node (`A, B, C, D`) is directly connected to all others.
+
+---
+
+ **Quick Difference Recap**:
+
+* **Connected Graph** → All nodes reachable, but not necessarily directly.
+* **Disconnected Graph** → At least one pair of nodes cannot reach each other.
+* **Complete Graph** → Strongest form of connected → every node directly linked to every other node.
+
+---
+**practical Python implementation** for the 3 connectivity-based graph types:
+
+We’ll make a simple `Graph` class and then create **Connected, Disconnected, and Complete graphs**.
+
+```python
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v, undirected=True):
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        if undirected:
+            self.graph[v].append(u)
+
+    def show_graph(self):
+        for node in self.graph:
+            print(node, "->", self.graph[node])
+
+
+# -------- Connected Graph --------
+print("✅ Connected Graph")
+connected = Graph()
+connected.add_edge("A", "B")
+connected.add_edge("B", "C")
+connected.add_edge("C", "D")
+connected.add_edge("A", "D")
+connected.show_graph()
+
+print("\n")
+
+# -------- Disconnected Graph --------
+print("❌ Disconnected Graph")
+disconnected = Graph()
+# First component
+disconnected.add_edge("A", "B")
+# Second component
+disconnected.add_edge("C", "D")
+disconnected.show_graph()
+
+print("\n")
+
+# -------- Complete Graph (K4) --------
+print("🌐 Complete Graph (K4)")
+n = 4
+nodes = ["A", "B", "C", "D"]
+complete = Graph()
+for i in range(n):
+    for j in range(i + 1, n):
+        complete.add_edge(nodes[i], nodes[j])
+complete.show_graph()
+```
+
+---
+
+### 🖥 Output:
+
+```
+ Connected Graph
+A -> ['B', 'D']
+B -> ['A', 'C']
+C -> ['B', 'D']
+D -> ['C', 'A']
+
+ Disconnected Graph
+A -> ['B']
+B -> ['A']
+C -> ['D']
+D -> ['C']
+
+ Complete Graph (K4)
+A -> ['B', 'C', 'D']
+B -> ['A', 'C', 'D']
+C -> ['B', 'A', 'D']
+D -> ['C', 'A', 'B']
+```
+
+---
+
+ This way:
+
+* First one is **Connected** (all nodes reachable).
+* Second is **Disconnected** (two separate components).
+* Third is **Complete** (every node connected to every other).
+
+ 
