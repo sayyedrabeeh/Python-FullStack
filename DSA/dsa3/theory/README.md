@@ -823,6 +823,17 @@ g.show()
             
             
             
-            ```
+ ```
+ 
 
+* When checking for cycles, you still need to **traverse neighbors**.
+
+  * For node `i`, you scan row `i` in the matrix to find all `j` where `matrix[i][j] == 1`.
+  * Then DFS/BFS works the same way as with adjacency list.
+
+Cycle detection is possible, but scanning neighbors is **O(V)** (you must look at the whole row), even if the node has only a few edges.
+
+---
+
+ 
     
