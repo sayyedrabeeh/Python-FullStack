@@ -1786,4 +1786,123 @@ MST:
 
 ---
 
+# **What is Graph Indexing?**
+
+**Graph indexing** is the way we **assign identifiers to nodes** so that we can **efficiently access them in memory or in algorithms**.
+
+Think of it like **numbering or labeling nodes** in a graph.
+
+* Each node gets an **index (integer or ID)**.
+* This index is used to **access adjacency lists or adjacency matrices** efficiently.
+
+---
+
+# **Why is Graph Indexing Needed?**
+
+1. **Fast Access:**
+
+   * Instead of searching for a node by name every time, use its index.
+   * For example, in adjacency matrices, the row/column number = node index.
+
+2. **Memory Efficient:**
+
+   * Arrays/lists are **indexed by integers**, not strings.
+
+3. **Algorithm Friendly:**
+
+   * Most graph algorithms like **DFS, BFS, Dijkstra, Floyd-Warshall** use **integer indices** to track visited nodes or distances.
+
+---
+
+# **How Indexing Works**
+
+Suppose we have nodes:
+
+```
+Nodes: A, B, C, D
+```
+
+We can assign indices:
+
+```
+A → 0
+B → 1
+C → 2
+D → 3
+```
+
+Now adjacency list can be stored as:
+
+```python
+adj = [
+    [1, 2],  # A -> B, C
+    [0, 3],  # B -> A, D
+    [0, 3],  # C -> A, D
+    [1, 2]   # D -> B, C
+]
+```
+
+* `adj[0]` → neighbors of node 0 (A) → \[1,2] → B and C
+* `adj[1]` → neighbors of node 1 (B) → \[0,3] → A and D
+
+**Adjacency matrix:**
+
+```
+   0 1 2 3
+0 [0 1 1 0]  # A
+1 [1 0 0 1]  # B
+2 [1 0 0 1]  # C
+3 [0 1 1 0]  # D
+```
+
+---
+
+# **Using Indexing in Algorithms**
+
+* **DFS/BFS:** use `visited = [False]*n`
+* **Dijkstra/Bellman-Ford:** use `dist = [∞]*n`
+* Index `0` → node A, index `1` → node B, etc.
+
+**Example BFS with indexing:**
+
+```python
+adj = [[1,2],[0,3],[0,3],[1,2]]  # adjacency list
+visited = [False]*4
+
+def bfs(start):
+    queue = [start]
+    visited[start] = True
+    while queue:
+        node = queue.pop(0)
+        print(node, end=' ')
+        for neighbor in adj[node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+
+bfs(0)  # start from A
+```
+
+Output:
+
+```
+0 1 2 3
+```
+
+---
+
+# **Key Takeaways**
+
+* **Graph indexing** = assigning numbers (indices) to nodes.
+* Makes algorithms **faster and simpler**.
+* Needed for **adjacency matrices, adjacency lists, visited arrays, distance arrays**.
+* Usually, you can map **string labels to indices** using a dictionary:
+
+```python
+node_to_index = {'A':0,'B':1,'C':2,'D':3}
+index_to_node = {0:'A',1:'B',2:'C',3:'D'}
+```
+
+---
+
  
