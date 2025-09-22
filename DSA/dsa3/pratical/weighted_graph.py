@@ -37,10 +37,3 @@ g.add_edge('c','B',4)
 g.remove_node('D')
 g.remove_edge('B',"c")
 g.show_graph()
-
-
-            
-            
-            
-            
-        
