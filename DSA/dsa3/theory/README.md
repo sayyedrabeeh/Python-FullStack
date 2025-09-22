@@ -2401,5 +2401,125 @@ Is this a perfect binary tree? True
 * **Perfect Binary Tree** → Full + all leaves at the same depth.
 
 ---
+---
+
+##  What is a **Complete Binary Tree**?
+
+A **Complete Binary Tree** is a binary tree where:
+
+1. **All levels are completely filled**, **except possibly the last**.
+2. The **last level** must be **filled from left to right** (no gaps).
+
+ Think of it like a *binary heap* structure.
+
+---
+
+###  Example of Complete Binary Tree
+
+```
+        A
+       / \
+      B   C
+     / \  /
+    D  E F
+```
+
+* Levels 0 and 1 are fully filled.
+* Last level has nodes (D, E, F) filled **left to right**.
+  ✔ This is a complete binary tree.
+
+---
+
+###  Example of NOT Complete
+
+```
+        A
+       / \
+      B   C
+     /     \
+    D       E
+```
+
+* At the last level, **gap on left side** (D exists but no E before placing right child).
+   Not a complete tree.
+
+---
+
+##  Python Implementation of Complete Binary Tree Check
+
+We’ll use **level-order traversal (BFS)** to check if a gap exists.
+
+```python
+from collections import deque
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self, rootdata):
+        self.root = Node(rootdata)
+
+    def preorder(self, node):
+        if node:
+            print(node.data, end=" ")
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+    # --- Check Complete Binary Tree ---
+    def is_complete(self):
+        if not self.root:
+            return True
+
+        queue = deque([self.root])
+        end = False  # Flag: once we see a None, all next must be None
+
+        while queue:
+            current = queue.popleft()
+
+            if current:
+                if end:  # If we already saw a None before → not complete
+                    return False
+                queue.append(current.left)
+                queue.append(current.right)
+            else:
+                end = True  # First None found
+
+        return True
+```
+
+---
+
+##  Example Usage
+
+```python
+tree = BinaryTree("A")
+tree.root.left = Node("B")
+tree.root.right = Node("C")
+tree.root.left.left = Node("D")
+tree.root.left.right = Node("E")
+tree.root.right.left = Node("F")
+# tree.root.right.right = Node("G")  # Uncommenting makes it still complete
+
+print("Preorder Traversal: ")
+tree.preorder(tree.root)
+
+print("\nIs this a complete binary tree?", tree.is_complete())
+```
+
+---
+
+##  Output
+
+```
+Preorder Traversal:
+A B D E C F
+Is this a complete binary tree? True
+```
+
+---
 
  
