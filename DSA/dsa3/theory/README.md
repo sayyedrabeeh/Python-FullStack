@@ -1474,11 +1474,206 @@ Shortest distances from A: {'A': 0, 'B': 2, 'C': 5, 'D': 6, 'E': 5, 'F': 6}
 | Weighted graph, negative weights allowed     | Bellman-Ford   |
 | Find shortest paths for **all pairs**        | Floyd-Warshall |
 
+
+
 ---
- 
-     
-            
-            
+
+# ** Dijkstra’s Algorithm**
+
+**Purpose:**
+
+* Finds the **shortest path from a single source** to all other nodes in a graph.
+* Works **only if all edge weights are non-negative**.
+
+**Idea:**
+
+1. Keep track of the **minimum distance** from the source to each node.
+2. Always select the node with the **current smallest distance** (priority queue / min-heap).
+3. Update distances of neighbors if a shorter path is found.
+4. Repeat until all nodes are processed.
+
+**Python Example:**
+
+```python
+import heapq
+
+graph = {
+    'A': [('B', 2), ('C', 5)],
+    'B': [('A', 2), ('D', 4), ('E', 3)],
+    'C': [('A', 5), ('F', 2)],
+    'D': [('B', 4)],
+    'E': [('B', 3), ('F', 1)],
+    'F': [('C', 2), ('E', 1)]
+}
+
+def dijkstra(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    pq = [(0, start)]  # (distance, node)
+
+    while pq:
+        dist, node = heapq.heappop(pq)
+        if dist > distances[node]:
+            continue
+        for neighbor, weight in graph[node]:
+            if distances[node] + weight < distances[neighbor]:
+                distances[neighbor] = distances[node] + weight
+                heapq.heappush(pq, (distances[neighbor], neighbor))
+    
+    return distances
+
+print(dijkstra(graph, 'A'))
+```
+
+**Output:**
+
+```
+{'A': 0, 'B': 2, 'C': 5, 'D': 6, 'E': 5, 'F': 6}
+```
+
+**When to use:**
+
+* Positive-weighted graphs.
+* Single-source shortest path.
+
+---
+
+# **Bellman-Ford Algorithm**
+
+**Purpose:**
+
+* Finds the **shortest path from a single source**.
+* Can handle **negative weights**.
+* Can **detect negative cycles** (where total weight becomes negative in a loop).
+
+**Idea:**
+
+1. Initialize distances from the source to all nodes as `∞`, distance to source = 0.
+2. Relax all edges **V-1 times** (V = number of vertices).
+3. Check for **negative cycles** by trying to relax edges again.
+
+**Python Example:**
+
+```python
+def bellman_ford(graph, start):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+
+    for _ in range(len(graph) - 1):
+        for node in graph:
+            for neighbor, weight in graph[node]:
+                if distances[node] + weight < distances[neighbor]:
+                    distances[neighbor] = distances[node] + weight
+
+    # Check for negative cycles
+    for node in graph:
+        for neighbor, weight in graph[node]:
+            if distances[node] + weight < distances[neighbor]:
+                print("Graph contains negative weight cycle")
+                return None
+
+    return distances
+
+graph_neg = {
+    'A': [('B', 4), ('C', 2)],
+    'B': [('C', -3), ('D', 2)],
+    'C': [('D', 3)],
+    'D': []
+}
+
+print(bellman_ford(graph_neg, 'A'))
+```
+
+**Output:**
+
+```
+{'A': 0, 'B': 4, 'C': 1, 'D': 4}
+```
+
+**When to use:**
+
+* Graph has **negative edge weights**.
+* Need **single-source shortest path**.
+* Detect negative cycles.
+
+---
+
+# **Floyd-Warshall Algorithm**
+
+**Purpose:**
+
+* Computes **shortest paths between all pairs of nodes**.
+* Works for **positive and negative weights** (but no negative cycles).
+
+**Idea:**
+
+* Use **dynamic programming**.
+* Consider each node as an **intermediate point** in the path.
+* Update distances using the formula:
+
+```
+dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+```
+
+**Python Example:**
+
+```python
+def floyd_warshall(nodes, edges):
+    dist = {u: {v: float('inf') for v in nodes} for u in nodes}
+    
+    for u in nodes:
+        dist[u][u] = 0
+
+    for u in edges:
+        for v, w in edges[u]:
+            dist[u][v] = w
+
+    for k in nodes:
+        for i in nodes:
+            for j in nodes:
+                if dist[i][k] + dist[k][j] < dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+
+    return dist
+
+nodes = ['A', 'B', 'C', 'D']
+edges = {
+    'A': [('B', 4), ('C', 2)],
+    'B': [('C', -3), ('D', 2)],
+    'C': [('D', 3)],
+    'D': []
+}
+
+distances = floyd_warshall(nodes, edges)
+for u in distances:
+    print(u, distances[u])
+```
+
+**Output:**
+
+```
+A {'A': 0, 'B': 4, 'C': 1, 'D': 4}
+B {'A': inf, 'B': 0, 'C': -3, 'D': -1}
+C {'A': inf, 'B': inf, 'C': 0, 'D': 3}
+D {'A': inf, 'B': inf, 'C': inf, 'D': 0}
+```
+
+**When to use:**
+
+* Want **all-pairs shortest paths**.
+* Graph is **small or moderate in size** (O(V³) time).
+* Can handle **negative weights** (but not negative cycles).
+
+---
+
+# **Quick Comparison**
+
+| Algorithm      | Graph Type          | Weights         | Complexity     | Purpose                                                |
+| -------------- | ------------------- | --------------- | -------------- | ------------------------------------------------------ |
+| Dijkstra       | Directed/Undirected | Positive only   | O((V+E) log V) | Single-source shortest path                            |
+| Bellman-Ford   | Directed/Undirected | Can be negative | O(V \* E)      | Single-source shortest path + negative cycle detection |
+| Floyd-Warshall | Directed/Undirected | Can be negative | O(V³)          | All-pairs shortest path                                |
+
+---
 
  
-    
