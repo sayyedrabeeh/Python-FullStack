@@ -2751,4 +2751,41 @@ A B C D E
 * Balanced trees (like **AVL** or **Red-Black Trees**) are designed to **avoid degeneration**.
 
 ---
- 
+---
+
+##  **Types of Trees (General Classification)**
+
+```
+Tree
+│
+├── General Tree
+│   └── N-ary Tree (each node can have up to N children)
+│
+└── Binary Tree (each node has at most 2 children)
+    │
+    ├── Types by Structure
+    │   ├── Full Binary Tree (0 or 2 children for every node)
+    │   ├── Perfect Binary Tree (all levels completely filled)
+    │   ├── Complete Binary Tree (all levels filled, except last level filled left to right)
+    │   ├── Degenerate Binary Tree (every node has only one child → like linked list)
+    │   └── Skewed Binary Tree (special case of degenerate: all left OR all right children)
+    │
+    ├── Types by Balance
+    │   ├── Balanced Binary Tree (height difference ≤ 1 for all nodes)
+    │   │   ├── AVL Tree (self-balancing using rotations)
+    │   │   ├── Red-Black Tree (loosely balanced, ensures O(log n) height)
+    │   │   ├── Splay Tree (recently used nodes moved closer to root)
+    │   │   └── Treap (tree + heap randomized balancing)
+    │
+    ├── Types by Use
+    │   ├── Binary Search Tree (BST) (left < root < right)
+    │   ├── Heap (Min-Heap, Max-Heap)
+    │   ├── Segment Tree (range queries)
+    │   ├── Fenwick Tree / Binary Indexed Tree (prefix sums)
+    │   └── Expression Tree (used in compilers)
+    │
+    └── Special Variants
+        ├── Threaded Binary Tree (to make traversal faster)
+        └── Huffman Tree (for compression)
+```
+
