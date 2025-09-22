@@ -886,7 +886,157 @@ g.add_edge('B','C',34)
 g.add_edge('D','A',22)
 g.show_graph()
         
-```        
+```
+
+### cycle in adjecency matrix undirected
+
+```python
+
+class Graph:
+    def __init__(self):
+        self.nodes = []
+        self.matrix = []
+    def add_node(self,node):
+        self.nodes.append(node)
+        size = len(self.nodes)
+        for row in self.matrix:
+            row.append(0)
+        self.matrix.append([0] * size)
+    def add_edge(self,u,v,weight = 1,undirected = True):
+        if u not in self.nodes:
+            self.add_node(u)
+        if v not in self.nodes:
+            self.add_node(v)
+        i,j = self.nodes.index(u),self.nodes.index(v)
+        self.matrix[i][j] = weight
+        if undirected:
+            self.matrix[j][i] = weight
+            
+    def remove_edge(self,u,v,undirected = True):
+        if u in self.nodes and v in self.nodes:
+            i,j = self.nodes.index(u),self.nodes.index(v)
+            self.matrix[i][j] = 0
+            if undirected:
+                self.matrix[j][i] = 0
+    def remove_node(self,node):
+        if node in self.nodes:
+            id = self.nodes.index(node)
+            self.nodes.pop(id)
+            self.matrix.pop(id)
+            for row in self.matrix:
+                row.pop(id)
+    def is_cyclic_until(self,node,visited,parent):
+        visited[node] = True
+        for i,w in enumerate(self.matrix[node]):
+            if w != 0:
+                if not visited[i]:
+                    if self.is_cyclic_until(i,visited,node):
+                        return True
+                elif i != parent:
+                        return True
+    
+    def is_cyclic(self):
+        n = len(self.nodes)
+        visited = [False] * n
+        for i in range(n):
+            if not visited[i]:
+                if self.is_cyclic_until(i,visited,-1):
+                    return True
+        return False
+        
+        
+        
+        
+        
+    def show_graph(self):
+        print('  ','  '.join(self.nodes))
+        for i,row in enumerate(self.matrix):
+            print(self.nodes[i],row)
+g = Graph()
+g.add_edge('A','B',2)
+g.add_edge('A','C',23)
+g.add_edge('B','D',34)
+g.add_edge('D','B',22)
+g.show_graph()
+        
+print(g.is_cyclic())
+                 
+            
+```
+### cycle in adjecency matrix directed
+
+```python
+class Graph:
+    def __init__(self):
+        self.nodes = []
+        self.matrix = []
+    def add_node(self,node):
+        self.nodes.append(node)
+        size = len(self.nodes)
+        for row in self.matrix:
+            row.append(0)
+        self.matrix.append([0] * size)
+    def add_edge(self,u,v ,undirected = True):
+        if u not in self.nodes:
+            self.add_node(u)
+        if v not in self.nodes:
+            self.add_node(v)
+        i,j = self.nodes.index(u),self.nodes.index(v)
+        self.matrix[i][j] = 1
+        if undirected:
+            self.matrix[j][i] =1
+            
+    def remove_edge(self,u,v,undirected = True):
+        if u in self.nodes and v in self.nodes:
+            i,j = self.nodes.index(u),self.nodes.index(v)
+            self.matrix[i][j] = 0
+            if undirected:
+                self.matrix[j][i] = 0
+    def remove_node(self,node):
+        if node in self.nodes:
+            id = self.nodes.index(node)
+            self.nodes.pop(id)
+            self.matrix.pop(id)
+            for row in self.matrix:
+                row.pop(id)
+    def is_cyclic_until(self,node,visited,recstack,parent):
+        visited[node] = True
+        recstack[node] = True
+        for i,w in enumerate(self.matrix[node]):
+            if w != 0:
+                if not visited[i]:
+                    if self.is_cyclic_until(i,visited,recstack,node):
+                        return True
+                elif recstack[i] :
+                        return True
+        recstack[node] = False
+        return False
+        
+    def is_cyclic(self):
+        n = len(self.nodes)
+        visited = [False] * n
+        recstack = [False] * n
+        for i in range(n):
+            if not visited[i]:
+                if self.is_cyclic_until(i,visited,recstack,-1):
+                    return True
+        return False
+        
+        
+        
+    def show_graph(self):
+        print('  ','  '.join(self.nodes))
+        for i,row in enumerate(self.matrix):
+            print(self.nodes[i],row)
+g = Graph()
+g.add_edge('A','B',2)
+g.add_edge('A','C',23)
+g.add_edge('B','D',34)
+g.add_edge('D','B',22)
+g.show_graph()
+        
+print(g.is_cyclic())
+```
         
             
             
