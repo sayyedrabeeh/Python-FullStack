@@ -1903,6 +1903,144 @@ node_to_index = {'A':0,'B':1,'C':2,'D':3}
 index_to_node = {0:'A',1:'B',2:'C',3:'D'}
 ```
 
+
 ---
 
+# **Basic Rules of a Tree**
+
+A **tree** is a special type of graph with these rules:
+
+1. **Connected Graph**
+
+   * There must be **a path between every pair of nodes**.
+   * No node is isolated.
+
+2. **Acyclic**
+
+   * A tree **cannot have any cycles**.
+   * If a cycle exists, it’s **not a tree**.
+
+3. **Root Node**
+
+   * There is **exactly one root node** (the starting/top node).
+   * All other nodes are **descendants of the root**.
+
+4. **Parent-Child Relationship**
+
+   * Every node (except the root) has **exactly one parent**.
+   * Nodes can have **any number of children** (general tree) or **at most 2 children** (binary tree).
+
+5. **Number of Edges**
+
+   * For `N` nodes, a tree always has **N-1 edges**.
+   * Formula: `Edges = Nodes - 1`
+
+6. **Leaf Nodes**
+
+   * Nodes with **no children** are called **leaf nodes**.
+   * Every tree has at least **one leaf node**.
+
+7. **Height/Depth**
+
+   * **Height** of a tree = length of the **longest path from root to leaf**.
+   * **Depth** of a node = distance from root to that node.
+
+---
+
+# **Additional Rules for Binary Trees**
+
+* Each node has **at most 2 children**: left and right.
+* Binary tree can be:
+
+  1. **Full Binary Tree** – every node has 0 or 2 children.
+  2. **Complete Binary Tree** – all levels filled except possibly last, filled left to right.
+  3. **Perfect Binary Tree** – all levels completely filled.
+
+---
+
+# **Quick Checks to Verify a Tree**
+
+To check if a graph is a tree:
+
+1. **Connected:** All nodes reachable from root.
+2. **Acyclic:** No cycles.
+3. **Edges = Nodes - 1:** Ensures minimal connections.
+
+**Example:**
+
+```
+Graph:
+    A
+   / \
+  B   C
+ / \
+D   E
+
+Nodes = 5
+Edges = 4 → satisfies edges = nodes-1
+Connected? Yes
+Acyclic? Yes
+ This is a tree
+```
+
+---
+
+# **Tree Terminology Summary**
+
+| Term       | Meaning                                |
+| ---------- | -------------------------------------- |
+| Root       | Top-most node                          |
+| Parent     | Node that has children                 |
+| Child      | Node under a parent                    |
+| Leaf       | Node with no children                  |
+| Sibling    | Nodes with same parent                 |
+| Depth      | Distance from root                     |
+| Height     | Max depth of any node                  |
+| Ancestor   | Node on path from root to current node |
+| Descendant | Node reachable from current node       |
+
+---
  
+```python 
+class Node:
+    def __init__(self,data):
+        self.data = data
+        self.children = []
+class GenerralTree:
+    def __init__(self,rootdata):
+        self.root = Node(rootdata)
+    def add_node(self,parent,node):
+        new_child = Node(node)
+        parent.children.append(new_child)
+        return new_child
+    def delete_node(self,parent,value_delete):
+        if not parent :
+            return 
+        for i,child in enumerate(parent.children):
+            if child.data == value_delete:
+                del parent.children[i]
+                
+            for i in parent.children:
+                if self.delete_node(i,value_delete):
+                    return True
+        return False
+    
+    def print_tree(self,node,level = 0):
+        print('    ' * level + str(node.data))
+        for i in node.children:
+            self.print_tree(i,level + 1)
+        
+A = GenerralTree('A')
+B = A.add_node(A.root,"B")
+C = A.add_node(A.root,"C")
+D = A.add_node(A.root,"D")
+        
+E = A.add_node(B,'E')
+F = A.add_node(B,'F')
+        
+G = A.add_node(C,"G")
+ 
+A.print_tree(A.root)
+
+```
+
