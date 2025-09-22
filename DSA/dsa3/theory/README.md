@@ -1198,9 +1198,134 @@ A B C D E F
 
 ---
  
-           
-            
-            
+ 
+
+#  What is DFS?
+
+**DFS (Depth First Search)** is a graph traversal algorithm where you explore as far as possible along one branch before backtracking.
+
+ Think of it like **exploring a maze**:
+
+* You go down one path until you hit a dead end.
+* Then you backtrack to the last decision point and try another path.
+
+---
+
+#  How DFS Works
+
+DFS can be implemented in **two ways**:
+
+1. **Recursion (stack handled automatically by function calls)**
+2. **Explicit stack (manual implementation)**
+
+### Example (recursive DFS):
+
+```python
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    print(start, end=" ")
+
+    for neighbor in graph[start]:
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited)
+```
+
+---
+
+#  Step-by-step traversal idea
+
+
+```python
+graph = {
+    'A': ['B', 'C', 'G'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E'],
+    'G': []
+}
+```
+
+Starting DFS at `"A"` → possible order:
+
+```
+A → B → D → E → F → C → G
+```
+
+⚠ Note: DFS order can vary depending on adjacency list order.
+
+---
+
+#  When to Use DFS
+
+DFS is best for **deep exploration** problems:
+
+ **Pathfinding / Maze Solving**
+
+* DFS explores one path fully before trying another.
+* If you just need *any* path (not shortest), DFS is efficient.
+
+ **Topological Sorting** (ordering tasks with dependencies)
+
+ **Detecting Cycles in Graphs**
+
+* DFS can mark nodes as *visiting* vs *visited* to detect cycles.
+
+ **Connected Components**
+
+* Use DFS to explore all nodes reachable from a starting node.
+
+ **Game Trees / Puzzle Solving**
+
+* DFS explores all possible moves until it finds a solution.
+
+---
+
+#  When NOT to Use DFS
+
+ When you need the **shortest path in an unweighted graph** → Use **BFS**, not DFS.
+
+* DFS may find a path, but not necessarily the shortest.
+
+ If the graph is very deep and recursive DFS is used → **Stack Overflow** (too many recursive calls).
+
+* Iterative DFS with an explicit stack avoids this.
+
+---
+
+#  DFS vs BFS in Simple Terms
+
+| Feature              | DFS                                                           | BFS                                                                                    |
+| -------------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Strategy             | Go deep, then backtrack                                       | Explore level by level                                                                 |
+| Data Structure       | Stack (or recursion)                                          | Queue                                                                                  |
+| Finds shortest path? | ❌ No                                                          | ✅ Yes (in unweighted graphs)                                                           |
+| Memory usage         | Low (good for sparse graphs)                                  | Higher (stores many nodes in queue)                                                    |
+| Best use cases       | Pathfinding (not shortest), cycle detection, topological sort | Shortest path in unweighted graph, spreading processes (like virus, network broadcast) |
+
+---
+
+#  Real-life Examples
+
+* **DFS**:
+
+  * Solving mazes
+  * Detecting cycles in dependency graphs
+  * Analyzing connected social groups
+
+* **BFS**:
+
+  * Finding shortest route on a map
+  * Level order traversal in trees (like showing "friends of friends" on Facebook)
+  * Spreading information/virus simulation
+
+
+---
+
+ 
             
             
             
