@@ -2164,5 +2164,110 @@ If the tree looks like this:
 * **Search 'Z'** → `False`
 
 ---
+---
 
+##  What is a **Full Binary Tree**?
+
+A **Full Binary Tree** is a binary tree in which **every node has either 0 or 2 children**.
+ That means **no node has only one child**.
+
+Example of a **Full Binary Tree**:
+
+```
+        A
+       / \
+      B   C
+     / \ / \
+    D  E F  G
+```
+
+ All internal nodes have **exactly 2 children**
+ Leaf nodes (D, E, F, G) have **0 children**
+
+##  Implementation in Python
+
+We can build a full binary tree using our earlier `BinaryTree` class.
+
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self, rootdata):
+        self.root = Node(rootdata)
+
+    def preorder(self, node):
+        if node:
+            print(node.data, end=" ")
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+    def is_full_binary_tree(self, node):
+        # An empty tree is full
+        if node is None:
+            return True
+
+        # Leaf node → valid
+        if node.left is None and node.right is None:
+            return True
+
+        # Internal node with 2 children → check recursively
+        if node.left and node.right:
+            return (self.is_full_binary_tree(node.left) and
+                    self.is_full_binary_tree(node.right))
+
+        # If a node has only one child → not full
+        return False
+
+
+# ---------------- Example Usage ----------------
+tree = BinaryTree("A")
+tree.root.left = Node("B")
+tree.root.right = Node("C")
+
+tree.root.left.left = Node("D")
+tree.root.left.right = Node("E")
+
+tree.root.right.left = Node("F")
+tree.root.right.right = Node("G")
+
+print("Preorder Traversal: ")
+tree.preorder(tree.root)
+
+print("\nIs this a full binary tree?", tree.is_full_binary_tree(tree.root))
+```
+
+---
+
+##  Output
+
+```
+Preorder Traversal: 
+A B D E C F G
+Is this a full binary tree? True
+```
+
+---
+
+## ❌ Not a Full Binary Tree Example
+
+If we remove just one child:
+
+```
+        A
+       / \
+      B   C
+     /
+    D
+```
+
+Here, `B` has **only one child (D)** → ❌ Not a full binary tree.
+
+---
+
+ 
  
