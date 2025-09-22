@@ -2521,5 +2521,134 @@ Is this a complete binary tree? True
 ```
 
 ---
+---
 
+##  What is a Balanced Binary Tree?
+
+A **Balanced Binary Tree** is a binary tree in which:
+
+* The **height difference (balance factor)** between the left and right subtree of **any node** is at most **1**.
+* That means for every node:
+
+  $$
+  | \text{height(left)} - \text{height(right)} | \leq 1
+  $$
+
+Balanced does **not mean perfect** or **completely filled**, it only means no side is “too heavy”.
+
+---
+
+###  Example of Balanced Tree
+
+```
+        A
+       / \
+      B   C
+     /
+    D
+```
+
+* Height of left subtree of A = 2 (B→D).
+* Height of right subtree of A = 1 (C).
+* Difference = 1 → ✅ Balanced.
+
+---
+
+###  Example of Unbalanced Tree
+
+```
+        A
+       /
+      B
+     /
+    C
+   /
+  D
+```
+
+* Left subtree height = 4, right subtree height = 0.
+* Difference = 4 → ❌ Not balanced.
+
+---
+
+##  Python Implementation to Check Balanced Binary Tree
+
+We can do this efficiently in **O(n)** using recursion:
+
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self, rootdata):
+        self.root = Node(rootdata)
+
+    def preorder(self, node):
+        if node:
+            print(node.data, end=" ")
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+    # --- Check Balanced ---
+    def is_balanced(self, node):
+        def check_height(curr):
+            if not curr:
+                return 0  # height = 0
+
+            left = check_height(curr.left)
+            if left == -1:  # left unbalanced
+                return -1
+
+            right = check_height(curr.right)
+            if right == -1:  # right unbalanced
+                return -1
+
+            if abs(left - right) > 1:
+                return -1  # current node unbalanced
+
+            return 1 + max(left, right)  # return height
+
+        return check_height(node) != -1
+```
+
+---
+
+##  Example Usage
+
+```python
+tree = BinaryTree("A")
+tree.root.left = Node("B")
+tree.root.right = Node("C")
+tree.root.left.left = Node("D")
+tree.root.left.right = Node("E")
+
+print("Preorder Traversal: ")
+tree.preorder(tree.root)
+
+print("\nIs this tree balanced?", tree.is_balanced(tree.root))
+```
+
+---
+
+##  Output
+
+```
+Preorder Traversal:
+A B D E C
+Is this tree balanced? True
+```
+
+---
+
+##  Types of Balanced Trees in practice
+
+1. **AVL Tree** → Strictly balanced (difference ≤ 1 always).
+2. **Red-Black Tree** → Loosely balanced (ensures O(log n) height).
+3. **B-Trees / B+ Trees** → Used in databases & file systems.
+
+---
  
