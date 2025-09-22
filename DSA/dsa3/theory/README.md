@@ -2789,3 +2789,143 @@ Tree
         └── Huffman Tree (for compression)
 ```
 
+ 
+
+---
+
+##  What is a Binary Search Tree (BST)?
+
+A **Binary Search Tree (BST)** is a type of **binary tree** with an extra rule:
+
+* For every node:
+
+  * All values in the **left subtree** are **smaller** than the node’s value.
+  * All values in the **right subtree** are **greater** than the node’s value.
+
+ This property makes **searching, insertion, and deletion efficient** (on average **O(log n)** time).
+
+---
+
+##  Rules of BST
+
+1. Each node has at most 2 children (like any binary tree).
+2. Left child < Parent < Right child.
+3. No duplicates (in most implementations).
+
+---
+
+##  Example BST
+
+```
+        50
+       /  \
+     30    70
+    / \   / \
+  20  40 60  80
+```
+
+* Left of 50 → smaller values (30, 20, 40)
+* Right of 50 → greater values (70, 60, 80)
+
+---
+
+## Operations in BST
+
+### 1. **Search** 
+
+* Start at the root.
+* If the key < root → search left.
+* If the key > root → search right.
+* If equal → found.
+
+**Example:** Search 60
+
+* 60 > 50 → go right
+* 60 < 70 → go left → found 
+
+---
+
+### 2. **Insert** 
+
+* Always insert as a **leaf node**.
+* Use BST property to find the correct position.
+
+**Example:** Insert 65
+
+* 65 > 50 → go right
+* 65 < 70 → go left
+* 65 > 60 → insert as right child of 60.
+
+---
+
+### 3. **Delete** 
+
+Deletion has 3 cases:
+
+1. **Leaf node** → just remove.
+2. **One child** → replace with child.
+3. **Two children** → replace with **inorder successor** (smallest in right subtree) or **inorder predecessor** (largest in left subtree).
+
+---
+
+## 🖥️ Python Implementation of BST
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BST:
+    def __init__(self):
+        self.root = None
+
+    # Insert
+    def insert(self, root, key):
+        if root is None:
+            return Node(key)
+        if key < root.key:
+            root.left = self.insert(root.left, key)
+        elif key > root.key:
+            root.right = self.insert(root.right, key)
+        return root
+
+    # Search
+    def search(self, root, key):
+        if root is None or root.key == key:
+            return root
+        if key < root.key:
+            return self.search(root.left, key)
+        return self.search(root.right, key)
+
+    # Inorder Traversal (Sorted Order)
+    def inorder(self, root):
+        if root:
+            self.inorder(root.left)
+            print(root.key, end=" ")
+            self.inorder(root.right)
+
+# Example Usage
+tree = BST()
+root = None
+for val in [50, 30, 20, 40, 70, 60, 80]:
+    root = tree.insert(root, val)
+
+print("Inorder traversal (sorted):")
+tree.inorder(root)
+```
+
+---
+ 
+---
+
+**Why use BST?**
+
+* Efficient search, insert, delete → **O(log n)** (if balanced).
+* Maintains sorted order.
+* Used in databases, compilers, and many algorithms.
+
+---
+
+ 
