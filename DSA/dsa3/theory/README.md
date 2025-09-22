@@ -1320,14 +1320,163 @@ DFS is best for **deep exploration** problems:
 
   * Finding shortest route on a map
   * Level order traversal in trees (like showing "friends of friends" on Facebook)
-  * Spreading information/virus simulation
+  * Spreading information/virus simulation.
+---
 
+# ** What is a Shortest Path?**
+
+In a graph, the **shortest path** between two nodes is the path with the **minimum cost/distance/weight**.
+
+* In **unweighted graphs**, shortest path = **minimum number of edges**.
+* In **weighted graphs**, shortest path = **minimum sum of weights along edges**.
 
 ---
 
+# ** Types of Shortest Path Problems**
+
+| Problem Type                                  | Description                      | Algorithm Commonly Used |
+| --------------------------------------------- | -------------------------------- | ----------------------- |
+| **Unweighted graph**                          | All edges are equal              | BFS                     |
+| **Weighted graph (positive weights)**         | Edge weights > 0                 | Dijkstra                |
+| **Weighted graph (negative weights allowed)** | Edge weights can be negative     | Bellman-Ford            |
+| **All-pairs shortest path**                   | Shortest paths between all nodes | Floyd-Warshall          |
+
+---
+
+# ** BFS for Shortest Path (Unweighted Graph)**
+
+**Idea:**
+
+* BFS visits nodes **level by level**, so the first time you reach a node, it’s via the **shortest path** in terms of edges.
+
+**Example:**
+
+```python
+from collections import deque
+
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+def bfs_shortest_path(graph, start, goal):
+    visited = set([start])
+    queue = deque([[start]])  # store paths
+    
+    while queue:
+        path = queue.popleft()
+        node = path[-1]
+        
+        if node == goal:
+            return path  # shortest path
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                new_path = list(path)
+                new_path.append(neighbor)
+                queue.append(new_path)
+
+print("Shortest path from A to F:", bfs_shortest_path(graph, 'A', 'F'))
+```
+
+**Output:**
+
+```
+Shortest path from A to F: ['A', 'C', 'F']
+```
+
+ Works only for **unweighted graphs**.
+
+---
+
+# ** Dijkstra’s Algorithm (Weighted Graph, Positive Weights)**
+
+**Idea:**
+
+* Keeps track of the **minimum distance from start** to every node.
+* Always picks the node with the **current smallest distance** to explore next.
+
+**Steps:**
+
+1. Initialize distances → `start = 0`, others = `∞`.
+2. Pick the node with **minimum distance** that’s not visited.
+3. Update distances of neighbors.
+4. Repeat until all nodes visited.
+
+**Python Example:**
+
+```python
+import heapq
+
+graph = {
+    'A': [('B', 2), ('C', 5)],
+    'B': [('A', 2), ('D', 4), ('E', 3)],
+    'C': [('A', 5), ('F', 2)],
+    'D': [('B', 4)],
+    'E': [('B', 3), ('F', 1)],
+    'F': [('C', 2), ('E', 1)]
+}
+
+def dijkstra(graph, start):
+    pq = [(0, start)]  # (distance, node)
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    while pq:
+        dist, node = heapq.heappop(pq)
+        if dist > distances[node]:
+            continue
+        for neighbor, weight in graph[node]:
+            if distances[node] + weight < distances[neighbor]:
+                distances[neighbor] = distances[node] + weight
+                heapq.heappush(pq, (distances[neighbor], neighbor))
+    
+    return distances
+
+print("Shortest distances from A:", dijkstra(graph, 'A'))
+```
+
+**Output:**
+
+```
+Shortest distances from A: {'A': 0, 'B': 2, 'C': 5, 'D': 6, 'E': 5, 'F': 6}
+```
+
+---
+
+# ** Bellman-Ford Algorithm (Handles Negative Weights)**
+
+* Works even if **edge weights are negative**.
+* Detects **negative cycles**.
+* Slower than Dijkstra: **O(V \* E)**
+
+---
+
+# ** Floyd-Warshall Algorithm (All-Pairs Shortest Path)**
+
+* Computes shortest paths **between all pairs of nodes**.
+* Uses dynamic programming → updates distances using intermediate nodes.
+* Complexity: **O(V³)**
+
+---
+
+# ** When to Use Each**
+
+| Scenario                                     | Algorithm      |
+| -------------------------------------------- | -------------- |
+| Unweighted graph, shortest in terms of edges | BFS            |
+| Weighted graph, positive weights             | Dijkstra       |
+| Weighted graph, negative weights allowed     | Bellman-Ford   |
+| Find shortest paths for **all pairs**        | Floyd-Warshall |
+
+---
  
-            
-            
+     
             
             
 
