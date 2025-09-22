@@ -2043,4 +2043,126 @@ G = A.add_node(C,"G")
 A.print_tree(A.root)
 
 ```
+---
 
+##  What is a Binary Tree?
+
+* A **Binary Tree** is a special kind of tree where **each node can have at most 2 children**:
+
+  * **Left child**
+  * **Right child**
+
+ Compared to a general tree (where a node can have unlimited children), binary trees are more structured and widely used in algorithms like **binary search trees, heaps, expression trees, etc.**
+
+---
+
+##  Binary Tree Implementation in Python
+
+Here’s a **full implementation with key operations**:
+
+```python
+# ---------------- Binary Tree Node ----------------
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+# ---------------- Binary Tree Class ----------------
+class BinaryTree:
+    def __init__(self, rootdata):
+        self.root = Node(rootdata)
+
+    # Pre-order Traversal (Root -> Left -> Right)
+    def preorder(self, node):
+        if node:
+            print(node.data, end=" ")
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+    # In-order Traversal (Left -> Root -> Right)
+    def inorder(self, node):
+        if node:
+            self.inorder(node.left)
+            print(node.data, end=" ")
+            self.inorder(node.right)
+
+    # Post-order Traversal (Left -> Right -> Root)
+    def postorder(self, node):
+        if node:
+            self.postorder(node.left)
+            self.postorder(node.right)
+            print(node.data, end=" ")
+
+    # Count total nodes
+    def count_nodes(self, node):
+        if node is None:
+            return 0
+        return 1 + self.count_nodes(node.left) + self.count_nodes(node.right)
+
+    # Height of tree
+    def height(self, node):
+        if node is None:
+            return 0
+        return 1 + max(self.height(node.left), self.height(node.right))
+
+    # Search for a value
+    def search(self, node, value):
+        if node is None:
+            return False
+        if node.data == value:
+            return True
+        return self.search(node.left, value) or self.search(node.right, value)
+
+# ---------------- Example Usage ----------------
+tree = BinaryTree("A")
+
+# Adding children manually
+tree.root.left = Node("B")
+tree.root.right = Node("C")
+
+tree.root.left.left = Node("D")
+tree.root.left.right = Node("E")
+
+tree.root.right.left = Node("F")
+tree.root.right.right = Node("G")
+
+print("Pre-order Traversal: ")
+tree.preorder(tree.root)
+
+print("\nIn-order Traversal: ")
+tree.inorder(tree.root)
+
+print("\nPost-order Traversal: ")
+tree.postorder(tree.root)
+
+print("\n\nTotal nodes in tree:", tree.count_nodes(tree.root))
+print("Height of tree:", tree.height(tree.root))
+print("Search 'E':", tree.search(tree.root, "E"))
+print("Search 'Z':", tree.search(tree.root, "Z"))
+```
+---
+
+##  Output Example
+
+If the tree looks like this:
+
+```
+        A
+       / \
+      B   C
+     / \  / \
+    D  E F  G
+```
+
+* **Pre-order**: `A B D E C F G`
+* **In-order**: `D B E A F C G`
+* **Post-order**: `D E B F G C A`
+* **Total nodes**: `7`
+* **Height**: `3`
+* **Search 'E'** → `True`
+* **Search 'Z'** → `False`
+
+---
+
+ 
