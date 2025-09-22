@@ -2651,4 +2651,104 @@ Is this tree balanced? True
 3. **B-Trees / B+ Trees** → Used in databases & file systems.
 
 ---
+**Degenerate Binary Tree** (sometimes called a *pathological tree*).
+---
+
+##  What is a Degenerate Binary Tree?
+
+A **Degenerate Binary Tree** is a binary tree where **every parent node has only one child** (either left or right, but never both).
+
+In simple words, it behaves like a **linked list** because each node only points to one child.
+
+---
+
+##  Example of a Degenerate Binary Tree
+
+```
+    A
+     \
+      B
+       \
+        C
+         \
+          D
+```
+
+Or it could be only left children:
+
+```
+    A
+   /
+  B
+ /
+C
+/
+D
+```
+
+---
+
+##  Why is it a problem?
+
+* Height of the tree = **number of nodes (n)**.
+* So operations like search, insert, delete → **O(n)** instead of **O(log n)** (like in a balanced binary tree).
+* Basically, it loses all efficiency benefits of binary trees.
+
+---
+
+##  Python Implementation
+
+We can still build a degenerate tree just by attaching one child at a time:
+
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self, rootdata):
+        self.root = Node(rootdata)
+
+    def insert_right_chain(self, values):
+        current = self.root
+        for val in values:
+            current.right = Node(val)   # always attach to the right
+            current = current.right
+
+    def preorder(self, node):
+        if node:
+            print(node.data, end=" ")
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+
+# Example usage
+tree = BinaryTree("A")
+tree.insert_right_chain(["B", "C", "D", "E"])
+
+print("Preorder Traversal of Degenerate Tree:")
+tree.preorder(tree.root)
+```
+
+---
+
+##  Output
+
+```
+Preorder Traversal of Degenerate Tree:
+A B C D E
+```
+
+---
+
+##  Key Point
+
+* A **degenerate tree** is technically a binary tree,
+* but it’s the *worst-case scenario* for binary trees because it behaves like a **linked list**.
+* Balanced trees (like **AVL** or **Red-Black Trees**) are designed to **avoid degeneration**.
+
+---
  
