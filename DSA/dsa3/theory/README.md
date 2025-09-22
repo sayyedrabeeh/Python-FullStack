@@ -1676,4 +1676,114 @@ D {'A': inf, 'B': inf, 'C': inf, 'D': 0}
 
 ---
 
+# **Spanning Tree (Simple Version)**
+
+**Definition in simple words:**
+
+* A **spanning tree** is a **subset of edges** from a connected graph that:
+
+  1. Connects **all the nodes**.
+  2. Has **no cycles**.
+
+**Key point:**
+
+* If the graph has `V` nodes, the spanning tree will always have exactly `V-1` edges.
+
+**Example:**
+
+```
+Graph:
+     A
+    / \
+   B---C
+    \
+     D
+     
+Spanning tree (one possibility):
+     A
+    / \
+   B   C
+    \
+     D
+```
+
+* Notice: all nodes are connected, no loops/cycles.
+
+---
+
+# **Minimum Spanning Tree (MST)**
+
+**Definition in simple words:**
+
+* A **minimum spanning tree** is a **spanning tree with the smallest total weight**.
+
+**Why it matters:**
+
+* Imagine connecting cities with **roads**. Each road has a **cost**.
+* MST ensures **all cities are connected** with **minimum total cost**.
+
+**Example with weights:**
+
+```
+Graph:
+       A
+      / \
+  2 /     \ 3
+    B-------C
+       1
+
+Edges and weights: AB=2, AC=3, BC=1
+
+MST:
+- Pick BC (1) → lowest weight
+- Pick AB (2)
+- Total weight = 3
+- AC (3) is not needed because all nodes are connected
+```
+
+---
+
+# ** How to Find MST (Step by Step)**
+
+## **A Kruskal’s Algorithm (Easy Steps)**
+
+1. **Sort all edges by weight (smallest first)**
+   Example edges: `BC=1, AB=2, AC=3`
+2. **Pick the smallest edge that does not form a cycle**
+
+   * Pick `BC=1` → okay, no cycle
+   * Pick `AB=2` → okay, no cycle
+   * Pick `AC=3` → forms cycle? Yes → skip
+3. **Stop when you have V-1 edges**
+
+   * 3 nodes → need 2 edges → done
+
+**MST edges:** `BC, AB`
+
+---
+
+## **B Prim’s Algorithm (Easy Steps)**
+
+1. **Start from any node** (say A)
+2. Pick **smallest edge from visited nodes to unvisited nodes**
+
+   * From A → AB=2, AC=3 → pick AB=2
+   * Visited nodes: A, B
+3. Next smallest edge from visited nodes (A or B) to unvisited nodes (C)
+
+   * AC=3, BC=1 → pick BC=1
+4. All nodes visited → MST done
+
+**MST edges:** `AB, BC` → same as Kruskal
+
+---
+
+# **Key Idea to Remember**
+
+* **Spanning tree:** any tree connecting all nodes, ignores weights.
+* **Minimum spanning tree:** tree connecting all nodes with **minimum total weight**, considers edge weights.
+* **Both must be connected and have no cycles.**
+
+---
+
  
