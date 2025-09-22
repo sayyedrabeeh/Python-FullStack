@@ -835,5 +835,66 @@ Cycle detection is possible, but scanning neighbors is **O(V)** (you must look a
 
 ---
 
+Adjacency Matrix for a Weighted Graph.
+
+In an unweighted graph, edges are represented as 1 (connected) or 0 (not connected).
+In a weighted graph, we store the actual weight (distance, cost, etc.) instead of just 1.
+
+```python
+
+class Graph:
+    def __init__(self):
+        self.nodes = []
+        self.matrix = []
+    def add_node(self,node):
+        self.nodes.append(node)
+        size = len(self.nodes)
+        for row in self.matrix:
+            row.append(0)
+        self.matrix.append([0] * size)
+    def add_edge(self,u,v,weight = 1,undirected = True):
+        if u not in self.nodes:
+            self.add_node(u)
+        if v not in self.nodes:
+            self.add_node(v)
+        i,j = self.nodes.index(u),self.nodes.index(v)
+        self.matrix[i][j] = weight
+        if undirected:
+            self.matrix[j][i] = weight
+            
+    def remove_edge(self,u,v,undirected = True):
+        if u in self.nodes and v in self.nodes:
+            i,j = self.nodes.index(u),self.nodes.index(v)
+            self.matrix[i][j] = 0
+            if undirected:
+                self.matrix[j][i] = 0
+    def remove_node(self,node):
+        if node in self.nodes:
+            id = self.nodes.index(node)
+            self.nodes.pop(id)
+            self.matrix.pop(id)
+            for row in self.matrix:
+                row.pop(id)
+    def show_graph(self):
+        print('  ','  '.join(self.nodes))
+        for i,row in enumerate(self.matrix):
+            print(self.nodes[i],row)
+g = Graph()
+g.add_edge('A','B',2)
+g.add_edge('A','C',23)
+g.add_edge('B','C',34)
+g.add_edge('D','A',22)
+g.show_graph()
+        
+```        
+        
+            
+            
+            
+            
+            
+            
+            
+
  
     
