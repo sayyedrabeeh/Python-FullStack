@@ -2268,6 +2268,138 @@ If we remove just one child:
 Here, `B` has **only one child (D)** → ❌ Not a full binary tree.
 
 ---
+---
 
- 
+##  What is a **Perfect Binary Tree**?
+
+A **Perfect Binary Tree** is a binary tree in which:
+
+1. **All internal nodes** have **exactly 2 children**.
+2. **All leaf nodes** are at the **same level (depth)**.
+
+ Basically, the tree is completely filled at all levels.
+
+---
+
+###  Example of a Perfect Binary Tree
+
+```
+        A
+       / \
+      B   C
+     / \ / \
+    D  E F  G
+```
+
+* A has 2 children
+* B and C have 2 children each
+* Leaves (D, E, F, G) are **all at the same level**
+  ✔ Perfect Binary Tree
+
+---
+
+###  Example of a Non-Perfect Tree
+
+```
+        A
+       / \
+      B   C
+     /
+    D
+```
+
+* Node B has only **one child** → breaks rule
+* Leaves are not at the same level → not perfect
+
+---
+
+## Implementation in Python
+
+We’ll extend our `BinaryTree` class with a method to check **perfectness**.
+
+```python
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self, rootdata):
+        self.root = Node(rootdata)
+
+    def preorder(self, node):
+        if node:
+            print(node.data, end=" ")
+            self.preorder(node.left)
+            self.preorder(node.right)
+
+    # --- Helper function to find depth of leftmost leaf ---
+    def find_depth(self, node):
+        d = 0
+        while node is not None:
+            d += 1
+            node = node.left
+        return d
+
+    # --- Check Perfect Binary Tree ---
+    def is_perfect(self, node, depth, level=1):
+        if node is None:
+            return True
+
+        # If leaf node → check depth
+        if node.left is None and node.right is None:
+            return depth == level
+
+        # If internal node has no children → not perfect
+        if node.left is None or node.right is None:
+            return False
+
+        # Recur for left and right subtrees
+        return (self.is_perfect(node.left, depth, level + 1) and
+                self.is_perfect(node.right, depth, level + 1))
+```
+
+---
+
+##  Example Usage
+
+```python
+tree = BinaryTree("A")
+tree.root.left = Node("B")
+tree.root.right = Node("C")
+
+tree.root.left.left = Node("D")
+tree.root.left.right = Node("E")
+tree.root.right.left = Node("F")
+tree.root.right.right = Node("G")
+
+print("Preorder Traversal: ")
+tree.preorder(tree.root)
+
+depth = tree.find_depth(tree.root)
+print("\nIs this a perfect binary tree?", tree.is_perfect(tree.root, depth))
+```
+
+---
+
+##  Output
+
+```
+Preorder Traversal: 
+A B D E C F G
+Is this a perfect binary tree? True
+```
+
+---
+
+ In short:
+
+* **Full Binary Tree** → Every node has 0 or 2 children.
+* **Complete Binary Tree** → All levels filled except maybe last (left to right).
+* **Perfect Binary Tree** → Full + all leaves at the same depth.
+
+---
+
  
