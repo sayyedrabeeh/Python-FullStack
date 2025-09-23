@@ -3654,5 +3654,106 @@ class SplayTree:
 
 
 ---
-
  
+
+---
+
+##  What is a **Trie**?
+
+A **Trie** (pronounced “try”), also known as a **prefix tree** or **digital search tree**, is a **specialized tree data structure** used to store and efficiently retrieve **strings** (often words in a dictionary).
+
+Instead of storing a whole word in a single node, a Trie stores **characters of the word** across multiple nodes.
+
+---
+
+##  Key Characteristics of Trie
+
+1. **Nodes represent characters**, not whole words.
+2. **Root node** is usually empty (doesn’t hold a character).
+3. Each path from the root → leaf (or marked node) represents a **word**.
+4. Supports **fast prefix-based search** (ex: autocomplete).
+5. Space-efficient when storing many words with shared prefixes.
+
+---
+
+##  Example
+
+Suppose we want to insert the words:
+👉 `"cat"`, `"car"`, `"dog"`
+
+### Trie Structure:
+
+```
+(root)
+  ├── c
+  │    └── a
+  │         ├── t  (word ends here -> "cat")
+  │         └── r  (word ends here -> "car")
+  └── d
+       └── o
+            └── g (word ends here -> "dog")
+```
+
+---
+
+##  Operations in Trie
+
+1. **Insertion**
+
+   * Insert character by character into nodes.
+   * If character path exists, reuse it (don’t duplicate).
+   * Mark end of word.
+
+   Example: inserting `"cat"` creates path:
+   `(root) → c → a → t [end]`
+
+2. **Search**
+
+   * Traverse character by character.
+   * If full word exists and ends at marked node → ✅ Found.
+   * If path breaks → ❌ Not found.
+
+   Example: `"car"` → found.
+   `"cap"` → not found.
+
+3. **Prefix Search (Autocomplete)**
+
+   * Check if given prefix exists.
+   * Return all words that share it.
+   * Ex: prefix `"ca"` → returns `"cat"`, `"car"`.
+
+4. **Deletion**
+
+   * Unmark word’s end node.
+   * Remove unused nodes (if no other word uses them).
+
+---
+
+##  Time Complexity
+
+* **Insertion**: O(L)
+* **Search**: O(L)
+* **Deletion**: O(L)
+  where **L = length of the word**
+
+Faster than using a hash map when you want **prefix-based lookups**.
+
+---
+
+##  Applications of Trie
+
+* **Autocomplete / Search suggestions** (Google, search bars).
+* **Spell checkers**.
+* **IP routing (longest prefix matching)**.
+* **Word games** (Scrabble, Boggle).
+* **Text prediction in keyboards**.
+
+---
+
+**Comparison with BST/HashMap**
+
+* BST stores words fully → slower for prefix search.
+* HashMap stores full words → prefix search inefficient.
+* Trie is **designed for prefixes**, so it wins in autocomplete and dictionary problems.
+
+---
