@@ -3454,3 +3454,205 @@ So balancing is **critical for performance**.
 ---
 
  
+---
+
+#  **Splay Tree**
+
+##  What is a Splay Tree?
+
+A **Splay Tree** is a **self-adjusting binary search tree (BST)**.
+
+* After every operation (**search, insert, delete**), the accessed node is **splayed (moved) to the root** using special tree rotations.
+* The idea is: frequently accessed nodes should be **closer to the root** for faster future access.
+
+---
+
+##  Key Operations in Splay Trees
+
+Every operation works like a normal BST, **but after that we splay the node to the root**.
+
+### 1. **Splaying (core operation)**
+
+Moves a node `x` to the root using rotations.
+There are 3 main cases:
+
+####  Zig (Single Rotation)
+
+* Used when `x` is a child of the root.
+* Rotate once.
+
+```
+    x             p
+   /               \
+  p        →        x
+```
+
+####  Zig-Zig (Double Rotation - same direction)
+
+* `x` and parent `p` are both **left children** or both **right children**.
+* Rotate parent, then rotate grandparent.
+
+```
+      g
+     /
+    p
+   /
+  x          →    x is brought to top with 2 rotations
+```
+
+####  Zig-Zag (Double Rotation - opposite direction)
+
+* `x` is a left child, but parent is a right child (or vice versa).
+* Rotate twice (like AVL double rotation).
+
+```
+      g
+     /
+    p
+     \
+      x       →    Rotate p, then g
+```
+
+---
+
+### 2. **Search**
+
+* Search like BST.
+* Then **splay the found node (or last accessed node) to root**.
+* Makes future searches faster.
+
+### 3. **Insert**
+
+* Insert like BST.
+* Then **splay the newly inserted node to root**.
+
+### 4. **Delete**
+
+* Splay the node to delete to the root.
+* Remove root.
+* Merge left and right subtrees (using splay).
+
+---
+
+##  Why Use Splay Trees?
+
+✅ **Adaptive performance** → frequently used nodes are faster to access.
+✅ **Amortized O(log n)** time for operations.
+✅ Simple compared to AVL/Red-Black (no balancing factors or colors).
+
+❌ **Worst-case per operation** can be O(n) (if tree skews), but amortized is efficient.
+❌ Not good when all nodes are equally important (AVL or Red-Black are better then).
+
+---
+
+##  Example (Search Operation)
+
+Let’s say we search for `30` in this tree:
+
+```
+        20
+       /  \
+      10   40
+           / \
+         30  50
+```
+
+1. Found `30`.
+2. Perform **splaying** → `30` becomes root:
+
+```
+        30
+       /  \
+     20    40
+    /       \
+   10        50
+```
+
+Now `30` is at the root → future searches for `30` are **O(1)**.
+
+---
+
+##  Python Implementation (Simplified)
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class SplayTree:
+    def right_rotate(self, x):
+        y = x.left
+        x.left = y.right
+        y.right = x
+        return y
+
+    def left_rotate(self, x):
+        y = x.right
+        x.right = y.left
+        y.left = x
+        return y
+
+    def splay(self, root, key):
+        if not root or root.key == key:
+            return root
+
+        # Key lies in left subtree
+        if key < root.key:
+            if not root.left:
+                return root
+            if key < root.left.key:  # Zig-Zig
+                root.left.left = self.splay(root.left.left, key)
+                root = self.right_rotate(root)
+            elif key > root.left.key:  # Zig-Zag
+                root.left.right = self.splay(root.left.right, key)
+                if root.left.right:
+                    root.left = self.left_rotate(root.left)
+            return root if not root.left else self.right_rotate(root)
+
+        # Key lies in right subtree
+        else:
+            if not root.right:
+                return root
+            if key > root.right.key:  # Zig-Zig
+                root.right.right = self.splay(root.right.right, key)
+                root = self.left_rotate(root)
+            elif key < root.right.key:  # Zig-Zag
+                root.right.left = self.splay(root.right.left, key)
+                if root.right.left:
+                    root.right = self.right_rotate(root.right)
+            return root if not root.right else self.left_rotate(root)
+
+    def insert(self, root, key):
+        if not root:
+            return Node(key)
+        root = self.splay(root, key)
+        if root.key == key:
+            return root
+        new_node = Node(key)
+        if key < root.key:
+            new_node.right = root
+            new_node.left = root.left
+            root.left = None
+        else:
+            new_node.left = root
+            new_node.right = root.right
+            root.right = None
+        return new_node
+```
+
+---
+
+##  Summary
+
+* **Splay Tree = Self-adjusting BST**
+* Recently/frequently accessed nodes move to root → faster future access
+* Uses **Zig, Zig-Zig, Zig-Zag rotations**
+* Operations: Insert, Search, Delete → all **amortized O(log n)**
+
+
+
+---
+
+ 
