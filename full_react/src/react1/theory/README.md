@@ -5576,3 +5576,9 @@ function App() {
 ---
 
  
+useImperativeHandle = control what parent can access via ref
+
+Works with forwardRef
+
+Encapsulates child internals and exposes custom methods or properties.
+
