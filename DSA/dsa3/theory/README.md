@@ -2927,5 +2927,174 @@ tree.inorder(root)
 * Used in databases, compilers, and many algorithms.
 
 ---
+---
+
+#  1. Deletion in **Binary Search Tree (BST)**
+
+In BST, the structure must always follow:
+**Left < Root < Right.**
+
+That’s why deletion has **3 cases**:
+
+###  Case 1: Delete a **leaf node** (no children)
+
+* Just remove it.
+  Example: Delete `20` from
+
+```
+      50
+     /  \
+   30    70
+  / \
+ 20 40
+```
+
+→ `20` is simply removed.
+
+---
+
+###  Case 2: Delete node with **1 child**
+
+* Replace the node with its child.
+  Example: Delete `30` from
+
+```
+      50
+     /  \
+   30    70
+     \
+     40
+```
+
+→ `30` is replaced with `40`.
+
+---
+
+###  Case 3: Delete node with **2 children**
+
+* Replace the node with either:
+
+  * **Inorder Successor** (smallest in right subtree), OR
+  * **Inorder Predecessor** (largest in left subtree).
+
+Example: Delete `50` from
+
+```
+        50
+       /  \
+     30    70
+    / \   / \
+  20 40 60  80
+```
+
+* Inorder successor of `50` = `60`.
+* Replace `50` with `60`, then delete the original `60`.
+
+Result:
+
+```
+        60
+       /  \
+     30    70
+    / \      \
+  20 40      80
+```
+
+---
+### BST `delete` code:
+
+```python
+def delete(self, node, key):
+    if not node:
+        return None
+    if key < node.data:  # go left
+        node.left = self.delete(node.left, key)
+    elif key > node.data:  # go right
+        node.right = self.delete(node.right, key)
+    else:  # found the node
+        # Case 1 & 2: node has 0 or 1 child
+        if not node.left:
+            return node.right
+        elif not node.right:
+            return node.left
+
+        # Case 3: 2 children → find inorder successor
+        min_node = self.min_value(node.right)
+        node.data = min_node.data
+        node.right = self.delete(node.right, min_node.data)
+    return node
+```
+
+💡 Here:
+
+* `self.min_value(node.right)` finds the **inorder successor**.
+* Replaces the node’s data.
+* Deletes the duplicate from right subtree.
+
+---
+
+# 2. Deletion in a **Binary Tree (BT)**
+
+ Remember: A **binary tree** doesn’t have the BST property.
+So we can’t use left/right comparisons.
+Instead, we delete like this:
+
+### Steps:
+
+1. Find the node to delete.
+2. Find the **deepest node** (last node in level order).
+3. Replace target node’s data with deepest node’s data.
+4. Delete the deepest node.
+
+---
+
+###  BT `delete` code:
+
+```python
+def delete(self, value):
+    if not self.root:
+        return None
+    # Special case: only root
+    if self.root.data == value and not self.root.left and not self.root.right:
+        self.root = None
+        return
+
+    queue = [self.root]
+    node_to_delete = None
+
+    # Step 1: Find node to delete + track nodes
+    while queue:
+        current = queue.pop(0)
+        if current.data == value:
+            node_to_delete = current
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
+
+    # Step 2: Replace with deepest node
+    if node_to_delete:
+        deepest, parent = self.find_deepest_and_perant()
+        node_to_delete.data = deepest.data
+
+        # Step 3: Remove deepest node
+        if parent.right == deepest:
+            parent.right = None
+        elif parent.left == deepest:
+            parent.left = None
+```
+
+---
+
+##  Difference Between BST Delete vs BT Delete
+
+| Feature         | **BST Deletion**                                              | **BT Deletion**                              |
+| --------------- | ------------------------------------------------------------- | -------------------------------------------- |
+| Structure Rule  | Must satisfy **Left < Root < Right**                          | No order, only binary shape                  |
+| Cases           | Leaf, 1 child, 2 children (use inorder successor/predecessor) | Replace with **deepest node**                |
+| Search for node | Uses BST property (fast: O(log n))                            | Level order traversal (O(n))                 |
+| Use case        | Searching, ordered data (databases, maps)                     | General tree structures (heaps, parse trees) |
+
+---
 
  
