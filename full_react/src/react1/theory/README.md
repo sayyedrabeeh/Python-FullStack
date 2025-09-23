@@ -443,5 +443,488 @@ function Counter() {
 * This is why React encourages **declarative programming**: you just declare the UI, React handles the DOM updates under the hood.
 
 ---
+---
+
+## **1. What is a Single Page Application (SPA)?**
+
+* A **Single Page Application** is a **web app that loads a single HTML page** and dynamically updates content **without reloading the whole page**.
+* Unlike traditional multi-page apps (MPAs), SPAs **don’t fetch a new HTML page** on every user interaction.
+
+**Example:** Gmail, Facebook, Instagram web version.
+
+---
+
+## **2. How SPAs work**
+
+1. **Initial Load:**
+
+   * Browser downloads a **single HTML file** + **CSS + JavaScript bundle**.
+   * JavaScript initializes the app and renders content dynamically.
+
+2. **User Interaction:**
+
+   * When a user clicks a link or submits a form:
+
+     * SPA **intercepts the action** using JS (usually through a router).
+     * Fetches only **data from the server (API)** via AJAX / Fetch / Axios.
+     * Updates the **DOM dynamically** without reloading the page.
+
+3. **Routing:**
+
+   * SPAs use **client-side routing**. Example: React Router.
+   * The URL can change (`/dashboard`, `/profile`) without triggering a full page reload.
+
+---
+
+## **3. SPA vs MPA (Multi-Page Application)**
+
+| Feature        | SPA                       | MPA                              |
+| -------------- | ------------------------- | -------------------------------- |
+| Page reload    | No reload                 | Full reload for every page       |
+| Speed          | Faster after initial load | Slower, multiple reloads         |
+| Server calls   | API calls only            | HTML pages + assets each request |
+| State handling | Maintained across views   | Reset on every page load         |
+| Example        | Gmail, Facebook           | WordPress blog, Wikipedia        |
+
+---
+
+## **4. Why React is perfect for SPAs**
+
+1. **Virtual DOM** → Efficient updates without full page reload.
+2. **Component-based architecture** → UI divided into reusable components.
+3. **Client-side routing** → React Router manages SPA URLs.
+4. **State management** → Redux / Context API helps maintain state across views.
+5. **Fast UX** → Only data is fetched, not full HTML pages.
+
+---
+
+## **5. Basic React SPA Example**
+
+```jsx
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
+function Home() { return <h1>Home Page</h1>; }
+function About() { return <h1>About Page</h1>; }
+
+function App() {
+  return (
+    <Router>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/about">About</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Router>
+  );
+}
+```
+
+ **What happens:**
+
+* Clicking links **does not reload the page**.
+* React dynamically renders `<Home />` or `<About />` in the same HTML page.
+
+---
+
+### **6. Key insight**
+
+* **SPA = single HTML page, dynamic content updates.**
+* **Benefits:** Faster, smoother UX, better state handling.
+* **Drawbacks:** Initial load can be heavy, SEO needs extra work (SSR / prerendering).
+
+---
+
+---
+
+## **1. What is an MPA (Multi-Page Application)?**
+
+* **Definition:** A **Multi-Page Application** is a traditional web app where **each page is a separate HTML file**.
+* Whenever the user navigates to a new page, the **browser requests a new HTML page from the server**.
+
+**Examples:**
+
+* Amazon, eBay, WordPress blogs, Wikipedia.
+
+---
+
+## **2. How MPA works**
+
+1. **User requests a page:**
+
+   * Example: User goes to `www.example.com/about`.
+2. **Server responds:**
+
+   * Server sends a **full HTML page**, along with CSS, JS, images.
+3. **Browser renders:**
+
+   * The browser renders the entire page.
+4. **Navigation to another page:**
+
+   * Example: User clicks “Contact”.
+   * Browser makes **another request**, loads a new HTML page, and reloads the entire DOM.
+
+**Flowchart:**
+
+```
+User Clicks Link → Server Request → Server Sends HTML → Browser Renders
+```
+
+---
+
+## **3. MPA vs SPA (Quick Comparison)**
+
+| Feature          | MPA                          | SPA                                         |
+| ---------------- | ---------------------------- | ------------------------------------------- |
+| Page reload      | Reloads entire page          | No reload, dynamic content                  |
+| Server requests  | Multiple full-page requests  | Only API / data requests after initial load |
+| Speed            | Slower after each navigation | Faster after initial load                   |
+| State management | Resets after page reload     | Maintains state across views                |
+| Complexity       | Simple to implement          | Requires JS framework (React, Vue)          |
+| Example          | Amazon, Wikipedia            | Gmail, Facebook                             |
+
+---
+
+## **4. Advantages of MPA**
+
+1. Simple structure; easy to implement with HTML + server-side languages.
+2. SEO-friendly by default (since each page has its own URL and content).
+3. Works even if JavaScript is disabled.
+
+---
+
+## **5. Disadvantages of MPA**
+
+1. Slower navigation due to **full page reloads**.
+2. More server load (every page request hits the server).
+3. State handling is harder (data resets on each page load).
+
+---
+
+### **6. Key insight**
+
+* **MPA:** Traditional web apps → multiple HTML pages → full reloads on navigation.
+* **SPA:** Modern web apps → single HTML page → dynamic content update → faster UX.
+
+---
+ 
+  
+---
+
+## **1. What is Client-Side Rendering (CSR)?**
+
+* **CSR** is a rendering technique where the **browser (client) is responsible for generating the HTML dynamically** using JavaScript.
+* The server usually sends a **bare-bones HTML page** with a `<div id="root"></div>` and JS bundles.
+* The **JS code then renders the full UI** in the browser.
+
+**Example:** React, Angular, Vue apps by default use CSR.
+
+---
+
+## **2. How CSR works**
+
+1. **Initial request:**
+
+   * User requests `www.example.com`.
+   * Server sends **minimal HTML + JS bundle**.
+
+2. **Browser executes JS:**
+
+   * The JS library/framework (React, Vue) **renders the UI** inside a container (`<div id="root">`).
+
+3. **Subsequent actions:**
+
+   * When the user clicks links or interacts, **data is fetched via API calls** (AJAX / Fetch / Axios).
+   * The page updates **dynamically without full reload**.
+
+**Flowchart:**
+
+```
+User → Browser → Request HTML → Server sends HTML+JS → Browser executes JS → UI rendered
+```
+
+---
+
+## **3. CSR Example in React**
+
+```jsx
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+
+function App() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+* **What happens:**
+
+  * The server sends only `<div id="root"></div>` and JS bundle.
+  * React renders `<h1>` and `<button>` dynamically in the browser.
+  * Updates are handled in the **client-side**.
+
+---
+
+## **4. CSR vs SSR (Server-Side Rendering)**
+
+| Feature            | CSR                        | SSR                          |
+| ------------------ | -------------------------- | ---------------------------- |
+| Who renders HTML   | Browser (client)           | Server                       |
+| Initial load speed | Slower (JS must execute)   | Faster (HTML ready)          |
+| SEO                | Harder, needs extra tools  | Better SEO by default        |
+| Page updates       | Dynamically without reload | Requires new server requests |
+| Example            | React SPA                  | Next.js, Nuxt.js (with SSR)  |
+
+---
+
+## **5. Advantages of CSR**
+
+1. **Fast interactions after initial load** (no full page reloads).
+2. **Rich user experience** (dynamic, app-like).
+3. **Decoupled frontend & backend** (API-driven apps).
+
+---
+
+## **6. Disadvantages of CSR**
+
+1. **Slower initial load** (JS bundle must download and execute).
+2. **SEO challenges** (search engines may not index dynamic content well without SSR or prerendering).
+3. **Heavier browser load** for large apps.
+
+---
+
+### **Key insight**
+
+* **CSR = client renders HTML dynamically.**
+* React, Vue, Angular SPAs mostly use CSR by default.
+* Great for **dynamic, interactive web apps**.
+
+---
+ 
+---
+
+## **1. What is a Server?**
+
+* A **server** is a computer or system that **provides resources, data, or services** to other computers (clients) over a network (usually the internet).
+* In web development, the server **hosts websites, APIs, and databases**.
+
+### **Key Roles of a Server**
+
+1. **Handles requests** from clients.
+2. **Processes logic** (e.g., authentication, database queries, calculations).
+3. **Sends responses** (HTML, JSON, images, etc.) back to the client.
+
+**Example:**
+
+* When you go to `www.example.com`, your browser sends a request → the server sends back HTML/CSS/JS files.
+
+---
+
+## **2. What is a Browser (Client)?**
+
+* A **browser** is a **program that runs on the user’s device** to access web content.
+* Examples: Chrome, Firefox, Edge.
+
+### **Key Roles of a Browser**
+
+1. **Sends HTTP requests** to servers.
+2. **Renders content** (HTML, CSS, JS) for the user.
+3. **Executes client-side logic** (JavaScript) to make web pages interactive.
+
+**Example:**
+
+* React, Vue, or vanilla JS runs in the browser to update the DOM dynamically.
+
+---
+
+## **3. Server vs Browser – Quick Comparison**
+
+| Feature     | Server                                       | Browser (Client)                      |
+| ----------- | -------------------------------------------- | ------------------------------------- |
+| Location    | Remote machine or cloud                      | User’s device                         |
+| Purpose     | Provide data/resources                       | Display content & handle interaction  |
+| Programming | Node.js, Python, PHP, Java, etc.             | JavaScript, WebAssembly               |
+| Rendering   | Can render HTML (SSR) or send raw data (API) | Renders HTML/CSS/JS to UI             |
+| Examples    | Apache, Nginx, Express.js                    | Chrome, Firefox                       |
+| Storage     | Databases, files                             | Cookies, localStorage, sessionStorage |
+| Control     | Full control of backend                      | Limited to security sandbox           |
+
+---
+
+## **4. How They Work Together**
+
+1. **User opens URL in browser** → Browser sends HTTP request to server.
+2. **Server processes request** → Fetches data or renders HTML.
+3. **Server sends response** → Browser receives HTML, CSS, JS.
+4. **Browser renders page** → Executes JavaScript, handles interactivity.
+
+**Flow:**
+
+```
+User → Browser → HTTP Request → Server → Response → Browser → Render & Interact
+```
+
+---
+
+### **Key insight**
+
+* **Server = brain / storage / processing hub**
+* **Browser = eyes / interface / executor**
+
+Modern frameworks blur the line:
+
+* **CSR:** Browser handles rendering and updates.
+* **SSR:** Server sends pre-rendered HTML.
+
+---
+ 
  
 
+---
+
+# **1. What are `export` and `import`?**
+
+* **`export`**: Allows you to **share variables, functions, or classes** from one module so that other modules can use them.
+* **`import`**: Allows you to **bring in exported code** from another module.
+* Both are part of **ES Modules (ESM)** syntax in modern JS.
+
+---
+
+# **2. Types of Exports**
+
+There are **two main types**:
+
+## **A. Named Exports**
+
+* You can export **multiple things** from a single module.
+* Imported **must match the exported names**.
+
+**Example:**
+
+```js
+// math.js
+export const pi = 3.14;
+export function add(a, b) { return a + b; }
+export class Circle { constructor(radius) { this.radius = radius; } }
+```
+
+**Importing named exports:**
+
+```js
+// main.js
+import { pi, add, Circle } from './math.js';
+console.log(pi);         // 3.14
+console.log(add(2,3));   // 5
+const c = new Circle(5);
+```
+
+ You can also **rename** while importing:
+
+```js
+import { pi as PI } from './math.js';
+console.log(PI);
+```
+
+---
+
+## **B. Default Exports**
+
+* Each module can have **only one default export**.
+* Imported **name can be anything**.
+
+**Example:**
+
+```js
+// greet.js
+export default function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+**Importing default export:**
+
+```js
+// main.js
+import greetFunction from './greet.js';
+console.log(greetFunction("Alice")); // Hello, Alice!
+```
+
+---
+
+# **3. Import Types**
+
+1. **Named Import** – imports specific exports by name:
+
+```js
+import { add, pi } from './math.js';
+```
+
+2. **Default Import** – imports the default export:
+
+```js
+import greet from './greet.js';
+```
+
+3. **Mixed Import** – default + named in one statement:
+
+```js
+import greet, { pi, add } from './math-and-greet.js';
+```
+
+4. **Import all as namespace** – import everything under a single object:
+
+```js
+import * as math from './math.js';
+console.log(math.pi);    // 3.14
+console.log(math.add(2,3)); // 5
+```
+
+---
+
+# **4. Re-exporting**
+
+You can **re-export** from another module:
+
+```js
+// utils.js
+export { add, pi } from './math.js';
+export { default as greet } from './greet.js';
+```
+
+* Allows you to **aggregate exports** in one file.
+
+---
+
+# **5. Key Points / Rules**
+
+* **Named exports:** `export {name}` or `export const name = ...`
+* **Default exports:** `export default ...`
+* You **can have multiple named exports**, but only **one default export** per module.
+* When importing:
+
+  * Named → must match (or rename)
+  * Default → can name anything
+
+---
+
+### **Quick Summary Table**
+
+| Export Type | Syntax                           | Import Example                      |
+| ----------- | -------------------------------- | ----------------------------------- |
+| Named       | `export const x = 5;`            | `import { x } from './file.js';`    |
+| Default     | `export default function(){}`    | `import myFunc from './file.js';`   |
+| Namespace   | N/A (import type)                | `import * as obj from './file.js';` |
+| Re-export   | `export { x } from './file.js';` | `import { x } from './utils.js';`   |
+
+---
+
+ 
