@@ -1477,4 +1477,877 @@ componentWillUnmount
 
 ---
 
+ Perfect! Let’s dive into **React Hooks**, which are a fundamental concept in modern React development. I’ll break it down clearly.
+
+---
+
+## **1. What are Hooks?**
+
+* **Hooks** are functions that let **functional components** have **state and lifecycle features** previously only available in class components.
+* Introduced in **React 16.8**.
+* **Goal:** Avoid using classes, make code simpler, reusable, and easier to understand.
+
+**Key hooks:** `useState`, `useEffect`, `useContext`, `useReducer`, `useRef`, `useMemo`, `useCallback`, etc.
+
+---
+
+## **2. Basic Hooks**
+
+### **A. useState**
+
+* Adds **state to functional components**.
+
+```jsx
+import React, { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0); // count = state, setCount = updater
+
+  return (
+    <div>
+      <h1>{count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+* `useState(initialValue)` → returns `[state, setState]`
+
+---
+
+### **B. useEffect**
+
+* Handles **side effects** (like lifecycle methods).
+* Can replace **componentDidMount, componentDidUpdate, componentWillUnmount**.
+
+```jsx
+import React, { useState, useEffect } from "react";
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds(prev => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []); // Empty dependency = run once (mount)
+  
+  return <h1>Seconds: {seconds}</h1>;
+}
+```
+
+* Dependency array `[]` controls **when effect runs**:
+
+  * `[]` → run once (on mount)
+  * `[count]` → run when `count` changes
+  * No array → run on every render
+
+---
+
+### **C. useContext**
+
+* Allows **sharing data across components** without prop drilling.
+
+```jsx
+import React, { createContext, useContext } from "react";
+
+const ThemeContext = createContext("light");
+
+function Child() {
+  const theme = useContext(ThemeContext);
+  return <p>Theme: {theme}</p>;
+}
+
+function App() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <Child />
+    </ThemeContext.Provider>
+  );
+}
+```
+
+---
+
+### **D. useRef**
+
+* Stores **mutable values** that **persist across renders** without causing re-renders.
+* Can also reference **DOM elements**.
+
+```jsx
+import React, { useRef } from "react";
+
+function InputFocus() {
+  const inputRef = useRef();
+
+  const focusInput = () => inputRef.current.focus();
+
+  return (
+    <div>
+      <input ref={inputRef} />
+      <button onClick={focusInput}>Focus Input</button>
+    </div>
+  );
+}
+```
+
+---
+
+### **E. useReducer**
+
+* Like `useState` but for **complex state logic**.
+* Useful for **state machines or multiple state transitions**.
+
+```jsx
+import React, { useReducer } from "react";
+
+const initialState = { count: 0 };
+
+function reducer(state, action) {
+  switch(action.type) {
+    case 'increment': return { count: state.count + 1 };
+    case 'decrement': return { count: state.count - 1 };
+    default: return state;
+  }
+}
+
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <div>
+      <h1>{state.count}</h1>
+      <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+    </div>
+  );
+}
+```
+
+---
+
+## **3. Rules of Hooks**
+
+1. Only call hooks **at the top level** (not inside loops or conditions).
+2. Only call hooks **inside React functional components** (or custom hooks).
+3. Hooks should always start with `use` (e.g., `useState`, `useEffect`).
+
+---
+
+## **4. Why Hooks?**
+
+* Replace class components → simpler, less boilerplate.
+* Share logic across components via **custom hooks**.
+* Handle **state, lifecycle, context, refs** in functional components.
+
+---
+
+### **Key Insight**
+
+* Hooks = **functional components + class features**
+* `useState` → state
+* `useEffect` → lifecycle
+* `useContext` → global data
+* `useReducer` → complex state
+* `useRef` → DOM or persistent values
+
+---
+
+ 
+ 
+---
+
+## **1. What are Event Handlers?**
+
+* **Event Handlers** are functions that run in response to **events** triggered by the user or browser.
+* Examples of events: `click`, `change`, `submit`, `keydown`, `mouseover`.
+* In React, **events are written in camelCase** (`onClick`, `onChange`) instead of lowercase like in HTML.
+
+---
+
+## **2. Basic Syntax in React**
+
+```jsx
+function Button() {
+  const handleClick = () => {
+    alert("Button clicked!");
+  };
+
+  return <button onClick={handleClick}>Click Me</button>;
+}
+```
+
+* `onClick={handleClick}` → attaches the function to the button click.
+* **Do NOT call the function immediately** (no parentheses) when assigning:
+
+  ```jsx
+  // ❌ Wrong
+  <button onClick={handleClick()}>Click Me</button>
+  ```
+
+---
+
+## **3. Common React Events**
+
+| Event Type | React Attribute                                            | Example                                          |
+| ---------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| Mouse      | `onClick`, `onDoubleClick`, `onMouseEnter`, `onMouseLeave` | `<div onMouseEnter={handleHover}>Hover me</div>` |
+| Keyboard   | `onKeyDown`, `onKeyPress`, `onKeyUp`                       | `<input onKeyDown={handleKey} />`                |
+| Form       | `onChange`, `onSubmit`                                     | `<form onSubmit={handleSubmit}></form>`          |
+| Focus      | `onFocus`, `onBlur`                                        | `<input onFocus={handleFocus} />`                |
+| Clipboard  | `onCopy`, `onPaste`                                        | `<input onCopy={handleCopy} />`                  |
+
+---
+
+## **4. Passing Arguments to Event Handlers**
+
+```jsx
+function Button({ id }) {
+  const handleClick = (id, event) => {
+    alert(`Button ${id} clicked`);
+    console.log(event); // Access native event
+  };
+
+  return <button onClick={(e) => handleClick(id, e)}>Click Me</button>;
+}
+```
+
+* Wrap the handler in an **arrow function** to pass arguments.
+
+---
+
+## **5. Synthetic Events**
+
+* React wraps native browser events in **SyntheticEvent**, which is **cross-browser compatible**.
+* SyntheticEvent behaves like normal DOM events, but React handles cleanup automatically.
+
+**Example:**
+
+```jsx
+function Input() {
+  const handleChange = (event) => {
+    console.log(event.target.value); // Access input value
+  };
+
+  return <input type="text" onChange={handleChange} />;
+}
+```
+
+---
+
+## **6. Event Binding in Class Components**
+
+In class components, you often need to **bind `this`**:
+
+```jsx
+class Button extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this); // Bind this
+  }
+
+  handleClick() {
+    alert("Clicked!");
+  }
+
+  render() {
+    return <button onClick={this.handleClick}>Click Me</button>;
+  }
+}
+```
+
+* Or use **arrow functions** to automatically bind `this`:
+
+```jsx
+handleClick = () => { alert("Clicked!"); }
+```
+
+---
+
+## **7. Key Points**
+
+1. React events use **camelCase** (`onClick`, `onChange`).
+2. Assign **function reference**, don’t call it immediately.
+3. React wraps events in **SyntheticEvent** for cross-browser compatibility.
+4. Use arrow functions or bind in class components to handle `this`.
+
+---
+
+### **Key Insight**
+
+* Event handlers in React are **how UI responds to user actions**.
+* They work for both **functional components** (with Hooks) and **class components** (with state/lifecycle).
+
+---
+ 
+ 
+
+---
+
+## **1. What is React Fiber?**
+
+* **React Fiber** is the **reimplementation of React’s core rendering engine** introduced in **React 16**.
+* Purpose: Make **rendering more efficient, flexible, and interruptible**.
+* Think of Fiber as the **internal algorithm that React uses to build, update, and manage the Virtual DOM**.
+
+**Key idea:** Fiber allows React to **split rendering work into chunks** and prioritize important updates.
+
+---
+
+## **2. Why React Fiber?**
+
+Before Fiber, React used a **stack-based synchronous rendering algorithm**:
+
+* Problem: **Large component trees could block the main thread** → UI lag, slow updates.
+* Example: Animations or input could freeze while React updated a big tree.
+
+**Fiber solves this by:**
+
+1. **Incremental rendering:** Break work into units (fibers) and spread across multiple frames.
+2. **Prioritization:** High-priority updates (like typing or animations) can interrupt low-priority ones (like network updates).
+3. **Concurrency:** Enables React to schedule updates efficiently.
+
+---
+
+## **3. How Fiber Works (Conceptually)**
+
+1. React represents each element/component as a **Fiber node**.
+
+2. Each Fiber has:
+
+   * Type (function/class/host component)
+   * Props and state
+   * Parent/child/sibling links
+   * Priority and effects list
+
+3. React creates a **Fiber tree** (similar to the Virtual DOM tree).
+
+4. **Rendering phases:**
+
+* **Render (Reconciliation) Phase:**
+
+  * Fiber tree is built or updated **offscreen**.
+  * Can be paused, aborted, or reused.
+  * Does not touch the real DOM yet.
+
+* **Commit Phase:**
+
+  * Fiber tree changes are **committed to the real DOM**.
+  * This phase is **synchronous** (cannot be interrupted).
+
+**Flow:**
+
+```
+JSX -> Virtual DOM -> Fiber Tree (Render) -> Commit to DOM
+```
+
+---
+
+## **4. Key Features of Fiber**
+
+| Feature               | Description                                                |
+| --------------------- | ---------------------------------------------------------- |
+| Incremental rendering | Updates split into units, processed over multiple frames   |
+| Prioritization        | High-priority updates (user input) run before low-priority |
+| Better error handling | Fiber improves error boundaries and recovery               |
+| Concurrency support   | Enables future features like Concurrent Mode and Suspense  |
+
+---
+
+## **5. Fiber vs Old React (Stack Reconciler)**
+
+| Feature         | Stack Reconciler (Pre-React16) | Fiber                      |
+| --------------- | ------------------------------ | -------------------------- |
+| Rendering       | Synchronous, blocking          | Incremental, interruptible |
+| Update priority | No prioritization              | Prioritized updates        |
+| Large trees     | Can freeze UI                  | Can spread work over time  |
+| Concurrency     | No                             | Supports Concurrent Mode   |
+
+---
+
+## **6. Why Developers Care**
+
+* React Fiber **improves performance** for complex apps.
+* Enables **Concurrent Mode** → better animations, responsiveness, and async rendering.
+* Most **React internals now use Fiber**, but developers **don’t manipulate it directly**.
+* Understanding Fiber helps in **performance optimization** and understanding **why React sometimes pauses or batches updates**.
+
+---
+
+### **Key Insight**
+
+* **Fiber = React’s internal scheduler and reconciliation engine**
+* Splits rendering into **units of work** → smooth UI, prioritization, concurrency
+* Everything you write in JSX ultimately goes through **Fiber** before reaching the real DOM
+
+---
+
+ 
+
+---
+
+#  **What is `useEffect`?**
+
+* `useEffect` is a **React Hook** that lets you perform **side effects** in a **functional component**.
+* Side effects = anything that affects something outside of the component’s render process.
+
+👉 Examples of side effects:
+
+* Fetching data from an API
+* Setting up a subscription (WebSocket, event listener)
+* Updating the DOM manually
+* Starting/stopping timers
+
+---
+
+#  **Syntax**
+
+```jsx
+useEffect(() => {
+  // Side effect logic (runs after render)
+
+  return () => {
+    // Cleanup (optional) runs before unmount or before next effect run
+  };
+}, [dependencies]);
+```
+
+---
+
+#  **How it Works**
+
+1. Component renders.
+2. After painting to the DOM, React runs the effect.
+3. If the effect has dependencies, React decides whether to re-run it.
+4. If the effect returns a cleanup function, React runs it before:
+
+   * The component unmounts
+   * OR before running the effect again (on re-render)
+
+---
+
+#  **Dependencies Behavior**
+
+The second argument (`[dependencies]`) controls when the effect runs:
+
+| Dependency Array        | When it runs                                                      |
+| ----------------------- | ----------------------------------------------------------------- |
+| `useEffect(fn)`         | Runs **after every render**                                       |
+| `useEffect(fn, [])`     | Runs **only once** (after first render, like `componentDidMount`) |
+| `useEffect(fn, [a, b])` | Runs when **`a` or `b` changes**                                  |
+
+---
+
+#  **Examples**
+
+### 1. **Run on Every Render**
+
+```jsx
+useEffect(() => {
+  console.log("Runs after every render");
+});
+```
+
+### 2. **Run Only Once**
+
+```jsx
+useEffect(() => {
+  console.log("Runs only once on mount");
+}, []);
+```
+
+### 3. **Run When Specific State Changes**
+
+```jsx
+useEffect(() => {
+  console.log("Count changed:", count);
+}, [count]);
+```
+
+### 4. **Cleanup (like componentWillUnmount)**
+
+```jsx
+useEffect(() => {
+  const timer = setInterval(() => {
+    console.log("Timer running");
+  }, 1000);
+
+  return () => {
+    clearInterval(timer); // cleanup
+    console.log("Timer cleared");
+  };
+}, []);
+```
+
+---
+
+#  **Class Component Equivalent**
+
+In **class components**, we had lifecycle methods:
+
+| Class Method           | Equivalent `useEffect`     |
+| ---------------------- | -------------------------- |
+| `componentDidMount`    | `useEffect(fn, [])`        |
+| `componentDidUpdate`   | `useEffect(fn, [deps])`    |
+| `componentWillUnmount` | Cleanup inside `useEffect` |
+
+---
+
+#  **Real-World Example: Fetch Data**
+
+```jsx
+import { useEffect, useState } from "react";
+
+function Users() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(res => res.json())
+      .then(data => setUsers(data));
+
+    // optional cleanup
+    return () => console.log("Cleanup before unmount");
+  }, []); // run once on mount
+
+  return (
+    <ul>
+      {users.map(user => <li key={user.id}>{user.name}</li>)}
+    </ul>
+  );
+}
+```
+
+---
+
+#  **Key Points to Remember**
+
+* **Runs after render**, not during render.
+* Use **cleanup** to prevent memory leaks (timers, subscriptions).
+* Dependency array is very important → prevents unnecessary re-renders.
+* `useEffect` replaces **3 lifecycle methods** (`componentDidMount`, `componentDidUpdate`, `componentWillUnmount`).
+
+---
+#  **Controlled Component**
+
+A **controlled component** is a form element (like `<input>`, `<textarea>`, `<select>`) that is **controlled by React state**.
+
+* The **value** of the input is stored in React’s state.
+* The UI updates whenever the state changes.
+* You always need an `onChange` handler to update the state.
+
+ Basically, React is the **single source of truth** for the form data.
+
+### Example: Controlled Input
+
+```jsx
+import { useState } from "react";
+
+function ControlledForm() {
+  const [name, setName] = useState("");
+
+  return (
+    <div>
+      <input 
+        type="text" 
+        value={name} // controlled by React state
+        onChange={(e) => setName(e.target.value)} 
+      />
+      <p>You typed: {name}</p>
+    </div>
+  );
+}
+```
+
+ Advantages:
+
+* Easy validation (you always know the current value).
+* State-driven → predictable.
+* Useful when form data must be processed or stored immediately.
+
+ Disadvantage:
+
+* More code (boilerplate).
+* Every keystroke re-renders (though React is optimized).
+
+---
+
+#  **Uncontrolled Component**
+
+An **uncontrolled component** is when the form element **keeps its own internal state** — React does not control it directly.
+
+* Instead of `value`, you use `defaultValue` (or no value).
+* You access the current value using a **ref**.
+
+ Here, the **DOM itself is the source of truth**, not React.
+
+### Example: Uncontrolled Input
+
+```jsx
+import { useRef } from "react";
+
+function UncontrolledForm() {
+  const inputRef = useRef();
+
+  const handleSubmit = () => {
+    alert("You typed: " + inputRef.current.value);
+  };
+
+  return (
+    <div>
+      <input type="text" ref={inputRef} defaultValue="Hello" />
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
+  );
+}
+```
+
+ Advantages:
+
+* Less code (no `onChange`, no state updates).
+* Useful for quick forms or when integrating with non-React code (like jQuery plugins).
+
+ Disadvantages:
+
+* Harder to validate in real-time.
+* Less predictable since React doesn’t know the value until you read it.
+
+---
+
+#  **Comparison Table**
+
+| Feature         | Controlled                          | Uncontrolled                     |
+| --------------- | ----------------------------------- | -------------------------------- |
+| Source of truth | React state                         | DOM element                      |
+| Access value    | `state` variable                    | `ref.current.value`              |
+| Validation      | Easy (since value is in state)      | Harder (need to read DOM value)  |
+| Code            | More boilerplate                    | Less code                        |
+| Use case        | Complex forms, real-time validation | Simple forms, external libraries |
+
+---
+
+#  **Analogy**
+
+* **Controlled Component** → Like a parent constantly monitoring a child (React always knows what’s typed).
+* **Uncontrolled Component** → Like a child doing their own thing, and the parent only checks when needed.
+
+---
+---
+
+#  **What is a Synthetic Event?**
+
+In React, when you attach an event handler (like `onClick`, `onChange`, etc.), you don’t get the **native browser event** directly.
+Instead, React wraps it in a **SyntheticEvent** — a cross-browser wrapper around the native event.
+
+ Purpose:
+
+* To make events **work the same across all browsers**.
+* To improve **performance** with event delegation.
+* To give React more control over events (pooling, batching updates, etc.).
+
+---
+
+#  **Example**
+
+```jsx
+function App() {
+  const handleClick = (e) => {
+    console.log(e); // SyntheticEvent
+    console.log(e.nativeEvent); // Real browser event
+    console.log("Button clicked!");
+  };
+
+  return <button onClick={handleClick}>Click Me</button>;
+}
+```
+
+* `e` → React SyntheticEvent (React’s version of the event).
+* `e.nativeEvent` → The actual browser DOM event.
+
+---
+
+#  **Why Synthetic Events?**
+
+1. **Cross-browser compatibility**
+
+   * Older browsers (like IE) had different event APIs.
+   * React normalizes them so your code works everywhere.
+
+2. **Event Delegation**
+
+   * Instead of attaching events to every node, React attaches a **single event listener at the root (`document`)**.
+   * When an event happens, React figures out which component should handle it.
+   * → Faster and uses less memory.
+
+3. **Batching Updates**
+
+   * Synthetic events let React control **when state updates happen** (important for performance).
+
+---
+
+#  **Event Pooling (React ≤ v16)**
+
+In older React versions, SyntheticEvents were **pooled** for performance:
+
+* The same event object was reused across multiple events.
+* This meant you couldn’t access `e.target` after an async call.
+
+Example (old React):
+
+```jsx
+function App() {
+  const handleChange = (e) => {
+    setTimeout(() => {
+      console.log(e.target.value); // ❌ ERROR (event already nullified)
+    }, 1000);
+  };
+
+  return <input onChange={handleChange} />;
+}
+```
+
+ Fix (old way):
+
+```jsx
+const value = e.target.value;
+setTimeout(() => {
+  console.log(value); // works
+}, 1000);
+```
+
+ Note: **React 17+ no longer uses event pooling**, so now you can safely use `e` in async calls.
+
+---
+
+#  **Synthetic vs Native Event**
+
+| Feature       | SyntheticEvent        | Native DOM Event              |
+| ------------- | --------------------- | ----------------------------- |
+| Origin        | Created by React      | Created by Browser            |
+| Cross-browser | Normalized            | Different across browsers     |
+| Delegation    | Handled at root level | Attached directly to elements |
+| Access        | `e` in handler        | `e.nativeEvent`               |
+| Pooling       | Used in React ≤ 16    | N/A                           |
+
+---
+
+#  **Example: Both Events**
+
+```jsx
+function App() {
+  const handleClick = (e) => {
+    console.log("Synthetic Event:", e.type); // "click"
+    console.log("Native Event:", e.nativeEvent.type); // "click"
+  };
+
+  return <button onClick={handleClick}>Click</button>;
+}
+```
+
+---
+
+ **In short:**
+
+* **SyntheticEvent** is React’s wrapper around the browser event.
+* Makes events consistent, performant, and easier to manage.
+* You can always access the real event via `e.nativeEvent`.
+
+---
+
+---
+
+#  **What is Event Pooling?**
+
+In React (before v17), every event you handled (`onClick`, `onChange`, etc.) was a **SyntheticEvent**.
+To improve performance, React used an optimization called **event pooling**.
+
+ Event pooling means:
+
+* Instead of creating a new event object for every event, React **reused (pooled) a single event object**.
+* After your handler finished, React **cleared (nullified)** its properties (`e.target`, `e.type`, etc.) so it could recycle it for the next event.
+
+---
+
+#  **Why Event Pooling?**
+
+* Creating lots of event objects in large apps is expensive.
+* Pooling reduced **memory usage** and **GC (garbage collection) pressure**.
+
+---
+
+#  **Problem With Event Pooling**
+
+Since React cleared the event object after the handler finished, you **couldn’t use it asynchronously**.
+
+### Example (React ≤ 16):
+
+```jsx
+function App() {
+  const handleChange = (e) => {
+    setTimeout(() => {
+      console.log(e.target.value); 
+      // ❌ Error: e.target is null because event was cleared
+    }, 1000);
+  };
+
+  return <input onChange={handleChange} />;
+}
+```
+
+---
+
+#  **Solutions in Older React**
+
+###  Save the value immediately
+
+```jsx
+const handleChange = (e) => {
+  const value = e.target.value;
+  setTimeout(() => {
+    console.log(value); // works fine
+  }, 1000);
+};
+```
+
+###  Call `e.persist()` to prevent pooling
+
+```jsx
+const handleChange = (e) => {
+  e.persist(); // tells React: "don’t pool this event"
+  setTimeout(() => {
+    console.log(e.target.value); // works now
+  }, 1000);
+};
+```
+
+---
+
+# 🔹 **React 17+ Update**
+
+* Starting with **React 17**, **event pooling was removed**.
+* Now, SyntheticEvents behave like normal DOM events — you can safely use them asynchronously.
+
+So in React 17 and later:
+
+```jsx
+const handleChange = (e) => {
+  setTimeout(() => {
+    console.log(e.target.value);  
+  }, 1000);
+};
+```
+
+---
+
+# 🔹 **Summary**
+
+* **Event pooling** = React reused one event object for performance.
+* Problem: Event properties became `null` after the handler finished.
+* Fix: Use `e.persist()` or copy needed values.
+* **React 17+** → pooling is **removed**, no need to worry anymore.
+
+---
  
