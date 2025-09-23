@@ -2679,4 +2679,434 @@ function Controls({ setCount }) {
 
 ---
 
+---
+
+#  **What is Profiling in React?**
+
+* **Profiling** = measuring how your React app performs, especially **how long components take to render and re-render**.
+* Purpose: Identify **slow components or unnecessary renders** so you can optimize them.
+
+---
+
+#  **Why Profiling is Important**
+
+1. React apps can become slow if components render too often.
+2. Profiling helps you:
+
+   * Detect performance bottlenecks.
+   * Optimize expensive renders.
+   * Make apps smoother and more responsive.
+
+---
+
+#  **How to Profile in React**
+
+### **1. Using React DevTools Profiler**
+
+* Install **React Developer Tools** browser extension.
+* Go to the **Profiler** tab.
+* Steps:
+
+  1. Click **Record** to start profiling.
+  2. Interact with your app (click buttons, type, navigate).
+  3. Stop recording to see results.
+
+---
+
+### **Profiler Metrics**
+
+| Metric              | Description                                                          |
+| ------------------- | -------------------------------------------------------------------- |
+| **Commit Duration** | Time React took to render and commit changes to the DOM.             |
+| **Render Count**    | How many times a component rendered during the session.              |
+| **Wasted Time**     | Time spent rendering components that did not actually change the UI. |
+
+---
+
+### **2. Using `<Profiler>` Component in Code**
+
+React provides a **Profiler API** to programmatically measure performance.
+
+```jsx
+import { Profiler } from "react";
+
+function onRenderCallback(
+  id, // the "id" prop of the Profiler tree
+   phase, // "mount" or "update"
+  actualDuration, // time spent rendering the component
+  baseDuration, // estimated time without memoization
+  startTime, // when React started rendering
+  commitTime, // when React committed changes
+  interactions // Set of interactions
+) {
+  console.log({ id, phase, actualDuration });
+}
+
+function App() {
+  return (
+    <Profiler id="App" onRender={onRenderCallback}>
+      <MyComponent />
+    </Profiler>
+  );
+}
+```
+
+* **`id`** → unique name for the component being profiled.
+* **`onRenderCallback`** → receives metrics like **actual render time**, **mount/update phase**, etc.
+
+---
+
+#  **Optimizations After Profiling**
+
+1. **Use `React.memo()`** to avoid unnecessary re-renders.
+2. **Use `useMemo()` and `useCallback()`** to memoize expensive calculations or functions.
+3. **Split large components** into smaller ones.
+4. **Lazy-load components** with `React.lazy()` and `Suspense`.
+
+---
+
+#  **Analogy**
+
+* Profiling = **checking how long each worker takes to do their job**.
+* After seeing slow workers, you **optimize their process** or **replace them** to improve overall efficiency.
+
+---
+
+ **Key Insight:**
+
+* Profiling helps **measure performance**, not just guess.
+* Always profile before optimizing — sometimes React’s re-rendering is already very fast.
+
+---
+
+---
+
+#  **What is Throttling?**
+
+* **Throttling** = limiting how often a function can run over time.
+
+* Even if an event happens **multiple times**, the function is **only called once every X milliseconds**.
+
+* Purpose: **improve performance** by preventing a function from running too frequently.
+
+---
+
+#  **When to Use Throttling**
+
+Events that can fire **many times per second** are perfect candidates:
+
+| Event Type  | Why Throttle                                                      |
+| ----------- | ----------------------------------------------------------------- |
+| `scroll`    | Fires constantly while scrolling → heavy calculations can slow UI |
+| `resize`    | Fires many times when resizing window                             |
+| `mousemove` | Fires every tiny mouse movement                                   |
+| `keydown`   | Fires on every keypress, sometimes too frequent                   |
+
+---
+
+#  **Throttle vs Debounce**
+
+| Concept  | Throttle                                 | Debounce                                            |
+| -------- | ---------------------------------------- | --------------------------------------------------- |
+| Behavior | Run function **at most once every X ms** | Run function **after X ms of inactivity**           |
+| Example  | Scroll handler that runs every 200ms     | Search input: API call only after user stops typing |
+| Use case | Scroll, resize                           | Autocomplete, search, input validation              |
+
+---
+
+#  **Example: Throttle Function in JS**
+
+```js
+function throttle(fn, delay) {
+  let lastCall = 0;
+  return function (...args) {
+    const now = Date.now();
+    if (now - lastCall >= delay) {
+      lastCall = now;
+      fn.apply(this, args);
+    }
+  };
+}
+
+// Usage
+window.addEventListener("scroll", throttle(() => {
+  console.log("Scroll event handled!");
+}, 200));
+```
+
+* `fn` → function to throttle
+* `delay` → minimum time between calls (in ms)
+* Even if the scroll fires 100 times per second, our function runs **only once every 200ms**
+
+---
+
+#  **Example in React**
+
+```jsx
+import { useCallback } from "react";
+
+function App() {
+  const handleScroll = useCallback(
+    throttle(() => {
+      console.log("Scrolled!");
+    }, 200),
+    []
+  );
+
+  return <div onScroll={handleScroll} style={{ height: "200px", overflow: "auto" }}>
+    <div style={{ height: "1000px" }}>Scroll me</div>
+  </div>;
+}
+```
+
+* Wrapping in `useCallback` ensures **throttle function reference remains stable**.
+
+---
+
+#  **Why Throttle is Useful**
+
+1. **Reduces CPU usage** → prevents performance bottlenecks.
+2. **Prevents too many state updates** → React re-renders efficiently.
+3. **Smooth UX** → scrolls, animations, and inputs feel responsive.
+
+---
+
+#  **Analogy**
+
+* Imagine a **traffic light** that only lets **cars pass once every 5 seconds**, even if many cars arrive → throttling controls the flow of events.
+
+---
+---
+
+#  **What is `useRef`?**
+
+* `useRef` is a React Hook that lets you **persist values across renders** without triggering a re-render.
+
+* It can also be used to **access DOM elements directly**.
+
+* Think of it as a **box that holds a value**: you can put something in it and access it anytime.
+
+---
+
+#  **Syntax**
+
+```jsx
+const refContainer = useRef(initialValue);
+```
+
+* `refContainer` → an object with a single property `.current`
+* `initialValue` → optional initial value
+
+---
+
+#  **Two Main Uses of `useRef`**
+
+### **1. Accessing DOM Elements**
+
+```jsx
+import { useRef } from "react";
+
+function App() {
+  const inputRef = useRef();
+
+  const focusInput = () => {
+    inputRef.current.focus(); // access DOM node directly
+  };
+
+  return (
+    <div>
+      <input ref={inputRef} placeholder="Type here..." />
+      <button onClick={focusInput}>Focus Input</button>
+    </div>
+  );
+}
+```
+
+* `.current` points to the actual DOM element.
+* Useful for **focus, scroll, or measuring element dimensions**.
+
+---
+
+### **2. Persisting Values Across Renders**
+
+```jsx
+import { useRef, useState } from "react";
+
+function Timer() {
+  const [count, setCount] = useState(0);
+  const intervalRef = useRef();
+
+  const start = () => {
+    intervalRef.current = setInterval(() => {
+      setCount(c => c + 1);
+    }, 1000);
+  };
+
+  const stop = () => {
+    clearInterval(intervalRef.current);
+  };
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={start}>Start</button>
+      <button onClick={stop}>Stop</button>
+    </div>
+  );
+}
+```
+
+* `intervalRef.current` stores the interval ID **without causing re-renders**.
+* Unlike state, updating `.current` **does not trigger a render**.
+
+---
+
+#  **Key Points**
+
+1. **`useRef` does NOT trigger re-renders** when `.current` changes.
+2. Useful for **storing mutable values** across renders (like timers, previous values).
+3. Can reference **DOM elements** with `ref`.
+4. Works as a **persistent container** — survives through the entire component lifecycle.
+
+---
+
+#  **Common Patterns**
+
+* **Access DOM nodes:** `ref` + `current`
+* **Store previous state/value:** `prevCount = useRef(count)`
+* **Timers or intervals:** store ID to clear later
+* **Avoid re-renders** for non-UI-changing values
+
+---
+
+#  **Analogy**
+
+* `useState` → state in React, **changes trigger UI updates**
+* `useRef` → **a box that holds stuff** that you can change **without causing a UI update**
+
+---
+---
+
+#  **What is Shadow DOM?**
+
+* **Shadow DOM** is a **browser feature** that allows you to **encapsulate a part of the DOM** and **CSS**, so it’s **isolated** from the rest of the document.
+* Think of it as a **“mini DOM” inside an element**.
+* Anything inside a shadow DOM **doesn’t clash with the outer DOM** (no CSS leaks, no global ID conflicts).
+
+---
+
+#  **Why Shadow DOM Exists**
+
+1. **Encapsulation:**
+
+   * Protect your component’s styles and structure from outside interference.
+   * Prevent your styles from affecting the rest of the page.
+
+2. **Reusable Components:**
+
+   * Build custom elements (Web Components) that can be reused anywhere without worrying about CSS or JS conflicts.
+
+3. **Isolation:**
+
+   * Script and CSS inside the shadow DOM **cannot directly affect the outside DOM**, and vice versa (unless explicitly designed).
+
+---
+
+#  **Example: Creating Shadow DOM**
+
+```html
+<div id="host"></div>
+
+<script>
+  const host = document.getElementById("host");
+
+  // Attach a shadow root
+  const shadowRoot = host.attachShadow({ mode: "open" });
+
+  // Add content to the shadow DOM
+  shadowRoot.innerHTML = `
+    <style>
+      p {
+        color: red;
+        font-weight: bold;
+      }
+    </style>
+    <p>Hello from Shadow DOM!</p>
+  `;
+</script>
+```
+
+* `<div id="host">` → host element
+* `attachShadow({ mode: "open" })` → creates shadow root
+* Styles inside the shadow DOM **won’t affect the outer page**
+
+---
+
+#  **Key Points About Shadow DOM**
+
+1. **Encapsulated Styles:**
+
+   * CSS inside shadow DOM applies **only to that DOM**, not outside.
+
+2. **Encapsulated Structure:**
+
+   * DOM elements inside shadow DOM are **invisible to global CSS selectors**.
+
+3. **Mode:**
+
+   * `"open"` → shadow DOM can be accessed via `element.shadowRoot`
+   * `"closed"` → shadow DOM **cannot be accessed externally**
+
+4. **Event Handling:**
+
+   * Events inside shadow DOM **bubble up normally**, but the DOM structure is hidden.
+
+---
+
+#  **Shadow DOM vs Regular DOM**
+
+| Feature            | Shadow DOM                    | Regular DOM          |
+| ------------------ | ----------------------------- | -------------------- |
+| CSS Encapsulation  | Yes                           | No                   |
+| JS Access          | Only via `shadowRoot` if open | Direct               |
+| ID/Class Conflicts | No                            | Possible             |
+| Use Case           | Web Components                | Normal HTML elements |
+
+---
+
+#  **React and Shadow DOM**
+
+* React does **not use Shadow DOM by default**.
+* You can combine **React with Web Components** to use Shadow DOM:
+
+  * React renders inside a shadow root for encapsulation.
+
+---
+
+#  **Analogy**
+
+* **Shadow DOM** = a **room inside a house** with its own furniture and style.
+* You can decorate it however you like, and it **won’t affect the rest of the house**.
+
+---
+
  
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
