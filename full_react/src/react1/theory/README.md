@@ -3320,18 +3320,842 @@ function List({ items }) {
 
 ---
  
+---
 
+#  **What is the Diffing Algorithm?**
 
+* **Diffing Algorithm** = the method React uses to **compare the old Virtual DOM and the new Virtual DOM** to find the **minimal changes** needed to update the real DOM.
+* Purpose: **maximize performance** by avoiding full re-renders of the DOM.
 
+---
 
+# **How It Works**
 
+When the state or props change:
 
+1. React creates a **new Virtual DOM tree**.
+2. It **compares** the new tree with the previous Virtual DOM.
+3. It identifies **what changed, what stayed the same, and what can be reused**.
+4. Updates **only the changed parts** in the real DOM.
 
+---
 
+#  **Key Principles of the Diffing Algorithm**
 
+1. **Element Type Matters**
 
+   * **Same type:** React updates the element and its attributes/children.
+   * **Different type:** React **destroys the old element** and creates a new one.
 
+2. **Component Keys (Lists)**
 
+   * When rendering lists, React uses `key` to **identify which items changed, were added, or removed**.
+   * Proper keys prevent unnecessary re-renders.
 
+3. **Component as Black Box**
 
+   * If a component type hasn’t changed, React assumes its internal structure is unchanged and **recursively diffs its children**.
 
+4. **Tree-Level Comparison**
+
+   * React **compares trees level by level**, not every single node in the entire tree.
+   * This makes the diffing algorithm **O(n)** instead of O(n³).
+
+---
+
+#  **Example**
+
+```jsx
+function App({ items }) {
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+**Scenario:**
+
+* Old items: `[{id: 1, name: 'A'}, {id: 2, name: 'B'}]`
+* New items: `[{id: 1, name: 'A'}, {id: 2, name: 'C'}]`
+
+**React diffing:**
+
+1. Compares `id:1` → unchanged, no DOM update.
+2. Compares `id:2` → name changed → updates only text node.
+3. DOM update is **minimal** → efficient.
+
+---
+
+#  **Why Keys are Important**
+
+Without keys:
+
+```jsx
+{items.map(item => (
+  <li>{item.name}</li>
+))}
+```
+
+* React **cannot track elements**, may **re-create DOM nodes unnecessarily**, causing performance issues.
+
+---
+
+#  **Analogy**
+
+* Imagine comparing two spreadsheets:
+
+  * Instead of re-writing the whole sheet, you **only change the cells that are different**.
+* React does the same with the DOM using its **diffing algorithm**.
+
+---
+
+#  **Summary**
+
+* Diffing Algorithm = **core optimization in React**.
+* Compares **old vs new Virtual DOM** → minimal updates to the real DOM.
+* Works **efficiently using element types and keys**.
+* Helps React apps **stay fast even with complex UIs**.
+
+---
+
+---
+
+# **What is a Custom Hook?**
+
+* A **Custom Hook** is a **JavaScript function** whose name **starts with `use`** and can **call other hooks inside it**.
+* Purpose: **extract reusable stateful logic** from components.
+* Helps avoid **code duplication** and keeps components clean.
+
+---
+
+#  **Rules for Custom Hooks**
+
+1. Name **must start with `use`** (React uses this to identify hook usage).
+2. Can use **other hooks inside it** (like `useState`, `useEffect`, `useRef`).
+3. Must follow **Rules of Hooks**:
+
+   * Only call hooks at the **top level**, not inside loops or conditions.
+
+---
+
+#  **Example 1: Custom Hook for Window Width**
+
+```jsx
+import { useState, useEffect } from "react";
+
+// Custom Hook
+function useWindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return width;
+}
+
+// Using the Custom Hook
+function App() {
+  const width = useWindowWidth();
+
+  return <h1>Window width: {width}px</h1>;
+}
+```
+
+✅ Benefits:
+
+* Logic for tracking window width is **reusable**.
+* `App` stays **clean and simple**.
+
+---
+
+#  **Example 2: Custom Hook for Fetching Data**
+
+```jsx
+import { useState, useEffect } from "react";
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        setData(json);
+        setLoading(false);
+      });
+  }, [url]);
+
+  return { data, loading };
+}
+
+// Usage
+function App() {
+  const { data, loading } = useFetch("https://jsonplaceholder.typicode.com/todos/1");
+
+  if (loading) return <p>Loading...</p>;
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+}
+```
+
+* Any component can now **reuse `useFetch`** without duplicating fetch logic.
+
+---
+
+#  **Why Use Custom Hooks?**
+
+1. **Reusability:** Share logic across multiple components.
+2. **Readability:** Keep components simple and declarative.
+3. **Testing:** Easier to test logic independently from UI.
+4. **Separation of Concerns:** Component focuses on rendering; hook focuses on logic.
+
+---
+
+#  **Analogy**
+
+* **Component:** A car that drives (UI + logic).
+* **Custom Hook:** A reusable engine you can put in many cars (logic only, no UI).
+
+---
+
+💡 **Key Insight:**
+
+* Custom Hooks **do not render anything by themselves**; they just **provide reusable logic** for components.
+* They can manage **state, side effects, refs**, etc., just like built-in hooks.
+
+---
+ 
+
+---
+
+#  **What is Context API?**
+
+* **Context API** allows you to **pass data through the component tree** without manually passing props at every level.
+* It’s **built into React** (no external libraries needed).
+* Useful for **global state**, such as:
+
+  * Theme (dark/light mode)
+  * User authentication
+  * Language settings
+  * Cart in e-commerce apps
+
+---
+
+#  **When to Use Context API**
+
+* Avoid **prop drilling** when multiple components need the same data.
+* Not recommended for **frequent changing values** like counters — better to use state hooks or libraries like Redux for high-frequency updates.
+
+---
+
+#  **Steps to Use Context API**
+
+### **1. Create Context**
+
+```jsx
+import React, { createContext } from "react";
+
+export const ThemeContext = createContext();
+```
+
+---
+
+### **2. Provide Context Value**
+
+```jsx
+import { ThemeContext } from "./ThemeContext";
+
+function App() {
+  const theme = "dark"; // value to share
+
+  return (
+    <ThemeContext.Provider value={theme}>
+      <Header />
+      <Main />
+    </ThemeContext.Provider>
+  );
+}
+```
+
+* `ThemeContext.Provider` wraps components that need access.
+* `value` prop = data to share.
+
+---
+
+### **3. Consume Context**
+
+#### **Option 1: Using `useContext` Hook**
+
+```jsx
+import { useContext } from "react";
+import { ThemeContext } from "./ThemeContext";
+
+function Header() {
+  const theme = useContext(ThemeContext);
+
+  return <h1>Current theme: {theme}</h1>;
+}
+```
+
+#### **Option 2: Using `Context.Consumer`**
+
+```jsx
+import { ThemeContext } from "./ThemeContext";
+
+function Header() {
+  return (
+    <ThemeContext.Consumer>
+      {theme => <h1>Current theme: {theme}</h1>}
+    </ThemeContext.Consumer>
+  );
+}
+```
+
+* Preferred modern approach: **`useContext`**.
+
+---
+
+#  **Example with Theme Toggle**
+
+```jsx
+import React, { createContext, useState, useContext } from "react";
+
+const ThemeContext = createContext();
+
+function App() {
+  const [theme, setTheme] = useState("light");
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar() {
+  return <ThemeButton />;
+}
+
+function ThemeButton() {
+  const { theme, setTheme } = useContext(ThemeContext);
+
+  return (
+    <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+      Current theme: {theme}
+    </button>
+  );
+}
+```
+
+* **No prop drilling** from `App → Toolbar → ThemeButton`.
+* `ThemeButton` directly consumes context.
+
+---
+
+#  **Key Points**
+
+1. **Provider** → wraps components and supplies data.
+2. **Consumer (`useContext`)** → reads the data wherever needed.
+3. Avoid **overusing context** for frequently changing state — can lead to unnecessary re-renders.
+4. Works with **multiple contexts** at the same time.
+
+---
+
+#  **Analogy**
+
+* **Context API** = **a global bulletin board** in a company:
+
+  * Any employee (component) can **read messages** (data) directly without passing messages from manager to manager (prop drilling).
+
+---
+---
+
+#  **What are React Portals?**
+
+* **Portals** provide a way to **render a child component into a DOM node that exists outside the DOM hierarchy of the parent component**.
+* Useful when you want to **break out of container boundaries** but still maintain React’s state and event system.
+
+---
+
+#  **Why Use Portals?**
+
+1. **Modals/Popups:**
+
+   * Ensure the modal appears on top of all other content, even outside the parent container.
+
+2. **Tooltips/Dropdowns:**
+
+   * Avoid being clipped by parent `overflow: hidden` or CSS stacking context issues.
+
+3. **Maintains React Context:**
+
+   * The portal still behaves as a normal React child in terms of **events, state, and context**.
+
+---
+
+#  **Basic Syntax**
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+
+function Modal({ children }) {
+  return ReactDOM.createPortal(
+    <div className="modal">{children}</div>,
+    document.getElementById("modal-root") // target DOM node
+  );
+}
+
+function App() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <Modal>
+        <p>This is a modal rendered using a Portal!</p>
+      </Modal>
+    </div>
+  );
+}
+```
+
+* `ReactDOM.createPortal(child, container)`
+
+  * `child` → React element to render
+  * `container` → DOM node outside parent hierarchy
+
+---
+
+#  **HTML Structure Example**
+
+```html
+<div id="root"></div>       <!-- normal React app -->
+<div id="modal-root"></div>  <!-- portal target -->
+```
+
+* React App mounts normally in `#root`.
+* Modal renders in `#modal-root` using a portal.
+
+---
+
+#  **Key Points**
+
+1. **Event Handling:**
+
+   * Events **propagate through the React tree** even if rendered outside the DOM hierarchy.
+
+2. **Styling:**
+
+   * Can be styled independently of parent containers.
+
+3. **Use Cases:**
+
+   * **Modals, tooltips, dropdowns, notifications, floating UI elements**.
+
+---
+
+# 🔹 **Analogy**
+
+* Think of a portal as a **teleporter**:
+
+  * You’re inside your house (component tree), but you teleport something (modal) **outside your house to another room** (different DOM node) without losing connection to your family (React state/context).
+
+---
+ Perfect! Let’s break down **Types of Routers in React** and how they work.
+
+---
+
+# 🔹 **What is Routing in React?**
+
+* Routing in React is the process of **navigating between different views or pages** in a single-page application (SPA).
+
+* Unlike traditional apps, SPAs **do not reload the whole page** — routing **changes the UI dynamically**.
+
+* React uses **React Router** (most common library) for routing.
+
+---
+
+# 🔹 **Types of Routers in React Router**
+
+React Router provides different router types depending on the environment and needs:
+
+---
+
+### **1. BrowserRouter**
+
+* Uses **HTML5 history API** (`pushState`, `replaceState`) for navigation.
+* Produces **clean URLs** like `/home`, `/about`.
+* Most commonly used in **modern web apps**.
+
+```jsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+```
+
+✅ **Pros:** Clean URLs, works well with server-side setups.
+❌ **Cons:** Requires server configuration to handle 404 and redirect all routes to index.html.
+
+---
+
+### **2. HashRouter**
+
+* Uses **URL hash** (`#`) to keep UI in sync with URL.
+* URL looks like `/home#about`.
+* No server configuration required.
+
+```jsx
+import { HashRouter, Routes, Route } from "react-router-dom";
+
+function App() {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </HashRouter>
+  );
+}
+```
+
+✅ **Pros:** Works without server setup (good for GitHub Pages).
+❌ **Cons:** URLs have `#`, not ideal for SEO.
+
+---
+
+### **3. MemoryRouter**
+
+* Keeps history in **memory** (does not read/write to URL).
+* Useful for **testing** or **non-browser environments** (React Native, Electron).
+
+```jsx
+import { MemoryRouter, Routes, Route } from "react-router-dom";
+
+function App() {
+  return (
+    <MemoryRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+```
+
+✅ **Pros:** Perfect for unit testing and environments without browser.
+❌ **Cons:** URL is not visible in the browser.
+
+---
+
+### **4. StaticRouter**
+
+* Used **mainly in server-side rendering (SSR)**.
+* Doesn’t manipulate browser history, only **provides context for rendering routes**.
+
+```jsx
+import { StaticRouter, Routes, Route } from "react-router-dom/server";
+
+function App({ location }) {
+  return (
+    <StaticRouter location={location}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </StaticRouter>
+  );
+}
+```
+
+✅ **Pros:** Works perfectly for SSR (like Next.js custom routing).
+❌ **Cons:** Not meant for client-side navigation.
+
+---
+
+#  **Comparison Table**
+
+| Router Type   | URL Style         | Use Case                          | SEO Friendly |
+| ------------- | ----------------- | --------------------------------- | ------------ |
+| BrowserRouter | `/home`           | Web apps with server setup        | Yes          |
+| HashRouter    | `/#/home`         | Apps without server config        | No           |
+| MemoryRouter  | Not visible       | Testing, non-browser environments | N/A          |
+| StaticRouter  | Server-controlled | Server-side rendering             | Yes          |
+
+---
+
+# **Analogy**
+
+* **BrowserRouter** = normal roads with proper addresses.
+* **HashRouter** = GPS waypoints using hashes (`#`).
+* **MemoryRouter** = driving in a private track (memory only).
+* **StaticRouter** = blueprint for rendering a map on the server.
+
+---
+
+---
+
+#  **What is `useMemo`?**
+
+* `useMemo` is a **React Hook** that **memoizes a computed value**.
+* It **only recalculates the value when its dependencies change**, instead of on every render.
+* Purpose: **avoid expensive calculations on every render**.
+
+---
+
+#  **Syntax**
+
+```jsx
+const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
+
+* First argument → a **function that returns a value**
+* Second argument → **dependency array**
+
+  * Value is recomputed **only if a dependency changes**
+
+---
+
+#  **When to Use `useMemo`**
+
+1. **Expensive Calculations:**
+
+   * Example: heavy loops, large data processing, complex operations.
+
+2. **Derived Data:**
+
+   * When you need **a value derived from state or props** that shouldn’t be recalculated every render.
+
+3. **Performance Optimization:**
+
+   * Helps **prevent unnecessary re-renders** when passing values to child components.
+
+---
+
+#  **Example 1: Expensive Calculation**
+
+```jsx
+import React, { useState, useMemo } from "react";
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+
+  // Expensive function
+  const factorial = (n) => {
+    console.log("Calculating factorial...");
+    return n <= 0 ? 1 : n * factorial(n - 1);
+  };
+
+  // Memoize factorial calculation
+  const fact = useMemo(() => factorial(count), [count]);
+
+  return (
+    <div>
+      <h1>Factorial of {count} is {fact}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Type here" />
+    </div>
+  );
+}
+```
+
+* Without `useMemo`, **factorial recalculates on every render** (even when typing in input).
+* With `useMemo`, factorial recalculates **only when `count` changes**.
+
+---
+
+#  **Example 2: Optimizing Child Component**
+
+```jsx
+import React, { useState, useMemo } from "react";
+
+const Child = React.memo(({ data }) => {
+  console.log("Child rendered");
+  return <p>{data}</p>;
+});
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+
+  const computedData = useMemo(() => {
+    return `You clicked ${count} times`;
+  }, [count]);
+
+  return (
+    <div>
+      <Child data={computedData} />
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+    </div>
+  );
+}
+```
+
+* `Child` only re-renders **when `computedData` changes**, not when typing in the input.
+
+---
+
+#  **Key Points**
+
+1. `useMemo` **memoizes a value**, not a function.
+2. Dependencies array is **critical**: memoization works based on it.
+3. Useful for **expensive calculations and derived data**.
+4. Works **well with `React.memo`** to prevent unnecessary child re-renders.
+
+---
+
+#  **Analogy**
+
+* Imagine `useMemo` as a **calculator with memory**:
+
+  * If you ask the same question again, it **gives the stored answer** instead of recalculating.
+  * Only recalculates when the **inputs change**.
+
+---
+---
+
+#  **What is a Polyfill?**
+
+* A **polyfill** is a piece of code (usually JavaScript) that **implements a feature that the browser does not support natively**.
+* It’s like a **backup plan** for older browsers.
+* Purpose: **make modern JavaScript features work everywhere**, even in older environments.
+
+---
+
+# **Why Polyfills are Needed**
+
+Different browsers support different features of JavaScript (ES6, ES7, etc).
+
+* Example:
+
+  * Newer browsers support `Promise`, `fetch()`, `Object.assign()`, `Array.includes()`…
+  * Older browsers (like IE11) don’t support them.
+
+ Without polyfills, your app may **break** in older browsers.
+
+---
+
+#  **Examples of Polyfills**
+
+### 1. `Array.prototype.includes()` Polyfill
+
+```js
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function (value) {
+    return this.indexOf(value) !== -1;
+  };
+}
+```
+
+* If the browser doesn’t support `.includes()`, this polyfill **defines it** using `.indexOf()`.
+
+---
+
+### 2. `fetch()` Polyfill
+
+Older browsers don’t support `fetch()`.
+
+* Solution: **`whatwg-fetch`** library provides a polyfill.
+
+```bash
+npm install whatwg-fetch
+```
+
+```js
+import "whatwg-fetch";
+
+fetch("https://api.example.com/data")
+  .then(res => res.json())
+  .then(data => console.log(data));
+```
+
+---
+
+### 3. `Promise` Polyfill
+
+```bash
+npm install core-js
+```
+
+```js
+import "core-js/es/promise";
+
+new Promise((resolve) => resolve("Polyfill working!"))
+  .then(console.log);
+```
+
+---
+
+#  **How Polyfills Work**
+
+* Check if the feature exists in the browser.
+* If not → **add a compatible version using older JS code**.
+* If yes → do nothing (so modern browsers aren’t slowed down).
+
+---
+
+#  **Popular Polyfill Libraries**
+
+1. **core-js** → covers most modern JS features (used by Babel).
+2. **whatwg-fetch** → polyfill for `fetch()`.
+3. **regenerator-runtime** → polyfill for async/await.
+
+---
+
+#  **How Polyfills are Added in React (Vite/Webpack apps)**
+
+* Usually handled automatically by **Babel + core-js**.
+* You can configure it in `babel.config.js`:
+
+```js
+module.exports = {
+  presets: [
+    ["@babel/preset-env", {
+      useBuiltIns: "usage",
+      corejs: 3
+    }]
+  ]
+};
+```
+
+ This ensures **only the required polyfills** are included.
+
+---
+
+#  **Analogy**
+
+Think of polyfills like **dictionary translations**:
+
+* You want to speak modern English (`includes`, `fetch`, `Promise`),
+* but your friend only understands old English.
+* So you give them a **dictionary (polyfill)** that translates modern words into older equivalents.
+
+---
+
+ Quick Recap:
+
+* **Polyfill = Adds missing features.**
+* **Used for compatibility in old browsers.**
+* **Implemented via core-js, Babel, whatwg-fetch, etc.**
+
+---
+ 
