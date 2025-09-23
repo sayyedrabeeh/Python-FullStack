@@ -3091,10 +3091,235 @@ function Timer() {
 ---
 
  
+---
 
+#  **What is an Error Boundary?**
+
+* An **Error Boundary** is a **React component that catches JavaScript errors anywhere in its child component tree**.
+* It **prevents the entire React app from crashing** when an error occurs.
+* Think of it as a **safety net** around parts of your UI.
+
+---
+
+#  **Key Points**
+
+1. **Error boundaries catch errors** during:
+
+   * Rendering
+   * Lifecycle methods
+   * Constructors of the whole tree below them
+2. **They do NOT catch errors** in:
+
+   * Event handlers
+   * Asynchronous code (`setTimeout`, `fetch`)
+   * Server-side rendering
+
+---
+
+#  **Creating an Error Boundary**
+
+To create one, you must use a **class component** with at least **two lifecycle methods**:
+
+```jsx
+import React from "react";
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  // Catch errors in child components
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  // Log error info (optional)
+  componentDidCatch(error, info) {
+    console.error("Error caught:", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+```
+
+---
+
+#  **Using an Error Boundary**
+
+```jsx
+import ErrorBoundary from "./ErrorBoundary";
+import MyComponent from "./MyComponent";
+
+function App() {
+  return (
+    <ErrorBoundary>
+      <MyComponent />
+    </ErrorBoundary>
+  );
+}
+```
+
+* If `MyComponent` throws an error during render, **ErrorBoundary will catch it**.
+* Instead of the whole app crashing, you see `"Something went wrong."`.
+
+---
+
+#  **Multiple Error Boundaries**
+
+* You can wrap **different parts of your app** in separate error boundaries.
+* This way, **one component crashing won’t affect other parts**:
+
+```jsx
+<ErrorBoundary>
+  <Header />
+</ErrorBoundary>
+
+<ErrorBoundary>
+  <MainContent />
+</ErrorBoundary>
+
+<ErrorBoundary>
+  <Footer />
+</ErrorBoundary>
+```
+
+---
+
+#  **Why Use Error Boundaries**
+
+1. Improves **user experience** — app doesn’t crash entirely.
+2. Helps **developers log and debug** errors.
+3. Makes your app **resilient** in production.
+
+---
+
+#  **Analogy**
+
+* Error Boundary = **airbag in a car**.
+* If there’s a crash (error), the airbag catches the impact, protecting the passengers (rest of the app).
+
+---
+
+ **Key Notes**
+
+* Must be a **class component**, not functional.
+* Can only catch errors **in child components**, not itself.
+* Can be combined with **fallback UI** and **logging services** like Sentry.
+
+---
+---
+
+#  **What is Reconciliation?**
+
+* **Reconciliation** = the process React uses to **update the DOM** when your app’s state or props change.
+* React **does not re-render the entire DOM**. Instead, it calculates the **minimal set of changes** needed and updates only those.
+* This is why React is **fast and efficient**.
+
+---
+
+#  **How Reconciliation Works**
+
+1. **Virtual DOM**:
+
+   * React keeps a lightweight **copy of the DOM** in memory (Virtual DOM).
+   * When state or props change, React creates a **new Virtual DOM tree**.
+
+2. **Diffing Algorithm**:
+
+   * React compares the **new Virtual DOM** with the **previous Virtual DOM**.
+   * It identifies which parts have **changed, added, or removed**.
+
+3. **DOM Update**:
+
+   * React updates only the parts of the **real DOM that changed**, not the entire tree.
+   * This minimizes **expensive DOM operations**.
+
+---
+
+#  **Key Points of Diffing Algorithm**
+
+* **Same Component Type**:
+
+  * Update the component and its children.
+* **Different Component Type**:
+
+  * Remove the old component and create a new one.
+* **Keys in Lists**:
+
+  * React uses `key` props to **match list items** across renders efficiently.
+  * Without keys, React may **re-render unnecessarily**.
+
+---
+
+#  **Example of Reconciliation**
+
+```jsx
+function App() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div>
+      <h1>{count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+**Process when button clicked:**
+
+1. `count` changes → new Virtual DOM created.
+2. React compares old `<h1>{count}</h1>` with new one.
+3. Only the **text node inside `<h1>` changes**.
+4. React updates **just that text node** in the real DOM.
+
+* No full page re-render → fast and efficient.
+
+---
+
+#  **Importance of Keys in Lists**
+
+```jsx
+function List({ items }) {
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+* `key` helps React **match old and new elements**.
+* Without keys, React may **re-create DOM elements unnecessarily**, hurting performance.
+
+---
+
+#  **Analogy**
+
+* **Virtual DOM** = a **mock-up of your house**.
+* You plan changes in the mock-up first, then **only renovate the rooms that need it**, instead of tearing down the whole house.
+
+---
+
+#  **Summary**
+
+* Reconciliation = React’s **process of updating the DOM efficiently**.
+* Uses **Virtual DOM + diffing algorithm**.
+* Keys are **essential for lists**.
+* Avoids unnecessary DOM manipulations → **better performance**.
+
+---
  
-
-
 
 
 
