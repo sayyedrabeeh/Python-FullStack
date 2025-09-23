@@ -2789,3 +2789,1064 @@ Tree
         └── Huffman Tree (for compression)
 ```
 
+ 
+
+---
+
+##  What is a Binary Search Tree (BST)?
+
+A **Binary Search Tree (BST)** is a type of **binary tree** with an extra rule:
+
+* For every node:
+
+  * All values in the **left subtree** are **smaller** than the node’s value.
+  * All values in the **right subtree** are **greater** than the node’s value.
+
+ This property makes **searching, insertion, and deletion efficient** (on average **O(log n)** time).
+
+---
+
+##  Rules of BST
+
+1. Each node has at most 2 children (like any binary tree).
+2. Left child < Parent < Right child.
+3. No duplicates (in most implementations).
+
+---
+
+##  Example BST
+
+```
+        50
+       /  \
+     30    70
+    / \   / \
+  20  40 60  80
+```
+
+* Left of 50 → smaller values (30, 20, 40)
+* Right of 50 → greater values (70, 60, 80)
+
+---
+
+## Operations in BST
+
+### 1. **Search** 
+
+* Start at the root.
+* If the key < root → search left.
+* If the key > root → search right.
+* If equal → found.
+
+**Example:** Search 60
+
+* 60 > 50 → go right
+* 60 < 70 → go left → found 
+
+---
+
+### 2. **Insert** 
+
+* Always insert as a **leaf node**.
+* Use BST property to find the correct position.
+
+**Example:** Insert 65
+
+* 65 > 50 → go right
+* 65 < 70 → go left
+* 65 > 60 → insert as right child of 60.
+
+---
+
+### 3. **Delete** 
+
+Deletion has 3 cases:
+
+1. **Leaf node** → just remove.
+2. **One child** → replace with child.
+3. **Two children** → replace with **inorder successor** (smallest in right subtree) or **inorder predecessor** (largest in left subtree).
+
+---
+
+## 🖥️ Python Implementation of BST
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BST:
+    def __init__(self):
+        self.root = None
+
+    # Insert
+    def insert(self, root, key):
+        if root is None:
+            return Node(key)
+        if key < root.key:
+            root.left = self.insert(root.left, key)
+        elif key > root.key:
+            root.right = self.insert(root.right, key)
+        return root
+
+    # Search
+    def search(self, root, key):
+        if root is None or root.key == key:
+            return root
+        if key < root.key:
+            return self.search(root.left, key)
+        return self.search(root.right, key)
+
+    # Inorder Traversal (Sorted Order)
+    def inorder(self, root):
+        if root:
+            self.inorder(root.left)
+            print(root.key, end=" ")
+            self.inorder(root.right)
+
+# Example Usage
+tree = BST()
+root = None
+for val in [50, 30, 20, 40, 70, 60, 80]:
+    root = tree.insert(root, val)
+
+print("Inorder traversal (sorted):")
+tree.inorder(root)
+```
+
+---
+ 
+---
+
+**Why use BST?**
+
+* Efficient search, insert, delete → **O(log n)** (if balanced).
+* Maintains sorted order.
+* Used in databases, compilers, and many algorithms.
+
+---
+---
+
+#  1. Deletion in **Binary Search Tree (BST)**
+
+In BST, the structure must always follow:
+**Left < Root < Right.**
+
+That’s why deletion has **3 cases**:
+
+###  Case 1: Delete a **leaf node** (no children)
+
+* Just remove it.
+  Example: Delete `20` from
+
+```
+      50
+     /  \
+   30    70
+  / \
+ 20 40
+```
+
+→ `20` is simply removed.
+
+---
+
+###  Case 2: Delete node with **1 child**
+
+* Replace the node with its child.
+  Example: Delete `30` from
+
+```
+      50
+     /  \
+   30    70
+     \
+     40
+```
+
+→ `30` is replaced with `40`.
+
+---
+
+###  Case 3: Delete node with **2 children**
+
+* Replace the node with either:
+
+  * **Inorder Successor** (smallest in right subtree), OR
+  * **Inorder Predecessor** (largest in left subtree).
+
+Example: Delete `50` from
+
+```
+        50
+       /  \
+     30    70
+    / \   / \
+  20 40 60  80
+```
+
+* Inorder successor of `50` = `60`.
+* Replace `50` with `60`, then delete the original `60`.
+
+Result:
+
+```
+        60
+       /  \
+     30    70
+    / \      \
+  20 40      80
+```
+
+---
+### BST `delete` code:
+
+```python
+def delete(self, node, key):
+    if not node:
+        return None
+    if key < node.data:  # go left
+        node.left = self.delete(node.left, key)
+    elif key > node.data:  # go right
+        node.right = self.delete(node.right, key)
+    else:  # found the node
+        # Case 1 & 2: node has 0 or 1 child
+        if not node.left:
+            return node.right
+        elif not node.right:
+            return node.left
+
+        # Case 3: 2 children → find inorder successor
+        min_node = self.min_value(node.right)
+        node.data = min_node.data
+        node.right = self.delete(node.right, min_node.data)
+    return node
+```
+
+💡 Here:
+
+* `self.min_value(node.right)` finds the **inorder successor**.
+* Replaces the node’s data.
+* Deletes the duplicate from right subtree.
+
+---
+
+# 2. Deletion in a **Binary Tree (BT)**
+
+ Remember: A **binary tree** doesn’t have the BST property.
+So we can’t use left/right comparisons.
+Instead, we delete like this:
+
+### Steps:
+
+1. Find the node to delete.
+2. Find the **deepest node** (last node in level order).
+3. Replace target node’s data with deepest node’s data.
+4. Delete the deepest node.
+
+---
+
+###  BT `delete` code:
+
+```python
+def delete(self, value):
+    if not self.root:
+        return None
+    # Special case: only root
+    if self.root.data == value and not self.root.left and not self.root.right:
+        self.root = None
+        return
+
+    queue = [self.root]
+    node_to_delete = None
+
+    # Step 1: Find node to delete + track nodes
+    while queue:
+        current = queue.pop(0)
+        if current.data == value:
+            node_to_delete = current
+        if current.left:
+            queue.append(current.left)
+        if current.right:
+            queue.append(current.right)
+
+    # Step 2: Replace with deepest node
+    if node_to_delete:
+        deepest, parent = self.find_deepest_and_perant()
+        node_to_delete.data = deepest.data
+
+        # Step 3: Remove deepest node
+        if parent.right == deepest:
+            parent.right = None
+        elif parent.left == deepest:
+            parent.left = None
+```
+
+---
+
+##  Difference Between BST Delete vs BT Delete
+
+| Feature         | **BST Deletion**                                              | **BT Deletion**                              |
+| --------------- | ------------------------------------------------------------- | -------------------------------------------- |
+| Structure Rule  | Must satisfy **Left < Root < Right**                          | No order, only binary shape                  |
+| Cases           | Leaf, 1 child, 2 children (use inorder successor/predecessor) | Replace with **deepest node**                |
+| Search for node | Uses BST property (fast: O(log n))                            | Level order traversal (O(n))                 |
+| Use case        | Searching, ordered data (databases, maps)                     | General tree structures (heaps, parse trees) |
+
+---
+ 
+---
+
+#  AVL Tree – Introduction
+
+* **AVL Tree** = Self-balancing **Binary Search Tree (BST)**.
+ 
+* Ensures that the tree height is always **O(log n)** for efficient searching, insertion, and deletion.
+
+---
+
+#  Key Property
+
+For **every node**:
+
+```
+Balance Factor (BF) = height(left subtree) – height(right subtree)
+```
+
+* Allowed values: **–1, 0, +1**
+* If BF goes outside this range, we **rebalance the tree** using **rotations**.
+
+---
+
+#  Why AVL Tree?
+
+ Normal BST can become skewed like a linked list if you insert sorted data:
+
+```
+Insert: 10, 20, 30, 40, 50
+BST becomes:
+10
+  \
+   20
+     \
+      30
+        \
+         40
+           \
+            50
+```
+
+* Height = `n`
+* Search complexity = **O(n)** ❌
+
+But AVL keeps it balanced:
+
+```
+        30
+       /  \
+     20    40
+    /        \
+  10          50
+```
+
+* Height ≈ **log(n)**
+* Search complexity = **O(log n)** ✅
+
+---
+
+#  Rotations in AVL
+
+Whenever balance factor goes out of range, we use **rotations**:
+
+1. **Right Rotation (LL Rotation)**
+
+   * Case: Heavy on **left-left** side.
+   * Fix by rotating right.
+
+   Example: Insert `[30, 20, 10]`
+
+   ```
+       30
+      /
+     20
+    /
+   10
+   ```
+
+   After Right Rotation:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+2. **Left Rotation (RR Rotation)**
+
+   * Case: Heavy on **right-right** side.
+   * Fix by rotating left.
+
+   Example: Insert `[10, 20, 30]`
+
+   ```
+    10
+      \
+       20
+         \
+          30
+   ```
+
+   After Left Rotation:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+3. **Left-Right Rotation (LR Rotation)**
+
+   * Case: Heavy on **left-right** side.
+   * Fix: First rotate **left**, then **right**.
+
+   Example: Insert `[30, 10, 20]`
+
+   ```
+       30
+      /
+     10
+       \
+        20
+   ```
+
+   After rotations:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+4. **Right-Left Rotation (RL Rotation)**
+
+   * Case: Heavy on **right-left** side.
+   * Fix: First rotate **right**, then **left**.
+
+   Example: Insert `[10, 30, 20]`
+
+   ```
+     10
+       \
+        30
+       /
+      20
+   ```
+
+   After rotations:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+#  Complexity
+
+| Operation | BST (Worst Case) | AVL Tree |
+| --------- | ---------------- | -------- |
+| Search    | O(n)             | O(log n) |
+| Insert    | O(n)             | O(log n) |
+| Delete    | O(n)             | O(log n) |
+
+---
+
+#  Python Implementation (Simplified)
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.height = 1  # new node height = 1
+
+class AVLTree:
+    def get_height(self, root):
+        return root.height if root else 0
+
+    def get_balance(self, root):
+        return self.get_height(root.left) - self.get_height(root.right) if root else 0
+
+    def right_rotate(self, z):
+        y = z.left
+        T3 = y.right
+        y.right = z
+        z.left = T3
+        z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        return y
+
+    def left_rotate(self, z):
+        y = z.right
+        T2 = y.left
+        y.left = z
+        z.right = T2
+        z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        return y
+
+    def insert(self, root, key):
+        # Normal BST insert
+        if not root:
+            return Node(key)
+        elif key < root.key:
+            root.left = self.insert(root.left, key)
+        else:
+            root.right = self.insert(root.right, key)
+
+        # Update height
+        root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
+
+        # Get balance factor
+        balance = self.get_balance(root)
+
+        # Balance cases
+        if balance > 1 and key < root.left.key:  # LL
+            return self.right_rotate(root)
+        if balance < -1 and key > root.right.key:  # RR
+            return self.left_rotate(root)
+        if balance > 1 and key > root.left.key:  # LR
+            root.left = self.left_rotate(root.left)
+            return self.right_rotate(root)
+        if balance < -1 and key < root.right.key:  # RL
+            root.right = self.right_rotate(root.right)
+            return self.left_rotate(root)
+
+        return root
+
+    def pre_order(self, root):
+        if root:
+            print(root.key, end=" ")
+            self.pre_order(root.left)
+            self.pre_order(root.right)
+
+
+# Example
+tree = AVLTree()
+root = None
+nums = [10, 20, 30, 40, 50, 25]
+for num in nums:
+    root = tree.insert(root, num)
+
+print("Preorder traversal of AVL tree:")
+tree.pre_order(root)
+```
+
+Output:
+
+```
+Preorder traversal of AVL tree:
+30 20 10 25 40 50
+```
+
+---
+
+ 
+
+---
+
+#  **Balanced vs Unbalanced Tree**
+
+---
+
+##  **Balanced Tree**
+
+A **balanced tree** is a tree where the **height of the left and right subtrees of every node differ by at most 1 (or within some limit depending on definition)**.
+
+* Height = number of edges on the longest path from node to a leaf.
+* Ensures tree height is **O(log n)** → search, insert, delete are efficient.
+
+ Example of a **balanced binary tree**:
+
+```
+        15
+       /  \
+      10   20
+     / \   / \
+    8  12 18 25
+```
+
+* Left and right subtrees of each node differ by at most 1.
+* Height = 3 → near optimal.
+* Search = O(log n).
+
+---
+
+##  **Unbalanced Tree**
+
+An **unbalanced tree** is one where the height difference between left and right subtrees is **large** (greater than 1 in most definitions).
+
+ Example of an **unbalanced binary tree** (skewed tree):
+
+```
+    10
+      \
+       20
+         \
+          30
+            \
+             40
+```
+
+* Looks like a **linked list**.
+* Height = n (worst case).
+* Search = O(n) → very inefficient.
+
+---
+
+##  Types of Balanced Trees
+
+Some special trees are designed to **self-balance**:
+
+1. **AVL Tree** – balance factor in range `[-1, 1]`
+2. **Red-Black Tree** – balance using colors (used in maps/sets)
+3. **B-Tree / B+ Tree** – used in databases, keeps disk access efficient
+4. **Splay Tree** – brings frequently used nodes closer
+
+---
+
+##  Why Balance Matters?
+
+Imagine searching in:
+
+* **Balanced BST (height \~ log n):**
+
+  * n = 1,000,000 → height \~ 20
+  * Search in **\~20 steps**
+* **Unbalanced BST (height \~ n):**
+
+  * n = 1,000,000 → height = 1,000,000
+  * Search may take **\~1,000,000 steps** 😱
+
+So balancing is **critical for performance**.
+
+---
+
+ **Summary in a Chart**
+
+| Feature           | Balanced Tree          | Unbalanced Tree         |
+| ----------------- | ---------------------- | ----------------------- |
+| Height            | O(log n)               | O(n)                    |
+| Search Efficiency | Fast (log n)           | Slow (linear)           |
+| Example           | AVL, Red-Black, B-Tree | Skewed BST              |
+| Shape             | Compact, symmetric     | Tilted, linked-list-ish |
+
+---
+
+ 
+---
+
+#  **Splay Tree**
+
+##  What is a Splay Tree?
+
+A **Splay Tree** is a **self-adjusting binary search tree (BST)**.
+
+* After every operation (**search, insert, delete**), the accessed node is **splayed (moved) to the root** using special tree rotations.
+* The idea is: frequently accessed nodes should be **closer to the root** for faster future access.
+
+---
+
+##  Key Operations in Splay Trees
+
+Every operation works like a normal BST, **but after that we splay the node to the root**.
+
+### 1. **Splaying (core operation)**
+
+Moves a node `x` to the root using rotations.
+There are 3 main cases:
+
+####  Zig (Single Rotation)
+
+* Used when `x` is a child of the root.
+* Rotate once.
+
+```
+    x             p
+   /               \
+  p        →        x
+```
+
+####  Zig-Zig (Double Rotation - same direction)
+
+* `x` and parent `p` are both **left children** or both **right children**.
+* Rotate parent, then rotate grandparent.
+
+```
+      g
+     /
+    p
+   /
+  x          →    x is brought to top with 2 rotations
+```
+
+####  Zig-Zag (Double Rotation - opposite direction)
+
+* `x` is a left child, but parent is a right child (or vice versa).
+* Rotate twice (like AVL double rotation).
+
+```
+      g
+     /
+    p
+     \
+      x       →    Rotate p, then g
+```
+
+---
+
+### 2. **Search**
+
+* Search like BST.
+* Then **splay the found node (or last accessed node) to root**.
+* Makes future searches faster.
+
+### 3. **Insert**
+
+* Insert like BST.
+* Then **splay the newly inserted node to root**.
+
+### 4. **Delete**
+
+* Splay the node to delete to the root.
+* Remove root.
+* Merge left and right subtrees (using splay).
+
+---
+
+##  Why Use Splay Trees?
+
+✅ **Adaptive performance** → frequently used nodes are faster to access.
+✅ **Amortized O(log n)** time for operations.
+✅ Simple compared to AVL/Red-Black (no balancing factors or colors).
+
+❌ **Worst-case per operation** can be O(n) (if tree skews), but amortized is efficient.
+❌ Not good when all nodes are equally important (AVL or Red-Black are better then).
+
+---
+
+##  Example (Search Operation)
+
+Let’s say we search for `30` in this tree:
+
+```
+        20
+       /  \
+      10   40
+           / \
+         30  50
+```
+
+1. Found `30`.
+2. Perform **splaying** → `30` becomes root:
+
+```
+        30
+       /  \
+     20    40
+    /       \
+   10        50
+```
+
+Now `30` is at the root → future searches for `30` are **O(1)**.
+
+---
+
+##  Python Implementation (Simplified)
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class SplayTree:
+    def right_rotate(self, x):
+        y = x.left
+        x.left = y.right
+        y.right = x
+        return y
+
+    def left_rotate(self, x):
+        y = x.right
+        x.right = y.left
+        y.left = x
+        return y
+
+    def splay(self, root, key):
+        if not root or root.key == key:
+            return root
+
+        # Key lies in left subtree
+        if key < root.key:
+            if not root.left:
+                return root
+            if key < root.left.key:  # Zig-Zig
+                root.left.left = self.splay(root.left.left, key)
+                root = self.right_rotate(root)
+            elif key > root.left.key:  # Zig-Zag
+                root.left.right = self.splay(root.left.right, key)
+                if root.left.right:
+                    root.left = self.left_rotate(root.left)
+            return root if not root.left else self.right_rotate(root)
+
+        # Key lies in right subtree
+        else:
+            if not root.right:
+                return root
+            if key > root.right.key:  # Zig-Zig
+                root.right.right = self.splay(root.right.right, key)
+                root = self.left_rotate(root)
+            elif key < root.right.key:  # Zig-Zag
+                root.right.left = self.splay(root.right.left, key)
+                if root.right.left:
+                    root.right = self.right_rotate(root.right)
+            return root if not root.right else self.left_rotate(root)
+
+    def insert(self, root, key):
+        if not root:
+            return Node(key)
+        root = self.splay(root, key)
+        if root.key == key:
+            return root
+        new_node = Node(key)
+        if key < root.key:
+            new_node.right = root
+            new_node.left = root.left
+            root.left = None
+        else:
+            new_node.left = root
+            new_node.right = root.right
+            root.right = None
+        return new_node
+```
+
+---
+
+##  Summary
+
+* **Splay Tree = Self-adjusting BST**
+* Recently/frequently accessed nodes move to root → faster future access
+* Uses **Zig, Zig-Zig, Zig-Zag rotations**
+* Operations: Insert, Search, Delete → all **amortized O(log n)**
+
+
+
+---
+ 
+
+---
+
+##  What is a **Trie**?
+
+A **Trie** (pronounced “try”), also known as a **prefix tree** or **digital search tree**, is a **specialized tree data structure** used to store and efficiently retrieve **strings** (often words in a dictionary).
+
+Instead of storing a whole word in a single node, a Trie stores **characters of the word** across multiple nodes.
+
+---
+
+##  Key Characteristics of Trie
+
+1. **Nodes represent characters**, not whole words.
+2. **Root node** is usually empty (doesn’t hold a character).
+3. Each path from the root → leaf (or marked node) represents a **word**.
+4. Supports **fast prefix-based search** (ex: autocomplete).
+5. Space-efficient when storing many words with shared prefixes.
+
+---
+
+##  Example
+
+Suppose we want to insert the words:
+👉 `"cat"`, `"car"`, `"dog"`
+
+### Trie Structure:
+
+```
+(root)
+  ├── c
+  │    └── a
+  │         ├── t  (word ends here -> "cat")
+  │         └── r  (word ends here -> "car")
+  └── d
+       └── o
+            └── g (word ends here -> "dog")
+```
+
+---
+
+##  Operations in Trie
+
+1. **Insertion**
+
+   * Insert character by character into nodes.
+   * If character path exists, reuse it (don’t duplicate).
+   * Mark end of word.
+
+   Example: inserting `"cat"` creates path:
+   `(root) → c → a → t [end]`
+
+2. **Search**
+
+   * Traverse character by character.
+   * If full word exists and ends at marked node → ✅ Found.
+   * If path breaks → ❌ Not found.
+
+   Example: `"car"` → found.
+   `"cap"` → not found.
+
+3. **Prefix Search (Autocomplete)**
+
+   * Check if given prefix exists.
+   * Return all words that share it.
+   * Ex: prefix `"ca"` → returns `"cat"`, `"car"`.
+
+4. **Deletion**
+
+   * Unmark word’s end node.
+   * Remove unused nodes (if no other word uses them).
+
+---
+
+##  Time Complexity
+
+* **Insertion**: O(L)
+* **Search**: O(L)
+* **Deletion**: O(L)
+  where **L = length of the word**
+
+Faster than using a hash map when you want **prefix-based lookups**.
+
+---
+
+##  Applications of Trie
+
+* **Autocomplete / Search suggestions** (Google, search bars).
+* **Spell checkers**.
+* **IP routing (longest prefix matching)**.
+* **Word games** (Scrabble, Boggle).
+* **Text prediction in keyboards**.
+
+---
+
+**Comparison with BST/HashMap**
+
+* BST stores words fully → slower for prefix search.
+* HashMap stores full words → prefix search inefficient.
+* Trie is **designed for prefixes**, so it wins in autocomplete and dictionary problems.
+
+
+---
+
+#  Types of Trie
+
+A **Trie** is a tree-like data structure used mainly for **strings / sequences**.
+Depending on how it’s implemented or optimized, we have different types:
+
+---
+
+## 1. **Standard Trie (Prefix Tree)**
+
+* Every character of the word is stored in a **separate node**.
+* Each path from root → leaf = one word.
+* Fast lookups for prefixes.
+
+🔹 Example (words: `car, cat`):
+
+```
+(root)
+ └── c
+      └── a
+           ├── r  (car)
+           └── t  (cat)
+```
+
+ Pros: Simple, easy for prefix search.
+ Cons: Can use a lot of memory.
+
+---
+
+## 2. **Compressed Trie (Radix Tree / Patricia Trie)**
+
+* Instead of storing **one character per node**, compress chains into a **string**.
+* Saves space when many words share long prefixes.
+
+🔹 Example (words: `car, cat`):
+
+```
+(root)
+ └── ca
+      ├── r  (car)
+      └── t  (cat)
+```
+
+ Pros: Less memory.
+ Cons: Slightly complex insert/delete.
+
+---
+
+## 3. **Suffix Trie**
+
+* Stores all **suffixes of a string**.
+* Useful for substring search, pattern matching.
+
+🔹 Example (string: `"banana"`)
+Suffixes = `banana, anana, nana, ana, na, a`
+
+Trie structure will contain paths for each suffix.
+
+ Pros: Very fast substring search.
+ Cons: Huge memory (O(n²) nodes).
+
+---
+
+## 4. **Compact Suffix Trie (Suffix Tree)**
+
+* Optimized version of Suffix Trie → compresses repeated parts.
+* Much more space-efficient (O(n)).
+
+---
+
+## 5. **Aho-Corasick Trie (Automaton Trie)**
+
+* Builds a **finite state machine (FSM)** using Trie + failure links.
+* Used for **multi-pattern string matching** (searching multiple words in a text at once).
+
+🔹 Example: Searching `he, she, hers, his` in `"ushers"` → one pass finds all matches.
+
+---
+
+#  Summary (Types of Trie)
+
+| Type                    | Use Case                       | Space Usage | Speed   |
+| ----------------------- | ------------------------------ | ----------- | ------- |
+| Standard Trie           | Prefix search, autocomplete    | High        | Fast    |
+| Compressed / Radix Trie | Memory-efficient prefix search | Medium      | Fast    |
+| Suffix Trie             | Substring search               | Very High   | Fast    |
+| Suffix Tree (Compact)   | Substring search (efficient)   | Moderate    | Fast    |
+| Aho-Corasick Automaton  | Multi-pattern matching         | Moderate    | Fastest |
+
+---
+
+ 
