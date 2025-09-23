@@ -3756,4 +3756,97 @@ Faster than using a hash map when you want **prefix-based lookups**.
 * HashMap stores full words → prefix search inefficient.
 * Trie is **designed for prefixes**, so it wins in autocomplete and dictionary problems.
 
+
 ---
+
+#  Types of Trie
+
+A **Trie** is a tree-like data structure used mainly for **strings / sequences**.
+Depending on how it’s implemented or optimized, we have different types:
+
+---
+
+## 1. **Standard Trie (Prefix Tree)**
+
+* Every character of the word is stored in a **separate node**.
+* Each path from root → leaf = one word.
+* Fast lookups for prefixes.
+
+🔹 Example (words: `car, cat`):
+
+```
+(root)
+ └── c
+      └── a
+           ├── r  (car)
+           └── t  (cat)
+```
+
+ Pros: Simple, easy for prefix search.
+ Cons: Can use a lot of memory.
+
+---
+
+## 2. **Compressed Trie (Radix Tree / Patricia Trie)**
+
+* Instead of storing **one character per node**, compress chains into a **string**.
+* Saves space when many words share long prefixes.
+
+🔹 Example (words: `car, cat`):
+
+```
+(root)
+ └── ca
+      ├── r  (car)
+      └── t  (cat)
+```
+
+ Pros: Less memory.
+ Cons: Slightly complex insert/delete.
+
+---
+
+## 3. **Suffix Trie**
+
+* Stores all **suffixes of a string**.
+* Useful for substring search, pattern matching.
+
+🔹 Example (string: `"banana"`)
+Suffixes = `banana, anana, nana, ana, na, a`
+
+Trie structure will contain paths for each suffix.
+
+ Pros: Very fast substring search.
+ Cons: Huge memory (O(n²) nodes).
+
+---
+
+## 4. **Compact Suffix Trie (Suffix Tree)**
+
+* Optimized version of Suffix Trie → compresses repeated parts.
+* Much more space-efficient (O(n)).
+
+---
+
+## 5. **Aho-Corasick Trie (Automaton Trie)**
+
+* Builds a **finite state machine (FSM)** using Trie + failure links.
+* Used for **multi-pattern string matching** (searching multiple words in a text at once).
+
+🔹 Example: Searching `he, she, hers, his` in `"ushers"` → one pass finds all matches.
+
+---
+
+#  Summary (Types of Trie)
+
+| Type                    | Use Case                       | Space Usage | Speed   |
+| ----------------------- | ------------------------------ | ----------- | ------- |
+| Standard Trie           | Prefix search, autocomplete    | High        | Fast    |
+| Compressed / Radix Trie | Memory-efficient prefix search | Medium      | Fast    |
+| Suffix Trie             | Substring search               | Very High   | Fast    |
+| Suffix Tree (Compact)   | Substring search (efficient)   | Moderate    | Fast    |
+| Aho-Corasick Automaton  | Multi-pattern matching         | Moderate    | Fastest |
+
+---
+
+ 
