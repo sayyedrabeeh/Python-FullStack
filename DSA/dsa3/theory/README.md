@@ -3096,5 +3096,268 @@ def delete(self, value):
 | Use case        | Searching, ordered data (databases, maps)                     | General tree structures (heaps, parse trees) |
 
 ---
-
  
+---
+
+#  AVL Tree – Introduction
+
+* **AVL Tree** = Self-balancing **Binary Search Tree (BST)**.
+ 
+* Ensures that the tree height is always **O(log n)** for efficient searching, insertion, and deletion.
+
+---
+
+#  Key Property
+
+For **every node**:
+
+```
+Balance Factor (BF) = height(left subtree) – height(right subtree)
+```
+
+* Allowed values: **–1, 0, +1**
+* If BF goes outside this range, we **rebalance the tree** using **rotations**.
+
+---
+
+#  Why AVL Tree?
+
+ Normal BST can become skewed like a linked list if you insert sorted data:
+
+```
+Insert: 10, 20, 30, 40, 50
+BST becomes:
+10
+  \
+   20
+     \
+      30
+        \
+         40
+           \
+            50
+```
+
+* Height = `n`
+* Search complexity = **O(n)** ❌
+
+But AVL keeps it balanced:
+
+```
+        30
+       /  \
+     20    40
+    /        \
+  10          50
+```
+
+* Height ≈ **log(n)**
+* Search complexity = **O(log n)** ✅
+
+---
+
+#  Rotations in AVL
+
+Whenever balance factor goes out of range, we use **rotations**:
+
+1. **Right Rotation (LL Rotation)**
+
+   * Case: Heavy on **left-left** side.
+   * Fix by rotating right.
+
+   Example: Insert `[30, 20, 10]`
+
+   ```
+       30
+      /
+     20
+    /
+   10
+   ```
+
+   After Right Rotation:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+2. **Left Rotation (RR Rotation)**
+
+   * Case: Heavy on **right-right** side.
+   * Fix by rotating left.
+
+   Example: Insert `[10, 20, 30]`
+
+   ```
+    10
+      \
+       20
+         \
+          30
+   ```
+
+   After Left Rotation:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+3. **Left-Right Rotation (LR Rotation)**
+
+   * Case: Heavy on **left-right** side.
+   * Fix: First rotate **left**, then **right**.
+
+   Example: Insert `[30, 10, 20]`
+
+   ```
+       30
+      /
+     10
+       \
+        20
+   ```
+
+   After rotations:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+4. **Right-Left Rotation (RL Rotation)**
+
+   * Case: Heavy on **right-left** side.
+   * Fix: First rotate **right**, then **left**.
+
+   Example: Insert `[10, 30, 20]`
+
+   ```
+     10
+       \
+        30
+       /
+      20
+   ```
+
+   After rotations:
+
+   ```
+       20
+      /  \
+    10    30
+   ```
+
+---
+
+#  Complexity
+
+| Operation | BST (Worst Case) | AVL Tree |
+| --------- | ---------------- | -------- |
+| Search    | O(n)             | O(log n) |
+| Insert    | O(n)             | O(log n) |
+| Delete    | O(n)             | O(log n) |
+
+---
+
+#  Python Implementation (Simplified)
+
+```python
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.height = 1  # new node height = 1
+
+class AVLTree:
+    def get_height(self, root):
+        return root.height if root else 0
+
+    def get_balance(self, root):
+        return self.get_height(root.left) - self.get_height(root.right) if root else 0
+
+    def right_rotate(self, z):
+        y = z.left
+        T3 = y.right
+        y.right = z
+        z.left = T3
+        z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        return y
+
+    def left_rotate(self, z):
+        y = z.right
+        T2 = y.left
+        y.left = z
+        z.right = T2
+        z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
+        y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
+        return y
+
+    def insert(self, root, key):
+        # Normal BST insert
+        if not root:
+            return Node(key)
+        elif key < root.key:
+            root.left = self.insert(root.left, key)
+        else:
+            root.right = self.insert(root.right, key)
+
+        # Update height
+        root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
+
+        # Get balance factor
+        balance = self.get_balance(root)
+
+        # Balance cases
+        if balance > 1 and key < root.left.key:  # LL
+            return self.right_rotate(root)
+        if balance < -1 and key > root.right.key:  # RR
+            return self.left_rotate(root)
+        if balance > 1 and key > root.left.key:  # LR
+            root.left = self.left_rotate(root.left)
+            return self.right_rotate(root)
+        if balance < -1 and key < root.right.key:  # RL
+            root.right = self.right_rotate(root.right)
+            return self.left_rotate(root)
+
+        return root
+
+    def pre_order(self, root):
+        if root:
+            print(root.key, end=" ")
+            self.pre_order(root.left)
+            self.pre_order(root.right)
+
+
+# Example
+tree = AVLTree()
+root = None
+nums = [10, 20, 30, 40, 50, 25]
+for num in nums:
+    root = tree.insert(root, num)
+
+print("Preorder traversal of AVL tree:")
+tree.pre_order(root)
+```
+
+Output:
+
+```
+Preorder traversal of AVL tree:
+30 20 10 25 40 50
+```
+
+---
+
