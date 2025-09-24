@@ -18,7 +18,8 @@ import ReactDOM from 'react-dom/client';
 // import Calc from './react2/calculator_usecontext';
 // import Addtwonum from './react2/usememo';
 // import Todo from './react2/todolist';
-import App from './react3/pratical/counter';
+// import App from './react3/pratical/counter';
+import App from './react3/pratical/test';
 
 import { Provider } from 'react-redux'
 
