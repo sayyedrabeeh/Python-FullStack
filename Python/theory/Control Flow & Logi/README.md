@@ -1,17 +1,4 @@
-# Control Flow & Logi
- 
- ## Topics
-
-* If, Elif, Else
-* For, While loops
-* break, continue, pass
-* assert, with context manager
-* Ternary operator, match-case (Python 3.10+)
-* Operators:
-  * Arithmetic, Comparison, Logical
-  * Identity (is), Membership (in)
-  * Bitwise, Assignment
-
+# Control Flow & Log
 
 # If, Elif, Else
 

@@ -2,21 +2,7 @@
 
 ### topics
  
-* Variables and Constants
-* Data Types (int, float, str, bool, None)
-* Type Casting (int(), str(), etc.)
-* Truthy vs Falsy values
-* Call by Sharing vs Call by Reference
-* id(), type()
-* Python Virtual Machine (PVM)
-* Python Memory Management
-* Garbage Collection (including Cyclic GC)
-* Global Interpreter Lock (GIL)
-* CPython, Pyc file, eval()
-* PEP8 (Style guide)
-* Python Environments (Virtual Environment, Conda, etc.)
-* Environmental Variables
-* Python Execution Flow
+
 
 
 #  Variables and Constants

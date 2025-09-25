@@ -1,20 +1,6 @@
 # Functions
  ## Topics
-
-
-* Defining and Calling Functions
-* Parameters, Return values
-* Default Args, Keyword Args
-* *args, **kwargs (Variadic functions)
-* First-class functions
-* Anonymous Functions (lambda)
-* Higher-order functions
-* Closures
-* Pure vs Impure Functions
-* Currying
-* Type Annotations (def add(a: int, b: int) -> int)
-* Decorators
-
+ 
 # Defining and Calling Functions
 
  

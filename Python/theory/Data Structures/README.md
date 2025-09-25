@@ -1,15 +1,5 @@
 # Data Structures
-
-## Topics 
-
-* String (methods, immutability)
-* List (mutable, slicing, methods)
-* List Comprehension
-* Tuples, Nested Tuples
-* Set (union, intersection, uniqueness)
-* Dictionary (key-value pairs)
-* Unpacking, Destructuring
-* Collections module (namedtuple, defaultdict, Counter)
+ 
 
 #  String (methods, immutability)
 
