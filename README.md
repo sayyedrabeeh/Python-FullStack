@@ -31,4 +31,4 @@ Here’s a simple path you can follow:
 
 ---
 
-✅ By completing these steps, you’ll be ready to work as a **Full-Stack Python Developer** with confidence.  
+   
