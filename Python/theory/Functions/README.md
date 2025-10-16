@@ -1,5 +1,7 @@
 # Functions
  ## Topics
+ 
+
 
 
 * Defining and Calling Functions
@@ -15,7 +17,6 @@
 * Type Annotations (def add(a: int, b: int) -> int)
 * Decorators
 * Django CORS 
-
 # Defining and Calling Functions
 
  

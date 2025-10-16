@@ -30,5 +30,3 @@ Here’s a simple path you can follow:
 - [ ] **Step 7:** Practice deploying apps to the cloud (Heroku, AWS, or similar).  
 
 ---
-
-✅ By completing these steps, you’ll be ready to work as a **Full-Stack Python Developer** with confidence.  
