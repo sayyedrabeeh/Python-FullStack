@@ -236,3 +236,261 @@ class ActiveUser(User):
 * **Proxy models** are lightweight, perfect for custom querysets or methods without schema changes.
 
 ---
+---
+
+##  Setup
+
+Assume we have a simple model in `models.py`:
+
+```python
+from django.db import models
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    published_date = models.DateField()
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+```
+
+Now open your Django shell:
+
+```bash
+python manage.py shell
+```
+
+Then import your models:
+
+```python
+from myapp.models import Author, Book
+```
+
+---
+
+##  ORM Questions and Answers
+
+### 1. **Create new records**
+
+**Question:** How do you create a new author in Django ORM?
+
+**Answer:**
+
+```python
+author = Author.objects.create(name="J.K. Rowling", age=58)
+```
+
+ *This saves the author directly to the database.*
+
+---
+
+### 2. **Retrieve all records**
+
+**Question:** How do you get all authors?
+
+**Answer:**
+
+```python
+authors = Author.objects.all()
+print(authors)
+```
+
+---
+
+### 3. **Filter records**
+
+**Question:** How do you get all authors older than 40?
+
+**Answer:**
+
+```python
+authors = Author.objects.filter(age__gt=40)
+```
+
+ `__gt` means “greater than”.
+Other options include:
+
+* `__lt` → less than
+* `__gte` → greater than or equal
+* `__icontains` → case-insensitive substring search
+
+---
+
+### 4. **Get a single object**
+
+**Question:** How do you get one author named “J.K. Rowling”?
+
+**Answer:**
+
+```python
+author = Author.objects.get(name="J.K. Rowling")
+```
+
+ If no match or multiple matches are found, Django raises an error.
+
+---
+
+### 5. **Update a record**
+
+**Question:** How do you update an author’s age?
+
+**Answer:**
+
+```python
+author = Author.objects.get(name="J.K. Rowling")
+author.age = 59
+author.save()
+```
+
+ Always call `.save()` to commit changes.
+
+---
+
+### 6. **Delete a record**
+
+**Question:** How do you delete an author?
+
+**Answer:**
+
+```python
+author = Author.objects.get(name="J.K. Rowling")
+author.delete()
+```
+
+---
+
+### 7. **Query related objects**
+
+**Question:** How do you get all books written by “J.K. Rowling”?
+
+**Answer:**
+
+```python
+author = Author.objects.get(name="J.K. Rowling")
+books = Book.objects.filter(author=author)
+```
+
+Or shorter:
+
+```python
+books = author.book_set.all()
+```
+
+ Django automatically creates a reverse relation `book_set`.
+
+---
+
+### 8. **Ordering results**
+
+**Question:** How do you get all authors ordered by name (A–Z)?
+
+**Answer:**
+
+```python
+authors = Author.objects.order_by('name')
+```
+
+Descending order:
+
+```python
+authors = Author.objects.order_by('-name')
+```
+
+---
+
+### 9. **Count records**
+
+**Question:** How many authors are there?
+
+**Answer:**
+
+```python
+Author.objects.count()
+```
+
+---
+
+### 10. **Get distinct values**
+
+**Question:** How do you get all unique author ages?
+
+**Answer:**
+
+```python
+Author.objects.values_list('age', flat=True).distinct()
+```
+
+---
+
+### 11. **Filter using related model fields**
+
+**Question:** How do you get all books where the author is older than 50?
+
+**Answer:**
+
+```python
+books = Book.objects.filter(author__age__gt=50)
+```
+
+ Use double underscores (`__`) to query across relationships.
+
+---
+
+### 12. **Aggregation (Sum, Avg, etc.)**
+
+**Question:** How do you get the average age of authors?
+
+**Answer:**
+
+```python
+from django.db.models import Avg
+Author.objects.aggregate(Avg('age'))
+```
+
+Output example:
+
+```python
+{'age__avg': 47.3}
+```
+
+---
+
+### 13. **Check if an object exists**
+
+**Question:** How do you check if an author named “George Orwell” exists?
+
+**Answer:**
+
+```python
+Author.objects.filter(name="George Orwell").exists()
+```
+
+Returns `True` or `False`.
+
+---
+
+### 14. **Limit results**
+
+**Question:** How do you get only the first 3 authors?
+
+**Answer:**
+
+```python
+Author.objects.all()[:3]
+```
+
+---
+
+### 15. **Exclude certain records**
+
+**Question:** How do you get all authors except those younger than 30?
+
+**Answer:**
+
+```python
+Author.objects.exclude(age__lt=30)
+```
+
+---
+ 
