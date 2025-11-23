@@ -1,8 +1,11 @@
 # Python (programming language)
 
-Python is a high-level, general-purpose programming language.Python is dynamically type-checked (Dynamic typing : Types are checked at runtime ,will check the type only when it needs to use it) and garbage-collected (Python automatically manages memory) .
+Python is a high-level, general-purpose programming language.Python is dynamically type-checked 
+(Dynamic typing : Types are checked at runtime ,will check the type only when it needs to use it) 
+and garbage-collected (Python automatically manages memory) .
 
-It supports multiple programming paradigms, including structured.object-oriented and functional programming.
+It supports multiple programming paradigms, including structured.object-oriented and functional 
+programming.
 
 
 ## Datatypes
@@ -11,7 +14,10 @@ It supports multiple programming paradigms, including structured.object-oriented
 
 ### Primitive Datatypes
 
-simple values of data.are typically immutable, meaning their value cannot change after they are created.for storing single values and performing basic operations. In Python, all data values are objects. That means Python has no primitive data types and all the types are reference types. However, Python has built-in data types.
+simple values of data.are typically immutable, meaning their value cannot change after they are 
+created.for storing single values and performing basic operations. In Python, all data values are 
+objects. That means Python has no primitive data types and all the types are reference types. 
+However, Python has built-in data types.
 python has four primitive variable types:
 ---
  1.Integers
@@ -22,34 +28,44 @@ python has four primitive variable types:
 
 ### Collection Datatpe
 
-Python has 4 built-in data structures that can be used to hold a collection of objects, they are list, tuple, set, and dictionary. They can be distinguished into mutable, immutable, set type, and mappings respectively.
-collection types are a subset of non-primitive types.so, all collections are non-primitive, but not all non-primitive types are collections.
+Python has 4 built-in data structures that can be used to hold a collection of objects, they are 
+list, tuple, set, and dictionary. They can be distinguished into mutable, immutable, set type, and 
+mappings respectively.
+collection types are a subset of non-primitive types.so, all collections are non-primitive, but 
+not all non-primitive types are collections.
 
 #### Lists
 
-Lists are ordered mutable sequences that can be changed after they have been created by adding, removing, or changing objects. Lists can be declared by using square brackets “[]”
+Lists are ordered mutable sequences that can be changed after they have been created by adding, 
+removing, or changing objects. Lists can be declared by using square brackets “[]”
         eg: a = [1,2,3,4,5]
 
 #### Tuples
 
-Tuples are ordered immutable sequence that stores multiple items in a single variable, meaning it cannot be changed after it has been created. A tuple can be created by a pair of parenthesis and comma-separated objects,
+Tuples are ordered immutable sequence that stores multiple items in a single variable, meaning it 
+cannot be changed after it has been created. A tuple can be created by a pair of parenthesis and 
+comma-separated objects,
         eg: a = (1,2,3,4,5)
 
-Single object tuples are referred to as a singleton. It can be created by using a trailing comma after the object, or else python identifies it as a string or integer.
+Single object tuples are referred to as a singleton. It can be created by using a trailing comma 
+after the object, or else python identifies it as a string or integer.
         eg : a = (10,)
 Commas are what makes a tuple, as parentheses are optional.
         eg : a = 1,2,3,4
 
 #### Sets
 
- that do not support duplicated objects and as such, they cannot be indexed. ets can be created by using curly brackets using the set() constructor.
+ that do not support duplicated objects and as such, they cannot be indexed. ets can be created by 
+ using curly brackets using the set() constructor.
 
         eg : a = {a,b,c,d}
          a = set((1,2,3,4,5))
 
 #### Dictionary
 
-A dictionary is an unordered set of key/value pairs. Each unique key has a value.duplicates are not allowed, as a dictionary cannot have multiple items with the same key, because the values will overwrite and the most recent value will be returned.
+A dictionary is an unordered set of key/value pairs. Each unique key has a value.duplicates are 
+not allowed, as a dictionary cannot have multiple items with the same key, because the values will 
+overwrite and the most recent value will be returned.
         eg : a = {
             1:2,
             3:4
@@ -57,35 +73,41 @@ A dictionary is an unordered set of key/value pairs. Each unique key has a value
 
 ### Non-Primitive Data Types
 
-Non-primitive data types, also known as complex or composite data types, are data types that are derived from primitive data types. They can store multiple values or more complex structures of data.
-Unlike primitive types, non-primitive data types are mutable, meaning their contents can be changed.
+Non-primitive data types, also known as complex or composite data types, are data types that are 
+derived from primitive data types. They can store multiple values or more complex structures of 
+data.
+Unlike primitive types, non-primitive data types are mutable, meaning their contents can be 
+changed.
 
 
 ##  Type Casting
 
 
-Type casting, or type conversion, refers to converting a variable from one data type to another in Python. For 
-example, if you have a variable containing a string number, such as "27", you may need to convert it to an integer 
-before performing arithmetic operations. Otherwise, Python will interpret "27" as a string and add it to other 
+Type casting, or type conversion, refers to converting a variable from one data type to another in 
+Python. For example, if you have a variable containing a string number, such as "27", you may need 
+to convert it to an integer before performing arithmetic operations. Otherwise, Python will 
+interpret "27" as a string and add it to other 
 strings instead of performing arithmetic.
 
 Python provides two types of type casting:
 ---
   1 : Explicit Type Casting: Where the programmer manually converts one data type into another.
-  2 : Implicit Type Casting (Automatic Type Conversion): Where Python automatically converts one data type to 
-      another to prevent data loss or errors.
+  2 : Implicit Type Casting (Automatic Type Conversion): Where Python automatically converts one
+  data type to another to prevent data loss or errors.
 ---
 
 
 ## F-String
 
- efficient way to interpolate variables, objects, and expressions directly into strings. By prefixing a string with 
+ efficient way to interpolate variables, objects, and expressions directly into strings. By 
+ prefixing a string with 
  f or F, you can embed expressions within curly braces ({}), which are evaluated at runtime.
- This makes f-strings faster and more readable compared to older approaches like the modulo (%) operator or the 
+ This makes f-strings faster and more readable compared to older approaches like the modulo (%) 
+ operator or the 
  string .format() method.
 ---
-Before f-strings (introduced in Python 3.6), there were three main ways to do string interpolation (i.e., inserting 
-variables into strings):
+Before f-strings (introduced in Python 3.6), there were three main ways to do string interpolation 
+(i.e., inserting variables into strings):
 <pre>
   1 : % Operator (Old-style formatting)
         name = "Alice"
@@ -105,17 +127,17 @@ variables into strings):
         message = "My name is " + name + " and I am " + str(age) + " years old."
         print(message)
 </pre>
-F-strings joined the party in Python 3.6 with PEP 498. Also called formatted string literals,You can embed almost 
-any Python expression in an f-string. This allows you to do some nifty things.
+F-strings joined the party in Python 3.6 with PEP 498. Also called formatted string literals,You 
+can embed almost any Python expression in an f-string. This allows you to do some nifty things.
 ---
 > f"{2 * 21}"
-When Python runs this f-string, it multiplies 2 by 21 and immediately interpolates the resulting value into the 
-final string
+When Python runs this f-string, it multiplies 2 by 21 and immediately interpolates the resulting 
+value into the final string
 
-
-You can use a variable name followed by an equal sign (=) in an f-string to create a self-documented expression. 
-When Python runs the f-string, it builds an expression-like string containing the variable’s name, the equal sign, 
-and the variable’s current value.
+You can use a variable name followed by an equal sign (=) in an f-string to create a 
+self-documented expression. 
+When Python runs the f-string, it builds an expression-like string containing the variable’s name, 
+the equal sign, and the variable’s current value.
 
 <pre>
 variable = "Some mysterious value"
@@ -129,20 +151,22 @@ print(f"{variable = }")
 > customizing  classes using special methods, also known as magic methods or dunder methods. 
 
 
-A special method is a method whose name starts and ends with a double underscore. These methods have special 
-meanings for Python.Python automatically calls magic methods as a response to certain operations, such as 
-instantiation, sequence indexing, attribute managing, and much more, All these methods support specific feature.
+A special method is a method whose name starts and ends with a double underscore. These methods 
+have special meanings for Python.Python automatically calls magic methods as a response to certain 
+operations, such as instantiation, sequence indexing, attribute managing, and much more, All these 
+methods support specific feature.
 
 ---
->A method that is called implicitly by Python to execute a certain operation on a type, such as addition. Such 
-methods have names starting and ending with double underscores.
+>A method that is called implicitly by Python to execute a certain operation on a type, such as 
+addition. Such methods have names starting and ending with double underscores.
 
 ###  <u> **.__init__()** </u>
 
 
-When creating custom classes in Python, probably the first and most common method that you implement is .__init__
-(). This method works as an initializer because it allows you to provide initial values to any instance attributes 
-that you define in your classes.
+When creating custom classes in Python, probably the first and most common method that you
+implement is .__init__
+(). This method works as an initializer because it allows you to provide initial values to any 
+instance attributes that you define in your classes.
 
 
 <pre>
@@ -161,12 +185,15 @@ that you define in your classes.
 
 ### <u> **__new__()** </u>
 
-When you call a class constructor to create a new instance of a class, Python implicitly calls the .__new__() 
-method as the first step in the instantiation process. This method is responsible for creating and returning a new 
-empty object of the underlying class. Python then passes the just-created object to .__init__() for initialization.
+When you call a class constructor to create a new instance of a class, Python implicitly calls 
+the .__new__() 
+method as the first step in the instantiation process. This method is responsible for creating and 
+returning a new 
+empty object of the underlying class. Python then passes the just-created object to .__init__() 
+for initialization.
 
-The default implementation of .__new__() is enough for most practical use cases. So, you probably won’t need to 
-write a custom implementation of .__new__() in most cases.
+The default implementation of .__new__() is enough for most practical use cases. So, you probably 
+won’t need to write a custom implementation of .__new__() in most cases.
 
 
 
@@ -185,14 +212,17 @@ you can use .__new__() to create subclasses of immutable types, such as int, flo
 
 </pre>
 
-In this example, you’ll note that .__new__() is a class method because it gets the current class (cls) rather than 
-the current instance (self) as an argument.
+In this example, you’ll note that .__new__() is a class method because it gets the current class 
+(cls) rather than the current instance (self) as an argument.
 
-Then, you run three steps. First, you create a new instance of the current class, cls, by calling .__new__() on the 
-float class through the built-in super() function. This call creates a new instance of float and initializes it 
+Then, you run three steps. First, you create a new instance of the current class, cls, by calling .
+__new__() on the 
+float class through the built-in super() function. This call creates a new instance of float and 
+initializes it 
 using value as an argument.
 
-Then, you customize the new instance by dynamically attaching a .unit attribute to it. Finally, you return the new 
+Then, you customize the new instance by dynamically attaching a .unit attribute to it. Finally, 
+you return the new 
 instance to meet the default behavior of .__new__().
 
 
@@ -213,16 +243,20 @@ True
 ### <u>**.__str__() v/s .__repr__()**   </u>
 
 
-If you want to provide user-friendly output, then you can use the .__str__() method. On the other hand, when you 
-need to provide developer-friendly output, then you can use the .__repr__() method. These methods support two 
+If you want to provide user-friendly output, then you can use the .__str__() method. On the other 
+hand, when you 
+need to provide developer-friendly output, then you can use the .__repr__() method. These methods 
+support two 
 different string representations for Python objects.
 
 ---
 
-The .__str__() special method returns a human-readable string representation of the object.Python calls this method 
+The .__str__() special method returns a human-readable string representation of the object.Python 
+calls this method 
 when you call the built-in str() function, passing an instance of the class as an argument.
 
-Python also calls this method when you use the instance as an argument to the print() and format() functions. The 
+Python also calls this method when you use the instance as an argument to the print() and format() 
+functions. The 
 method is meant to provide a string that’s understandable.
 
 <pre>
@@ -254,14 +288,16 @@ I'm Jane Doe, and I'm 25 years old.
 </pre>
 
 
-When you use an instance of Person as an argument to str() or print(), you get a string representation of the 
+When you use an instance of Person as an argument to str() or print(), you get a string 
+representation of the 
 object on your screen.
 
 ---
 
 
 
-The .__repr__() method returns a string representation of an object that’s targeted at the developer.
+The .__repr__() method returns a string representation of an object that’s targeted at the 
+developer.
 
 
 <pre>
@@ -292,13 +328,17 @@ Person(name='John Doe', age=35)
 
 ### <u> **operator overloading.** </u>
 
-Operator overloading means providing additional functionality to the operators. You can do this with most built-in 
-types and their specific supported operators. However, that’s not all you can do with the special methods that 
-support Python operators. You can also use these methods to support some operators in your custom classes.
+Operator overloading means providing additional functionality to the operators. You can do this 
+with most built-in 
+types and their specific supported operators. However, that’s not all you can do with the special 
+methods that 
+support Python operators. You can also use these methods to support some operators in your custom 
+classes.
 
-Operator overloading means giving extended meaning to standard operators (like +, -, *, etc.) when used with custom objects (your own classes).
+Operator overloading means giving extended meaning to standard operators (like +, -, *, etc.) when 
+used with custom objects (your own classes).
 
-#### 🧮 Operator Overloading Methods in Python
+####  Operator Overloading Methods in Python
 
 | Operator | Method Name             | Description                     |
 |----------|-------------------------|---------------------------------|
@@ -358,9 +398,10 @@ print(p3)     # Output: (6, 8)
 
 
 
-#### 🔁 Right-Hand Operator Overloading Methods in Python
+####  Right-Hand Operator Overloading Methods in Python
 
-When the **left-hand operand** doesn’t support the operation (or returns `NotImplemented`), Python tries the corresponding **right-hand method**.
+When the **left-hand operand** doesn’t support the operation (or returns `NotImplemented`), Python 
+tries the corresponding **right-hand method**.
 
 | Operator | Right-Hand Method         | Used When                                   |
 |----------|---------------------------|---------------------------------------------|
@@ -396,16 +437,17 @@ class CustomNumber:
 a = CustomNumber(10)
 b = CustomNumber(20)
 
-# ✅ Left-hand __add__
+#  Left-hand __add__
 result1 = a + b
 print(result1)  # Output: CustomNumber(30)
 
-# ✅ Right-hand __radd__
+#  Right-hand __radd__
 result2 = 5 + a   # int + CustomNumber —> triggers __radd__
 print(result2)   # Output: CustomNumber(15)
 
-# ✅ What happens here?
-result3 = a + 5   # CustomNumber + int —> __add__ returns NotImplemented —> __radd__ not used because int doesn't have it
+#  What happens here?
+result3 = a + 5   # CustomNumber + int —> __add__ returns NotImplemented —> __radd__ not used 
+because int doesn't have it
 print(result3)    # TypeError
 
 
@@ -414,9 +456,10 @@ print(result3)    # TypeError
 
 ### <u>**Introspection** </u>
 
-### 🔍 What is **Introspection** in Python?
+###  What is **Introspection** in Python?
 
-**Introspection** is the ability of a Python program to **examine the type or properties of an object at runtime**.
+**Introspection** is the ability of a Python program to **examine the type or properties of an 
+object at runtime**.
 
 In simple words, Python lets you ask questions like:
 
@@ -427,7 +470,7 @@ In simple words, Python lets you ask questions like:
 
 ---
 
-## ✅ Why is Introspection useful?
+##  Why is Introspection useful?
 
 * Debugging
 * Writing dynamic or generic code
@@ -436,7 +479,7 @@ In simple words, Python lets you ask questions like:
 
 ---
 
-## 📦 Common Introspection Tools in Python
+##  Common Introspection Tools in Python
 
 | Function / Tool             | Purpose                                                    |
 | --------------------------- | ---------------------------------------------------------- |
@@ -455,7 +498,7 @@ In simple words, Python lets you ask questions like:
 
 ---
 
-## 🧪 Example
+## Example
 
 ```python
 class Person:
@@ -475,7 +518,7 @@ print(callable(p.__init__))  # True
 
 ---
 
-## 🧠 Advanced Introspection (via `inspect` module)
+##  Advanced Introspection (via `inspect` module)
 
 ```python
 import inspect
@@ -487,7 +530,7 @@ print(inspect.getsource(Person))  # Shows source code of the class
 
 ---
 
-## 🔥 Summary
+##  Summary
 
 | Introspection lets you...       | With tools like...                |
 | ------------------------------- | --------------------------------- |
@@ -501,15 +544,19 @@ print(inspect.getsource(Person))  # Shows source code of the class
  
 ### ___Iterators__
 
-you need two special methods. By implementing these methods, you’ll take control of the iteration process.
+you need two special methods. By implementing these methods, you’ll take control of the iteration 
+process.
 methods that make up an iterator. They’re known as the iterator protocol.
 
 > .__iter__()	Called to initialize the iterator. It must return an iterator object.
-> .__next__()	Called to iterate over the iterator. It must return the next value in the data stream.
+> .__next__()	Called to iterate over the iterator. It must return the next value in the data 
+stream.
 
 
-. In .__iter__(), you typically return self, the current object. In .__next__(), you need to return the next value 
-from the data stream in a sequence. This method must raise a StopIteration when the stream of data is exhausted.
+. In .__iter__(), you typically return self, the current object. In .__next__(), you need to 
+return the next value from the data stream in a sequence. This method must raise a StopIteration 
+when the stream of data 
+is exhausted.
 
 ```python
 
@@ -560,53 +607,62 @@ for number in counter:
 ## *__OPPS IN PYTHON__*
 
 
-Object-oriented programming (OOP) in Python helps you structure your code by grouping related data and behaviors 
-into objects. You start by defining classes, which act as blueprints, and then create objects from them. OOP 
-simplifies modeling real-world concepts in your programs and enables you to build systems that are more reusable 
-and scalable.
+Object-oriented programming (OOP) in Python helps you structure your code by grouping related data 
+and behaviors into objects. You start by defining classes, which act as blueprints, and then 
+create objects from them. OOP simplifies modeling real-world concepts in your programs and enables 
+you to build systems that are more reusable and scalable.
 
 
-classes as blueprints for objects. These objects contain data and the methods needed to manipulate that data.
-**The four key concepts of OOP in Python** are encapsulation, inheritance, abstraction, and polymorphism
+classes as blueprints for objects. These objects contain data and the methods needed to manipulate 
+that data.
+**The four key concepts of OOP in Python** are encapsulation, inheritance, abstraction, and 
+polymorphism
 
 **four tenants of OOP:**
 
-1. ***Encapsulation*** allows you to bundle data (attributes) and behaviors (methods) within a class to create a 
-cohesive unit. By defining methods to control access to attributes and its modification, encapsulation helps 
-maintain data integrity and promotes modular, secure code.
-2. ***Inheritance*** enables the creation of hierarchical relationships between classes, allowing a subclass to 
-inherit attributes and methods from a parent class. This promotes code reuse and reduces duplication.
+1. ***Encapsulation*** allows you to bundle data (attributes) and behaviors (methods) within a 
+class to create a cohesive unit. By defining methods to control access to attributes and its 
+modification, encapsulation helps maintain data integrity and promotes modular, secure code.
+2. ***Inheritance*** enables the creation of hierarchical relationships between classes, allowing 
+a subclass to inherit attributes and methods from a parent class. This promotes code reuse and 
+reduces duplication.
 
-3. ***Abstraction*** focuses on hiding implementation details and exposing only the essential functionality of an 
-object. 
-By enforcing a consistent interface, abstraction simplifies interactions with objects, allowing developers to focus 
+3. ***Abstraction*** focuses on hiding implementation details and exposing only the essential
+functionality of an object. By enforcing a consistent interface, abstraction simplifies
+interactions with objects, allowing developers to focus 
 on what an object does rather than how it achieves its functionality.
-4. ***Polymorphism*** allows you to treat objects of different types as instances of the same base type, as long as 
-they implement a common interface or behavior. Python’s duck typing make it especially suited for polymorphism, as 
-it  allows you to access attributes and methods on objects without needing to worry about their actual class
+4. ***Polymorphism*** allows you to treat objects of different types as instances of the same base 
+type, as long as they implement a common interface or behavior. Python’s duck typing make it 
+especially suited for polymorphism, as it  allows you to access attributes and methods on objects 
+without needing to worry about their actual class
 
 
->objects are at the center of object-oriented programming in Python. In other programming paradigms, objects only represent the data. In OOP, they additionally inform the overall structure of the program.
+>objects are at the center of object-oriented programming in Python. In other programming 
+paradigms, objects only represent the data. In OOP, they additionally inform the overall structure 
+of the program.
 
 
 
 ### ***Classes vs Instances***
 
-A class is a blueprint for how to define something. It doesn’t actually contain any data. The Dog class specifies 
-that a name and an age are necessary for defining a dog, but it doesn’t contain the name or age of any specific dog.
+A class is a blueprint for how to define something. It doesn’t actually contain any data. The Dog 
+class specifies that a name and an age are necessary for defining a dog, but it doesn’t contain 
+the name or age of any specific dog.
 
-While the class is the blueprint, an instance is an object that’s built from a class and contains real data. An 
-instance of the Dog class is not a blueprint anymore. It’s an actual dog with a name, like Miles, who’s four years 
-old.
-
-
-You start all class definitions with the class keyword, then add the name of the class and a colon. Python will 
-consider any code that you indent below the class definition as part of the class’s body.
+While the class is the blueprint, an instance is an object that’s built from a class and contains 
+real data. An instance of the Dog class is not a blueprint anymore. It’s an actual dog with a 
+name, like Miles, who’s four years old.
 
 
+You start all class definitions with the class keyword, then add the name of the class and a 
+colon. Python will consider any code that you indent below the class definition as part of the 
+class’s body.
 
-On the other hand, class attributes are attributes that have the same value for all class instances. You can define 
-a class attribute by assigning a value to a variable name outside of .__init__().
+
+
+On the other hand, class attributes are attributes that have the same value for all class 
+instances. You can define a class attribute by assigning a value to a variable name outside of .
+__init__().
 
 ```python
 
@@ -621,15 +677,15 @@ class Dog:
 
 ```
 
-You define class attributes directly beneath the first line of the class name and indent them by four spaces. You 
-always need to assign them an initial value. When you create an instance of the class, then Python automatically 
-creates and assigns class attributes to their initial values.
+You define class attributes directly beneath the first line of the class name and indent them by 
+four spaces. You always need to assign them an initial value. When you create an instance of the 
+class, then Python automatically creates and assigns class attributes to their initial values.
 
 
 
-One of the biggest advantages of using classes to organize data is that instances are guaranteed to have the 
-attributes you expect. All Dog instances have .species, .name, and .age attributes, so you can use those attributes 
-with confidence, knowing that they’ll always return a value.
+One of the biggest advantages of using classes to organize data is that instances are guaranteed 
+to have the attributes you expect. All Dog instances have .species, .name, and .age attributes, so 
+you can use those attributes with confidence, knowing that they’ll always return a value.
 
 Although the attributes are guaranteed to exist, their values can change dynamically:
 
@@ -644,26 +700,28 @@ Although the attributes are guaranteed to exist, their values can change dynamic
 'Felis silvestris'
 
 ```
-***Instance methods*** are functions that you define inside a class and can only call on an instance of that class. 
+***Instance methods*** are functions that you define inside a class and can only call on an 
+instance of that class. 
 Just like .__init__(), an instance method always takes self as its first parameter.
 
 ### ***Inheritance***
 
-Inheritance is the process by which one class takes on the attributes and methods of another. Newly formed classes 
-are called child classes, and the classes that you derive child classes from are called parent classes.
+Inheritance is the process by which one class takes on the attributes and methods of another. 
+Newly formed classes are called child classes, and the classes that you derive child classes from 
+are called parent classes.
 
-Child classes can override or extend the attributes and methods of parent classes. In other words, child classes 
-inherit all of the parent’s attributes and methods but can also specify attributes and methods that are unique to 
-themselves.
+Child classes can override or extend the attributes and methods of parent classes. In other words, 
+child classes inherit all of the parent’s attributes and methods but can also specify attributes 
+and methods that are unique to themselves.
 
 ### ***Encapsulation***
 
-Encapsulation refers to the bundling of data and methods within a class. It allows us to control access to class 
-members, making them private or public. This principle enhances data security, maintains code integrity, and 
-reduces dependencies.
+Encapsulation refers to the bundling of data and methods within a class. It allows us to control 
+access to class members, making them private or public. This principle enhances data security, 
+maintains code integrity, and reduces dependencies.
 
-In Python, encapsulation is achieved by using the _ prefix for member variables and methods. For example, if we 
-have a Person class.
+In Python, encapsulation is achieved by using the _ prefix for member variables and methods. For 
+example, if we have a Person class.
 
 ```python
 class Person:
@@ -677,31 +735,40 @@ class Person:
 
 ```
 
-Here, the _name and _age attributes are considered private and the _get_age() method is private as well. These are 
-intended to be used only within the class, and not directly accessed or modified by code outside of the class.
+Here, the _name and _age attributes are considered private and the _get_age() method is private as 
+well. These are intended to be used only within the class, and not directly accessed or modified 
+by code outside of the class.
 
 
 Encapsulation has several benefits in Python:
  1. It allows for code modularity, which makes it easier to change and maintain the codebase.
- 2. It ensures that the internal state of an object is only modified in a controlled way, which helps to prevent bugs and maintain consistency.
- 3. It makes the code more robust and secure since it is more difficult for other parts of the program to accidentally or maliciously change the internal state of an object
- 4. It makes the code more flexible since the internal implementation can be changed without affecting the code that uses the class.
+ 2. It ensures that the internal state of an object is only modified in a controlled way, which 
+ helps to prevent bugs and maintain consistency.
+ 3. It makes the code more robust and secure since it is more difficult for other parts of the 
+ program to accidentally or maliciously change the internal state of an object
+ 4. It makes the code more flexible since the internal implementation can be changed without 
+ affecting the code that uses the class.
 
-it’s important to note that, in python, encapsulation is not enforced by the interpreter and relies on the 
-programmer to not access private variables or methods directly. It’s more of a convention and a way to signal to 
-others that these methods or attributes are intended to be used only by the class.
+it’s important to note that, in python, encapsulation is not enforced by the interpreter and 
+relies on the programmer to not access private variables or methods directly. It’s more of a 
+convention and a way to signal to others that these methods or attributes are intended to be used 
+only by the class.
 
 ### ***Polymorphism***
 
-Polymorphism is the ability of objects to take on many forms. It allows us to define methods in different classes 
-with the same name but different implementations. Polymorphism promotes code flexibility, as objects can be used 
-interchangeably even if they belong to different classes.
+Polymorphism is the ability of objects to take on many forms. It allows us to define methods in 
+different classes with the same name but different implementations. Polymorphism promotes code 
+flexibility, as objects can be used interchangeably even if they belong to different classes.
 
 
- polymorphism is achieved through polymorphic functions, which are functions that can work with multiple types of 
- input. For example, the len() function can be used to find the length of a string, a list, or other types of data.
+ polymorphism is achieved through polymorphic functions, which are functions that can work with 
+ multiple types of  input. For example, the len() function can be used to find the length of a 
+ string, a list, or other types of data.
 
- Python also supports polymorphism through method overriding and method overloading. Method overriding occurs when a subclass provides a different implementation of a method that is already defined in the parent class. This allows for objects of the subclass to have a different behavior than objects of the parent class.
+ Python also supports polymorphism through method overriding and method overloading. Method 
+ overriding occurs when a subclass provides a different implementation of a method that is already 
+ defined in the parent class. This allows for objects of the subclass to have a different behavior 
+ than objects of the parent class.
 
 For example:
 ```python
@@ -723,21 +790,25 @@ class Circle(Shape):
         return 3.14 * (self.radius ** 2)
 
 ```
-both Rectangle and Circle class inherits from the Shape class and have different implementations for area method. 
-When area is called on an instance of Rectangle and Circle class, it will call the overridden method.
+both Rectangle and Circle class inherits from the Shape class and have different implementations 
+for area method. When area is called on an instance of Rectangle and Circle class, it will call 
+the overridden method.
 
 ### ***Abstraction***
 
-Abstraction focuses on providing simplified interfaces while hiding complex underlying implementations. By defining 
-abstract classes and methods, we can enforce consistent behavior across subclasses while allowing specific 
+Abstraction focuses on providing simplified interfaces while hiding complex underlying 
+implementations. By defining abstract classes and methods, we can enforce consistent behavior
+across subclasses while allowing specific 
 implementations to be developed separately.
 
-refers to the practice of hiding the implementation details of an object from other parts of the program and 
-providing only a simplified public interface to interact with the object.
+refers to the practice of hiding the implementation details of an object from other parts of the 
+program and providing only a simplified public interface to interact with the object.
 
-In Python OOPs concepts, data abstraction is achieved through the use of abstract classes and interfaces.
-An abstract class is a class that defines one or more abstract methods, which are methods that have no 
-implementation. A subclass is required to implement these methods before an instance of the class can be created.
+In Python OOPs concepts, data abstraction is achieved through the use of abstract classes and 
+interfaces.
+An abstract class is a class that defines one or more abstract methods, which are methods that 
+have no implementation. A subclass is required to implement these methods before an instance of 
+the class can be created.
 
 For example:
 
@@ -763,49 +834,62 @@ class Rectangle(Shape):
 
 ```
 
-the Shape class is an abstract class, which has two abstract methods, area and perimeter. The subclass Rectangle 
-implements these methods before an instance of the class can be created.
+the Shape class is an abstract class, which has two abstract methods, area and perimeter. The 
+subclass Rectangle implements these methods before an instance of the class can be created.
 
-An interface in python is just an abstract class with no implementations for any of its methods. Python has no 
-inbuilt support for interface but we can use ABC(Abstract base class) from python’s abc module as an interface.
+An interface in python is just an abstract class with no implementations for any of its methods. 
+Python has no inbuilt support for interface but we can use ABC(Abstract base class) from python’s 
+abc module as an interface.
 
 
 
 ### ***scope *** && LEGB rule
 
-The scope of a variable in Python determines where in your code that variable is visible and accessible.
+The scope of a variable in Python determines where in your code that variable is visible and 
+accessible.
 Python has four general scope levels:
   1. local
   2. enclosing
   3. global
   4. built-in
 
-Python goes through these scopes in order. It follows the LEGB rule, which stands for Local, Enclosing, Global, and 
+Python goes through these scopes in order. It follows the LEGB rule, which stands for Local, 
+Enclosing, Global, and 
 Built-in.
 
 
-early programming languages like BASIC only had global names. With this type of name, any part of the program could 
+early programming languages like BASIC only had global names. With this type of name, any part of 
+the program could 
 modify any variable at any time, making large programs difficult to maintain and debug.
 
-For example, if you define a name inside a function, then that name will have a local scope. You can only access 
-the name locally within the function implementation. In contrast, if you define a name at the top level of a 
-module, then that name will have a global scope. You’ll be able to access it from anywhere in your code
+For example, if you define a name inside a function, then that name will have a local scope. You 
+can only access the name locally within the function implementation. In contrast, if you define a 
+name at the top level of a module, then that name will have a global scope. You’ll be able to 
+access it from anywhere in your code
 
 #### Scope vs Namespace
 
-The concept of scope is closely related to the concept of namespace. A scope determines the visibility and lifetime 
-of names, while a namespace provides the place where those names are stored.
+The concept of scope is closely related to the concept of namespace. A scope determines the 
+visibility and lifetime of names, while a namespace provides the place where those names are 
+stored.
 
 A namespace is a mapping of names to objects.
-It’s like a dictionary that keeps track of all the names (variables, functions, classes, etc.) in a particular area 
+It’s like a dictionary that keeps track of all the names (variables, functions, classes, etc.) in 
+a particular area 
 of the program.
 
-| Feature        | Namespace                               | Scope                                       |
-| -------------- | --------------------------------------- | ------------------------------------------- |
-| What is it?    | A **mapping of names to objects**       | A **region** where a name is **accessible** |
-| Type           | Built-in, Global, Local, Enclosing      | Local, Enclosing, Global, Built-in          |
-| Think of it as | A **container of names** (like a dict)  | **Rules to find those names**               |
-| Example        | `globals()`, `locals()` show namespaces | `x` inside function vs outside function     |
+| Feature        | Namespace                               | 
+Scope                                       |
+| -------------- | --------------------------------------- | 
+------------------------------------------- |
+| What is it?    | A **mapping of names to objects**       | A **region** where a name is 
+**accessible** |
+| Type           | Built-in, Global, Local, Enclosing      | Local, Enclosing, Global, 
+Built-in          |
+| Think of it as | A **container of names** (like a dict)  | **Rules to find those 
+names**               |
+| Example        | `globals()`, `locals()` show namespaces | `x` inside function vs outside 
+function     |
 
 
 
@@ -817,16 +901,32 @@ of the program.
 ---
 
 
-**Local scope** is the body of any Python function or lambda expression. This scope contains the names that you 
-define inside the function. These names are only visible from within the function. Python creates a local scope 
-when you call a function, so you’ll have as many different local scopes as function calls. This is true even if you 
+**Local scope** is the body of any Python function or lambda expression. This scope contains the 
+names that you 
+define inside the function. These names are only visible from within the function. Python creates 
+a local scope 
+
+when you call a function, so you’ll have as many different local scopes as function calls. This is 
+true even if you 
+
 call the same function multiple times, or recursively. Each call creates a new local scope.
 
+
 **Enclosing scope** is a scope that exists only for nested functions and is defined by the outer or enclosing 
-function. This scope contains the names that you define within the enclosing function. The names in the enclosing 
+
+function. This scope contains the names that you define within the enclosing function. The names 
+in the enclosing 
+
 scope are visible from the code of the inner and outer functions.
 
-Python creates a local scope. The local scope of outer_func() is also the enclosing scope of inner_func(). From inside inner_func(), this 
+
+
+
+Python creates a local scope. The local scope of outer_func() is also the enclosing scope of 
+inner_func(). From inside inner_func(), this 
+
+
+
 scope is neither the global scope nor the local scope. Instead, it’s a special scope that lies in between those two scopes and is known 
 as the enclosing scope.
 
