@@ -164,9 +164,8 @@ addition. Such methods have names starting and ending with double underscores.
 
 
 When creating custom classes in Python, probably the first and most common method that you
-implement is .__init__
-(). This method works as an initializer because it allows you to provide initial values to any 
-instance attributes that you define in your classes.
+implement is .__init__(). This method works as an initializer because it allows you to provide 
+initial values to any instance attributes that you define in your classes.
 
 
 <pre>
@@ -186,11 +185,9 @@ instance attributes that you define in your classes.
 ### <u> **__new__()** </u>
 
 When you call a class constructor to create a new instance of a class, Python implicitly calls 
-the .__new__() 
-method as the first step in the instantiation process. This method is responsible for creating and 
-returning a new 
-empty object of the underlying class. Python then passes the just-created object to .__init__() 
-for initialization.
+the .__new__() method as the first step in the instantiation process. This method is responsible 
+for creating and returning a new empty object of the underlying class. Python then passes the 
+just-created object to .__init__() for initialization.
 
 The default implementation of .__new__() is enough for most practical use cases. So, you probably 
 won’t need to write a custom implementation of .__new__() in most cases.
@@ -216,10 +213,8 @@ In this example, you’ll note that .__new__() is a class method because it gets
 (cls) rather than the current instance (self) as an argument.
 
 Then, you run three steps. First, you create a new instance of the current class, cls, by calling .
-__new__() on the 
-float class through the built-in super() function. This call creates a new instance of float and 
-initializes it 
-using value as an argument.
+__new__() on the float class through the built-in super() function. This call creates a new 
+instance of float and initializes it using value as an argument.
 
 Then, you customize the new instance by dynamically attaching a .unit attribute to it. Finally, 
 you return the new 
@@ -244,20 +239,17 @@ True
 
 
 If you want to provide user-friendly output, then you can use the .__str__() method. On the other 
-hand, when you 
-need to provide developer-friendly output, then you can use the .__repr__() method. These methods 
-support two 
-different string representations for Python objects.
+hand, when you need to provide developer-friendly output, then you can use the .__repr__() method. 
+These methods support two different string representations for Python objects.
 
 ---
 
 The .__str__() special method returns a human-readable string representation of the object.Python 
-calls this method 
-when you call the built-in str() function, passing an instance of the class as an argument.
+calls this method when you call the built-in str() function, passing an instance of the class as 
+an argument.
 
 Python also calls this method when you use the instance as an argument to the print() and format() 
-functions. The 
-method is meant to provide a string that’s understandable.
+functions. The method is meant to provide a string that’s understandable.
 
 <pre>
 
@@ -289,8 +281,7 @@ I'm Jane Doe, and I'm 25 years old.
 
 
 When you use an instance of Person as an argument to str() or print(), you get a string 
-representation of the 
-object on your screen.
+representation of the object on your screen.
 
 ---
 
@@ -329,11 +320,9 @@ Person(name='John Doe', age=35)
 ### <u> **operator overloading.** </u>
 
 Operator overloading means providing additional functionality to the operators. You can do this 
-with most built-in 
-types and their specific supported operators. However, that’s not all you can do with the special 
-methods that 
-support Python operators. You can also use these methods to support some operators in your custom 
-classes.
+with most built-in types and their specific supported operators. However, that’s not all you can 
+do with the special methods that support Python operators. You can also use these methods to 
+support some operators in your custom classes.
 
 Operator overloading means giving extended meaning to standard operators (like +, -, *, etc.) when 
 used with custom objects (your own classes).
@@ -542,7 +531,7 @@ print(inspect.getsource(Person))  # Shows source code of the class
 ---
 
  
-### ___Iterators__
+### Iterators
 
 you need two special methods. By implementing these methods, you’ll take control of the iteration 
 process.
@@ -629,8 +618,8 @@ reduces duplication.
 
 3. ***Abstraction*** focuses on hiding implementation details and exposing only the essential
 functionality of an object. By enforcing a consistent interface, abstraction simplifies
-interactions with objects, allowing developers to focus 
-on what an object does rather than how it achieves its functionality.
+interactions with objects, allowing developers to focus on what an object does rather than how it achieves its functionality.
+
 4. ***Polymorphism*** allows you to treat objects of different types as instances of the same base 
 type, as long as they implement a common interface or behavior. Python’s duck typing make it 
 especially suited for polymorphism, as it  allows you to access attributes and methods on objects 
@@ -640,8 +629,6 @@ without needing to worry about their actual class
 >objects are at the center of object-oriented programming in Python. In other programming 
 paradigms, objects only represent the data. In OOP, they additionally inform the overall structure 
 of the program.
-
-
 
 ### ***Classes vs Instances***
 
@@ -682,11 +669,9 @@ four spaces. You always need to assign them an initial value. When you create an
 class, then Python automatically creates and assigns class attributes to their initial values.
 
 
-
 One of the biggest advantages of using classes to organize data is that instances are guaranteed 
 to have the attributes you expect. All Dog instances have .species, .name, and .age attributes, so 
 you can use those attributes with confidence, knowing that they’ll always return a value.
-
 Although the attributes are guaranteed to exist, their values can change dynamically:
 
 
@@ -700,9 +685,8 @@ Although the attributes are guaranteed to exist, their values can change dynamic
 'Felis silvestris'
 
 ```
-***Instance methods*** are functions that you define inside a class and can only call on an 
-instance of that class. 
-Just like .__init__(), an instance method always takes self as its first parameter.
+***Instance methods*** are functions that you define inside a class and can only call on an
+instance of that class. Just like .__init__(), an instance method always takes self as its first parameter.
 
 ### ***Inheritance***
 
