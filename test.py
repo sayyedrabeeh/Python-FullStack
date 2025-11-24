@@ -1,4 +1,8 @@
-a=[1,12,13,12,32,43,54]
-iterator = iter(a)
-for i in range(len(a)):
-    print(next(iterator))
+a = [1,2,3,2,4,3,4,5,5]
+b=set()
+for i in a:
+    if i not in b:
+        b.add(i)
+    else:
+        a.remove(i)
+print(a)
