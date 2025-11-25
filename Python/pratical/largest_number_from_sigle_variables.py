@@ -10,7 +10,7 @@ tl  =float('-inf')
 
 # groupping  
 
-for i in (a,b,c,d,e):
+for i in a,b,c,d,e:
     if i > l:
         tl = sl
         sl = l
