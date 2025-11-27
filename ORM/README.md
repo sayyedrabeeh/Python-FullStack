@@ -494,3 +494,113 @@ Author.objects.exclude(age__lt=30)
 
 ---
  
+
+ 
+
+To **open the Django shell using CMD (Command Prompt)**, follow these simple steps 
+
+---
+
+##  1. **Open your Command Prompt**
+
+* Press **Windows + R**, type `cmd`, and hit **Enter**
+  or
+* Open your project folder in **VS Code / Terminal** and use the terminal window.
+
+---
+
+##  2. **Navigate to your Django project folder**
+
+Use the `cd` command to go to the folder where your **`manage.py`** file is located.
+
+Example:
+
+```bash
+cd path\to\your\project
+```
+
+For example:
+
+```bash
+cd C:\Users\YourName\Desktop\myproject
+```
+
+ You should now see `manage.py` if you list files using:
+
+```bash
+dir
+```
+
+---
+
+##  3. **Activate your virtual environment (if you’re using one)**
+
+If you created a virtual environment (recommended), activate it:
+
+### On Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+You should see something like:
+
+```
+(venv) C:\Users\YourName\Desktop\myproject>
+```
+
+---
+
+##  4. **Run the Django shell**
+
+Now run:
+
+```bash
+python manage.py shell
+```
+
+You should see something like this:
+
+```
+Python 3.12.0 (tags/v3.12.0)
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>>
+```
+
+---
+
+##  5. **Use your models inside the shell**
+
+Once inside, you can import and use your models:
+
+```python
+from myapp.models import Author, Book
+Author.objects.all()
+```
+
+---
+
+##  6. **Exit the shell**
+
+To exit the shell, type:
+
+```python
+exit()
+```
+
+or press **Ctrl + Z**, then **Enter**.
+
+---
+
+###  Summary
+
+| Step | Command                  | Description                  |
+| ---- | ------------------------ | ---------------------------- |
+| 1    | `cd path\to\project`     | Go to project directory      |
+| 2    | `venv\Scripts\activate`  | Activate virtual environment |
+| 3    | `python manage.py shell` | Open Django shell            |
+| 4    | `exit()`                 | Close shell                  |
+
+---
+ 
