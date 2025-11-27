@@ -1,5 +1,14 @@
-import random
 
-a = lambda : random.randint(1,100)
 
-print([a() for _ in range(5)])
+
+sentence = "Python is a powerful and expressive programming language"
+longest = ''
+s = sentence.split(' ')
+for i in s:
+    if len(i) > len(longest):
+        longest = i 
+
+print(longest)
+
+
+

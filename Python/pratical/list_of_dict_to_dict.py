@@ -8,4 +8,4 @@ data = [
 
 result = { i['id'] : i for i in data}
  
-print(result)
+print(result) 
