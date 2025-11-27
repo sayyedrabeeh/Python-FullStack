@@ -1,14 +1,10 @@
 
 
+data = ["apple", "20", 10, "cat", 3.5, "5", None]
 
-sentence = "Python is a powerful and expressive programming language"
-longest = ''
-s = sentence.split(' ')
-for i in s:
-    if len(i) > len(longest):
-        longest = i 
+a=0
+for i in data:
+  if isinstance(i,int)|isinstance(i,float)  :
+    a+=i
 
-print(longest)
-
-
-
+print(a)
