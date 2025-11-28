@@ -318,10 +318,10 @@ DATABASES = {
 
 ```
 
-The settings.py file is also used for configuring a number of other settings, but at this point, you probably only 
-want to change the TIME_ZONE — this should be made equal to a string from the standard List of tz database time 
-zones (the TZ column in the table contains the values you want). Change your TIME_ZONE value to one of these 
-strings appropriate for your time zone.
+The settings.py file is also used for configuring a number of other settings, but at this point, 
+you probably only want to change the TIME_ZONE — this should be made equal to a string from the 
+standard List of tz database time zones (the TZ column in the table contains the values you want). 
+Change your TIME_ZONE value to one of these strings appropriate for your time zone.
 
 ```python
 
@@ -340,9 +340,9 @@ Useful when your app has users across different time zones or is hosted globally
 
 ##### Model definition
 
-Models are usually defined in an application's models.py file. They are implemented as subclasses of django.db.
-models.Model, and can include fields, methods and metadata. The code fragment below shows a "typical" model, named 
-MyModelName.
+Models are usually defined in an application's models.py file. They are implemented as subclasses 
+of django.db.models.Model, and can include fields, methods and metadata. The code fragment below 
+shows a "typical" model, named MyModelName.
 
 ```python 
 
@@ -373,17 +373,16 @@ class MyModelName(models.Model):
 
 #### Fields
 
-A model can have an arbitrary number of fields, of any type — each one represents a column of data that 
-we want to store in one of our database tables. Each database record (row) will consist of one of each 
-field value.
+A model can have an arbitrary number of fields, of any type — each one represents a column of data 
+that we want to store in one of our database tables. Each database record (row) will consist of one 
+of each field value.
 
-The field types are assigned using specific classes, which determine the type of record that is used to 
-store the data in the database, along with validation criteria to be used when values are received from 
-an HTML form (i.e., what constitutes a valid value). The field types can also take arguments that further 
-specify how the field is stored or can be used.
+The field types are assigned using specific classes, which determine the type of record that is 
+used to store the data in the database, along with validation criteria to be used when values are 
+received from an HTML form (i.e., what constitutes a valid value). The field types can also take 
+arguments that further specify how the field is stored or can be used.
 
- The field types can also take arguments that further specify how the field is stored or can be used. In 
- this case we are giving our field two arguments:
+The field types can also take arguments that further specify how the field is stored or can be used. In this case we are giving our field two arguments:
 
 > max_length=20 — States that the maximum length of a value in this field is 20 characters.
 
