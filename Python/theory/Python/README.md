@@ -843,8 +843,8 @@ Built-in.
 
 
 early programming languages like BASIC only had global names. With this type of name, any part of 
-the program could 
-modify any variable at any time, making large programs difficult to maintain and debug.
+the program could modify any variable at any time, making large programs difficult to maintain and 
+debug.
 
 For example, if you define a name inside a function, then that name will have a local scope. You 
 can only access the name locally within the function implementation. In contrast, if you define a 
@@ -886,58 +886,45 @@ function     |
 
 
 **Local scope** is the body of any Python function or lambda expression. This scope contains the 
-names that you 
-define inside the function. These names are only visible from within the function. Python creates 
-a local scope 
-
-when you call a function, so you’ll have as many different local scopes as function calls. This is 
-true even if you 
-
-call the same function multiple times, or recursively. Each call creates a new local scope.
+names that you define inside the function. These names are only visible from within the function. 
+Python creates a local scope when you call a function, so you’ll have as many different local 
+scopes as function calls. This is true even if you call the same function multiple times, or 
+recursively. Each call creates a new local scope.
 
 
-**Enclosing scope** is a scope that exists only for nested functions and is defined by the outer or enclosing 
-
-function. This scope contains the names that you define within the enclosing function. The names 
-in the enclosing 
-
-scope are visible from the code of the inner and outer functions.
-
-
-
+**Enclosing scope** is a scope that exists only for nested functions and is defined by the outer 
+or enclosing function. This scope contains the names that you define within the enclosing 
+function. The names in the enclosing scope are visible from the code of the inner and outer 
+functions.
 
 Python creates a local scope. The local scope of outer_func() is also the enclosing scope of 
-inner_func(). From inside inner_func(), this 
-
-
-
-scope is neither the global scope nor the local scope. Instead, it’s a special scope that lies in between those two scopes and is known 
+inner_func(). From inside inner_func(), this scope is neither the global scope nor the local 
+scope. Instead, it’s a special scope that lies in between those two scopes and is known 
 as the enclosing scope.
 
-All the names you create in the enclosing scope are visible from inside inner_func(), except for those created after you call inner_func
-(). 
+All the names you create in the enclosing scope are visible from inside inner_func(), except for 
+those created after you call inner_func(). 
 
-Names that you define in the enclosing scope are known as **nonlocal names** because they’re neither local nor global. They’re visible 
-from both the outer and inner functions.
+Names that you define in the enclosing scope are known as **nonlocal names** because they’re 
+neither local nor global. They’re visible from both the outer and inner functions.
 
 🔹 What is an Enclosing Function?
 An enclosing function is a function that contains another function inside it.
-
 The outer function is called the enclosing function.
-
 The inner function is called a nested function or inner function.
-
 The enclosing function creates an enclosing scope for the inner one.
 
-**Global scope** is the topmost scope in a Python program or interactive session. This scope contains all of the 
-names that you define at the top level of a script or module. Names in this scope are visible from everywhere in 
-your code.
+**Global scope** is the topmost scope in a Python program or interactive session. This scope 
+contains all of the names that you define at the top level of a script or module. Names in this 
+scope are visible from everywhere in your code.
 
-**Built-in scope** is a special scope that Python creates or loads whenever you run a script or open an interactive 
-session. This scope contains names such as built-in functions, exceptions, and other attributes that are built into 
-Python. Names in this scope are also available from everywhere in your code.
+**Built-in scope** is a special scope that Python creates or loads whenever you run a script or 
+open an interactive session. This scope contains names such as built-in functions, exceptions, and 
+other attributes that are built into Python. Names in this scope are also available from 
+everywhere in your code.
 
-Built-in scope is the widest and final level of scope in Python, containing all the predefined names
+Built-in scope is the widest and final level of scope in Python, containing all the predefined 
+names
 
 Examples include:
 
@@ -955,15 +942,15 @@ These are always available anywhere in your code, unless you override them local
         import builtins
 ---
 
-a given name exists in both the local and the global scope, then you’ll get the value associated with the name in 
-the local scope.
-
-You’ll always have at least two active scopes: the global and built-in ones. These two scopes will always be 
-available for you.
+a given name exists in both the local and the global scope, then you’ll get the value associated 
+with the name in the local scope.You’ll always have at least two active scopes: the global and 
+built-in ones. These two scopes will always be available for you.
 
 
-The built-in scope is a special scope that’s implemented as a standard library module named builtins. All of Python’s built-in objects 
-live in this module. Python automatically loads these objects when you run the Python interpreter. 
+
+The built-in scope is a special scope that’s implemented as a standard library module named 
+builtins. All of Python’s built-in objects live in this module. Python automatically loads these 
+objects when you run the Python interpreter. 
 
 
 #### Modifying the Behavior of a Python Scope.
@@ -974,11 +961,11 @@ Python provides two keywords that allow you to modify the content of global and 
    1. global
    2. nonlocal
 
-when you try to assign a value to a global variable inside a function, you create a new local variable in the function’s local scope. You 
-can modify this behavior by using the global statement.
+when you try to assign a value to a global variable inside a function, you create a new local
+variable in the function’s local scope. You can modify this behavior by using the global statement.
 
-The global statement consists of the global keyword followed by one or more names separated by commas. You can also use multiple global 
-statements with a name or a list of names. All the names that you list in a global statement will be mapped to the global scope.
+The global statement consists of the global keyword followed by one or more names separated by 
+commas. You can also use multiple global statements with a name or a list of names. All the names that you list in a global statement will be mapped to the global scope.
 
 ```python 
 >>> counter = 0  # A global variable
@@ -994,8 +981,9 @@ UnboundLocalError: cannot access local variable 'counter' where
 ⮑ it is not associated with a value
 
 ```
-Inside update_counter(), you try to update the global counter by using its previous value, 0. However, Python assumes that the counter 
-name is local to update_counter() and raises an UnboundLocalError exception because the name isn’t defined yet, but the code is trying to 
+Inside update_counter(), you try to update the global counter by using its previous value, 0. 
+However, Python assumes that the counter name is local to update_counter() and raises an 
+UnboundLocalError exception because the name isn’t defined yet, but the code is trying to 
 reuse a previous value.
 
 use global key word 
@@ -1019,15 +1007,18 @@ use global key word
 3
 ```
 
-In this new version of update_counter(), you add the statement global counter to the body of the function right before you try to change 
-counter. With this tiny change, you map the name counter in the function’s local scope to the same name in the global scope. From this 
-point on, you can freely modify counter inside update_counter(), and all changes will affect the global variable instead of creating a 
-new local one.
+In this new version of update_counter(), you add the statement global counter to the body of the 
+function right before you try to change counter. With this tiny change, you map the name counter 
+in the function’s local scope to the same name in the global scope. From this 
+point on, you can freely modify counter inside update_counter(), and all changes will affect the 
+global variable instead of creating a new local one.
 
 #### The nonlocal Statement
 
-Like global names, nonlocal names can be accessed from inner functions, but not assigned or updated. If you want to modify them, then you 
-need to use the nonlocal statement. With this statement, you can define a series of names that are going to be treated as nonlocal.
+Like global names, nonlocal names can be accessed from inner functions, but not assigned or 
+updated. If you want to modify them, then you 
+need to use the nonlocal statement. With this statement, you can define a series of names that are 
+going to be treated as nonlocal.
 
 ```python
  >>> def function():
@@ -1043,7 +1034,8 @@ need to use the nonlocal statement. With this statement, you can define a series
 84
 ```
 
-Unlike global, you can’t use nonlocal outside of a nested or inner function. To be more precise, you can’t use a nonlocal statement in 
+Unlike global, you can’t use nonlocal outside of a nested or inner function. To be more precise, 
+you can’t use a nonlocal statement in 
 either the global scope or in a local scope.
 
 ####  closure.
@@ -1069,15 +1061,17 @@ a closure is a callable that carries information about its enclosing scope, even
 225
 ```
 
-Variables like exponent that are referenced within a code block but not defined there are known as ***free variables***. These variables 
-derive their values from the surrounding scope. Free variables are essential to how closures function, as they allow a function to 
-“remember” and retain access to external variables, even after the enclosing scope has finished executing. This mechanism enables 
+Variables like exponent that are referenced within a code block but not defined there are known as 
+***free variables***. These variables derive their values from the surrounding scope. Free 
+variables are essential to how closures function, as they allow a function to 
+“remember” and retain access to external variables, even after the enclosing scope has finished 
+executing. This mechanism enables 
 closures to preserve state between successive calls.
 
 #### The globals() Function
 
-The built-in globals() function returns a namespace dictionary with all the names—and associated objects—that are currently in your 
-global scope.
+The built-in globals() function returns a namespace dictionary with all the names—and associated 
+objects—that are currently in your global scope.
 
 
 ```python
@@ -1101,14 +1095,16 @@ global scope.
 }
 
 ```
-The first call to globals() returns a dictionary containing the names in your __main__ program. Note that when you assign a new name at 
+The first call to globals() returns a dictionary containing the names in your __main__ program. 
+Note that when you assign a new name at 
 the top level of __main__, then the name is added to the dictionary that globals() returns.
 
 
 #### The locals() Function
 
-The built-in locals() function returns a dictionary that holds a copy of the current state of the local namespace. When you call locals
-() in a function block, you get all the names assigned in the local scope down to the point where you call locals().
+The built-in locals() function returns a dictionary that holds a copy of the current state of the 
+local namespace. When you call locals() in a function block, you get all the names assigned in the 
+local scope down to the point where you call locals().
 
 ```python
 >>> def function(arg):
@@ -1122,19 +1118,22 @@ The built-in locals() function returns a dictionary that holds a copy of the cur
 
 ```
 
-If you call locals() in the global scope, then you’ll get the same dictionary that you would get if you were to call globals()
+If you call locals() in the global scope, then you’ll get the same dictionary that you would get 
+if you were to call globals()
 
 #### Packing and Unpacking
 
-By using packing and unpacking you can create assignments with a single statement and catch several values with a single identifier, 
-making your code much easier to read.
+By using packing and unpacking you can create assignments with a single statement and catch 
+several values with a single identifier, making your code much easier to read.
 
-Packing is a handy Python tool that provides a dynamic way to pack and unpack values into a single data structure or take them out and 
-assign them to multiple variables. This process greatly improves the reliability and adaptability of your code.
+Packing is a handy Python tool that provides a dynamic way to pack and unpack values into a single 
+data structure or take them out and assign them to multiple variables. This process greatly 
+improves the reliability and adaptability of your code.
 
-In Python, “packing” refers to the process of putting values into a new tuple or list by separating them with commas. This can be done 
-with an assignment statement where the left-hand side is a tuple or list of variables and the right-hand side is another tuple or list 
-of values.
+In Python, “packing” refers to the process of putting values into a new tuple or list by 
+separating them with commas. This can be done with an assignment statement where the left-hand 
+side is a tuple or list of variables and the right-hand side is another tuple or list of values.
+
 
 ```python
 
@@ -1150,8 +1149,9 @@ myList = [number1, number2, number3]
 
 ```
 
-You can also use the * operator (which is used as both power and multiplication operators). Before we see how that works with packing, 
-let me show you how the * operator works. We’ll define a function called sumOf and use the * operator like so:
+You can also use the * operator (which is used as both power and multiplication operators). Before 
+we see how that works with packing, let me show you how the * operator works. We’ll define a 
+function called sumOf and use the * operator like so:
 
 ```python
 
@@ -1164,14 +1164,15 @@ print('Adding them up, we get:', sumOf(10, 20, 30))
 
 ```
 
-Remember, a tuple is an immutable list, so it cannot be changed once created. Tuples are great options for storing data that you don’t 
-want to be modified.
+Remember, a tuple is an immutable list, so it cannot be changed once created. Tuples are great 
+options for storing data that you don’t want to be modified.
 
 
 # Unpacking
 
-unpacking is the process of extracting values from a sequence and assigning them to multiple variables. We achieve unpacking with the 
-assignment operator on the left side and an iterable object on the left side.
+unpacking is the process of extracting values from a sequence and assigning them to multiple 
+variables. We achieve unpacking with the assignment operator on the left side and an iterable 
+object on the left side.
 
 eg:
 ```python
@@ -1525,7 +1526,7 @@ A variable name can’t start with a number because the **lexer/tokenizer would 
 
 ### 1. What is a **Lexer**?
 
-A **lexer** (short for *lexical analyzer*) is the first stage of a programming language interpreter or compiler.
+A **lexer** (short for *lexical analyzer*) is the first stage of a programming languageinterpreter or compiler.
 Its job:
 
 * Take raw source code (plain text)

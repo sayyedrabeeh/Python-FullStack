@@ -2,13 +2,13 @@
 
 ## What is Django?
 
-Django is a high-level Python Web framework.  A Web framework is a set of components that provide a standard way to 
-develop websites fast and easily. 
+Django is a high-level Python Web framework.  A Web framework is a set of components that provide a
+standard way to develop websites fast and easily. 
 
 ###  1. Opinionated Frameworks
 
-Opinionated frameworks make strong decisions about the architecture, folder structure, tools, and how to solve 
-common problems. They provide a "right way" of doing things.
+Opinionated frameworks make strong decisions about the architecture, folder structure, tools, and 
+how to solve common problems. They provide a "right way" of doing things.
 Faster development – lots of things are pre-configured.
 Strong ecosystem – plugins, tooling, and libraries align with the framework’s conventions.
 
@@ -22,8 +22,8 @@ Strong ecosystem – plugins, tooling, and libraries align with the framework’
 
 ###  2. Unopinionated Frameworks
 
-Unopinionated frameworks are minimal. They give you building blocks and let you choose your architecture, 
-libraries, tools, and folder structure.
+Unopinionated frameworks are minimal. They give you building blocks and let you choose your 
+architecture, libraries, tools, and folder structure.
 They make it easier for developers to use the most suitable tools to complete a particular task.
 
 >Maximum flexibility – build how you want.
@@ -40,30 +40,33 @@ They make it easier for developers to use the most suitable tools to complete a 
 
 ## strucher
 
-In a traditional data-driven website, a web application waits for HTTP requests from the web browser (or other 
-client). When a request is received the application works out what is needed based on the URL and possibly 
-information in POST data or GET data. Depending on what is required it may then read or write information from a 
-database or perform other tasks required to satisfy the request. The application will then return a response to the 
-web browser, often dynamically creating an HTML page for the browser to display by inserting the retrieved data 
-into placeholders in an HTML template.
+In a traditional data-driven website, a web application waits for HTTP requests from the web 
+browser (or other client). When a request is received the application works out what is needed 
+based on the URL and possibly information in POST data or GET data. Depending on what is required 
+it may then read or write information from a database or perform other tasks required to satisfy 
+the request. The application will then return a response to the web browser, often dynamically 
+creating an HTML page for the browser to display by inserting the retrieved data into placeholders 
+in an HTML template.
 Django web applications typically group the code that handles each of these steps into separate files:
 
 
-**URLs:** While it is possible to process requests from every single URL via a single function, it is much more 
-maintainable to write a separate view function to handle each resource. A URL mapper is used to redirect HTTP 
-requests to the appropriate view based on the request URL. The URL mapper can also match particular patterns of 
-strings or digits that appear in a URL and pass these to a view function as data.
+**URLs:** While it is possible to process requests from every single URL via a single function, it 
+is much more maintainable to write a separate view function to handle each resource. A URL mapper 
+is used to redirect HTTP requests to the appropriate view based on the request URL. The URL mapper 
+can also match particular patterns of strings or digits that appear in a URL and pass these to a 
+view function as data.
 
-**View:** A view is a request handler function, which receives HTTP requests and returns HTTP responses. Views 
-access the data needed to satisfy requests via models, and delegate the formatting of the response to templates.
+**View:** A view is a request handler function, which receives HTTP requests and returns HTTP 
+responses. Views access the data needed to satisfy requests via models, and delegate the formatting 
+of the response to templates.
 
-**Models:** Models are Python objects that define the structure of an application's data, and provide mechanisms to 
-manage (add, modify, delete) and query records in the database.
+**Models:** Models are Python objects that define the structure of an application's data, and 
+provide mechanisms to manage (add, modify, delete) and query records in the database.
 
-**Templates:** A template is a text file defining the structure or layout of a file (such as an HTML page), with 
-placeholders used to represent actual content. A view can dynamically create an HTML page using an HTML template, 
-populating it with data from a model. A template can be used to define the structure of any type of file; it 
-doesn't have to be HTML!.
+**Templates:** A template is a text file defining the structure or layout of a file (such as an 
+HTML page), with placeholders used to represent actual content. A view can dynamically create an 
+HTML page using an HTML template, populating it with data from a model. A template can be used to 
+define the structure of any type of file; it doesn't have to be HTML!.
 
 urls.py
 
@@ -78,8 +81,8 @@ urlpatterns = [
 
 ```
 
-The path() method uses angle brackets to define parts of a URL that will be captured and passed through to the view 
-function as named arguments.
+The path() method uses angle brackets to define parts of a URL that will be captured and passed 
+through to the view function as named arguments.
 
 ```python
 
@@ -103,15 +106,18 @@ def user_detail(request, id):
 
 ```
 
-The second argument is another function that will be called when the pattern is matched. The notation views.
-book_detail indicates that the function is called book_detail() and can be found in a module called views (i.e., 
-inside a file named views.py).
+The second argument is another function that will be called when the pattern is matched. The
+notation views.
+book_detail indicates that the function is called book_detail() and can be found in a module called 
+views (i.e., inside a file named views.py).
 
 
 ### Handling the request (views.py)
 
-Views are the heart of the web application, receiving HTTP requests from web clients and returning HTTP responses. 
-In between, they marshal the other resources of the framework to access databases, render templates, etc.
+Views are the heart of the web application, receiving HTTP requests from web clients and returning 
+HTTP responses. 
+In between, they marshal the other resources of the framework to access databases, render 
+templates, etc.
 
 ```python
 
@@ -128,13 +134,14 @@ def index(request):
 
 ### Defining data models (models.py)
 
-Django web applications manage and query data through Python objects referred to as models. Models define the 
-structure of stored data, including the field types and possibly also their maximum size, default values, selection 
-list options, help text for documentation, label text for forms, etc.
+Django web applications manage and query data through Python objects referred to as models. Models 
+define the structure of stored data, including the field types and possibly also their maximum 
+size, default values, selection list options, help text for documentation, label text for forms, 
+etc.
 
-Once you've chosen what database you want to use, you don't need to talk to it directly at all — you just write 
-your model structure and other code, and Django handles all the "dirty work" of communicating with the database for 
-you.
+Once you've chosen what database you want to use, you don't need to talk to it directly at all —you 
+just write your model structure and other code, and Django handles all the "dirty work" of 
+communicating with the database for you.
 
 ```python 
 ## filename: views.py
@@ -151,14 +158,15 @@ def index(request):
 ```
 
 
-This function uses the render() function to create the HttpResponse that is sent back to the browser. This function 
-is a shortcut; it creates an HTML file by combining a specified HTML template and some data to insert in the 
-template (provided in the variable named context).
+This function uses the render() function to create the HttpResponse that is sent back to the 
+browser. This function is a shortcut; it creates an HTML file by combining a specified HTML 
+template and some data to insert in the template (provided in the variable named context).
 
-Templates are often used to create HTML, but can also create other types of document. Django supports both its 
-native templating system and another popular Python library called Jinja2 out of the box. 
+Templates are often used to create HTML, but can also create other types of document. Django 
+supports both its native templating system and another popular Python library called Jinja2 out of 
+the box. 
 
-##### ⚙️ To switch to Jinja2:
+#####  To switch to Jinja2:
 
 ```python
 
@@ -181,18 +189,21 @@ You can choose either depending on your style:
     🔥 Jinja2: More control, better for power users.
 
 
-**Forms:** HTML Forms are used to collect user data for processing on the server. Django simplifies form creation, 
-validation, and processing.
-**User authentication and permissions:** Django includes a robust user authentication and permission system that 
-has been built with security in mind.
-**Administration site**: The Django administration site is included by default when you create an app using the 
-basic skeleton. It makes it trivially easy to provide an admin page for site administrators to create, edit, and 
-view any data models in your site.
+**Forms:** HTML Forms are used to collect user data for processing on the server. Django simplifies 
+form creation, validation, and processing.
+
+**User authentication and permissions:** Django includes a robust user authentication and 
+permission system that has been built with security in mind.
+
+**Administration site**: The Django administration site is included by default when you create an 
+app using the basic skeleton. It makes it trivially easy to provide an admin page for site 
+administrators to create, edit, and view any data models in your site.
 
 
 ##### *Creating the project*
 
-Create the new project using the django-admin startproject command as shown, and then navigate into the project folder:
+Create the new project using the django-admin startproject command as shown, and then navigate into 
+the project folder:
 
 ```python
 django-admin startproject locallibrary
@@ -217,18 +228,20 @@ locallibrary/
 
 __init__.py is an empty file that instructs Python to treat this directory as a Python package.
 
-**settings.py** contains all the website settings, including registering any applications we create, the location 
-of our static files, database configuration details, etc.
+**settings.py** contains all the website settings, including registering any applications we 
+create, the location of our static files, database configuration details, etc.
 
-**wsgi.py** is used to help your Django application communicate with the web server. You can treat this as 
-boilerplate.
+**wsgi.py** is used to help your Django application communicate with the web server. You can treat 
+this as boilerplate.
 
-**asgi.py** is a standard for Python asynchronous web apps and servers to communicate with each other. Asynchronous 
-Server Gateway Interface (ASGI) is the asynchronous successor to Web Server Gateway Interface (WSGI). ASGI provides 
-a standard for both asynchronous and synchronous Python apps, whereas WSGI provided a standard for synchronous apps 
-only. ASGI is backward-compatible with WSGI and supports multiple servers and application frameworks.
+**asgi.py** is a standard for Python asynchronous web apps and servers to communicate with each 
+other. Asynchronous Server Gateway Interface (ASGI) is the asynchronous successor to Web Server 
+Gateway Interface (WSGI). ASGI provides a standard for both asynchronous and synchronous Python 
+apps, whereas WSGI provided a standard for synchronous apps only. ASGI is backward-compatible with 
+WSGI and supports multiple servers and application frameworks.
 
-The **manage.py** script is used to create applications, work with databases, and start the development web server.
+The **manage.py** script is used to create applications, work with databases, and start the 
+development web server.
 
  Make sure to run this command from the same folder as your project's manage.py
 
@@ -241,10 +254,10 @@ py manage.py startapp catalog
 
 
  ```
-The tool creates a new folder and populates it with files for the different parts of the application (shown in the 
-following example). Most of the files are named after their purpose (e.g., views should be stored in views.py, 
-models in models.py, tests in tests.py, administration site configuration in admin.py, application registration in 
-apps.py).
+The tool creates a new folder and populates it with files for the different parts of theapplication 
+(shown in the following example). Most of the files are named after their purpose (e.g., views
+should be stored in views.py, models in models.py, tests in tests.py, administration site 
+configuration in admin.py, application registration in apps.py).
 
 The updated project directory should now look like this:
 ```python
@@ -262,17 +275,16 @@ locallibrary/
 
 ```
 
-A migrations folder, used to store "migrations" — files that allow you to automatically update your database as you 
-modify your models.
+A migrations folder, used to store "migrations" — files that allow you to automatically update your 
+database as you modify your models.
 
 
-__init__.py — an empty file created here so that Django/Python will recognize the folder as a Python Package and 
-allow you to use its objects within other parts of the project.
+__init__.py — an empty file created here so that Django/Python will recognize the folder as a 
+Python Package and allow you to use its objects within other parts of the project.
 
 Applications are registered by adding them to the INSTALLED_APPS list in the project settings.
 
-Open the project settings file, django-locallibrary-tutorial/locallibrary/settings.py, and find the definition for 
-the INSTALLED_APPS list. Then add a new line at the end of the list, as shown below.
+Open the project settings file, django-locallibrary-tutorial/locallibrary/settings.py, and find the definition for the INSTALLED_APPS list. Then add a new line at the end of the list, as shown below.
 
 ```python
 
@@ -290,6 +302,7 @@ INSTALLED_APPS = [
 ]
 
 ```
+
 We'll use the default SQLite database
 it requires no additional work to set up! You can see how this database is configured in settings.py
 

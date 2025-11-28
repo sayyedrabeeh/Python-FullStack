@@ -1,10 +1,13 @@
 
 
-data = ["apple", "20", 10, "cat", 3.5, "5", None]
 
-a=0
-for i in data:
-  if isinstance(i,int)|isinstance(i,float)  :
-    a+=i
+def users(request,id):
+    user = user.objects.get(id=id)
+    context = {
+        'user' : user
+    }
+    return render('users.html',context)
 
-print(a)
+urlpattern = [
+    path('users/<int:id>',users,name='user')
+]
