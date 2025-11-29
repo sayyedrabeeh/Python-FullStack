@@ -875,3 +875,487 @@ Author.objects.bulk_update(authors, ['age', 'name'])
 These methods are essential for **performance optimization** in Django applications! 
 
 ---
+
+ 
+ 
+## **Django ORM: Complex Queries**
+
+Complex queries allow you to build sophisticated database queries using Django's ORM without 
+writing raw SQL. These tools give you the power to handle advanced filtering, calculations, and 
+nested queries.
+
+---
+
+### **1. Q Objects - Complex Queries with OR, AND, NOT Logic**
+
+**Q objects** allow you to build complex queries with `OR`, `AND`, and `NOT` conditions. By default, Django's `filter()` uses `AND` logic, but Q objects give you more flexibility.
+
+#### **Basic OR Query**
+
+**Problem:** Get authors who are either older than 60 OR named "George Orwell"
+
+**Without Q objects (not possible with simple filter):**
+```python
+# Can't do this easily with filter() alone
+```
+
+**With Q objects:**
+```python
+from django.db.models import Q
+
+authors = Author.objects.filter(Q(age__gt=60) | Q(name="George Orwell"))
+```
+
+**Operators:**
+- `|` → OR
+- `&` → AND
+- `~` → NOT
+
+---
+
+#### **AND Query (Explicit)**
+
+```python
+authors = Author.objects.filter(Q(age__gt=30) & Q(age__lt=50))
+```
+
+This is equivalent to:
+```python
+authors = Author.objects.filter(age__gt=30, age__lt=50)
+```
+
+---
+
+#### **NOT Query**
+
+**Get all authors who are NOT named "George Orwell":**
+
+```python
+authors = Author.objects.filter(~Q(name="George Orwell"))
+```
+
+---
+
+#### **Complex Combined Queries**
+
+**Get authors who are either (older than 50) OR (named "Jane Austen" AND younger than 45):**
+
+```python
+authors = Author.objects.filter(
+    Q(age__gt=50) | (Q(name="Jane Austen") & Q(age__lt=45))
+)
+```
+
+---
+
+#### **Real-World Example: Search Functionality**
+
+```python
+search_term = "Orwell"
+
+results = Author.objects.filter(
+    Q(name__icontains=search_term) | 
+    Q(bio__icontains=search_term) |
+    Q(email__icontains=search_term)
+)
+```
+
+---
+
+#### **Dynamic Q Objects**
+
+Build queries dynamically based on user input:
+
+```python
+from django.db.models import Q
+
+def search_authors(name=None, min_age=None, max_age=None):
+    query = Q()
+    
+    if name:
+        query &= Q(name__icontains=name)
+    if min_age:
+        query &= Q(age__gte=min_age)
+    if max_age:
+        query &= Q(age__lte=max_age)
+    
+    return Author.objects.filter(query)
+
+# Usage
+authors = search_authors(name="George", min_age=40)
+```
+
+---
+
+### **2. F Expressions - Reference Model Fields in Queries**
+
+**F expressions** allow you to reference model field values directly in the database, enabling field-to-field comparisons and atomic operations.
+
+#### **Basic Field Comparison**
+
+**Problem:** Find books where the price is greater than the discount price
+
+```python
+from django.db.models import F
+
+books = Book.objects.filter(price__gt=F('discount_price'))
+```
+
+---
+
+#### **Field Arithmetic**
+
+**Increase all author ages by 1:**
+
+```python
+Author.objects.update(age=F('age') + 1)
+```
+
+**Benefits:**
+- Atomic operation (no race conditions)
+- Happens directly in the database
+- Much faster than loading objects into memory
+
+**More examples:**
+
+```python
+# Decrease all product prices by 10%
+Product.objects.update(price=F('price') * 0.9)
+
+# Double all stock quantities
+Product.objects.update(stock=F('stock') * 2)
+```
+
+---
+
+#### **Comparing Two Fields**
+
+**Find products where stock is less than minimum stock level:**
+
+```python
+low_stock = Product.objects.filter(stock__lt=F('min_stock_level'))
+```
+
+**Find authors where age is greater than years of experience:**
+
+```python
+authors = Author.objects.filter(age__gt=F('years_of_experience'))
+```
+
+---
+
+#### **F Expressions with Relationships**
+
+**Find books where the author's age is greater than 50:**
+
+```python
+books = Book.objects.filter(author__age__gt=50)
+```
+
+**Using F expression to compare related fields:**
+
+```python
+books = Book.objects.filter(copies_sold__gt=F('author__total_books_written'))
+```
+
+---
+
+#### **Annotations with F Expressions**
+
+```python
+from django.db.models import F
+
+books = Book.objects.annotate(
+    profit=F('price') - F('cost')
+).filter(profit__gt=10)
+```
+
+---
+
+### **3. Subqueries - Nested Queries**
+
+**Subqueries** allow you to use the result of one query inside another query, enabling complex nested operations.
+
+#### **Basic Subquery**
+
+**Problem:** Find all authors who have written at least one book published after 2020
+
+```python
+from django.db.models import OuterRef, Subquery
+
+# Subquery to get recent books
+recent_books = Book.objects.filter(
+    author=OuterRef('pk'),
+    published_date__year__gt=2020
+)
+
+# Main query
+authors = Author.objects.filter(
+    id__in=Subquery(recent_books.values('author'))
+)
+```
+
+---
+
+#### **Subquery with Annotation**
+
+**Get the latest book's title for each author:**
+
+```python
+from django.db.models import OuterRef, Subquery
+
+latest_book = Book.objects.filter(
+    author=OuterRef('pk')
+).order_by('-published_date')
+
+authors = Author.objects.annotate(
+    latest_book_title=Subquery(latest_book.values('title')[:1])
+)
+
+for author in authors:
+    print(f"{author.name}: {author.latest_book_title}")
+```
+
+---
+
+#### **Subquery for Filtering**
+
+**Find authors whose latest book was published after 2020:**
+
+```python
+latest_book_date = Book.objects.filter(
+    author=OuterRef('pk')
+).order_by('-published_date').values('published_date')[:1]
+
+authors = Author.objects.annotate(
+    latest_date=Subquery(latest_book_date)
+).filter(latest_date__year__gt=2020)
+```
+
+---
+
+#### **Exists Subquery**
+
+**Find authors who have at least one book:**
+
+```python
+from django.db.models import Exists, OuterRef
+
+has_books = Book.objects.filter(author=OuterRef('pk'))
+
+authors = Author.objects.annotate(
+    has_books=Exists(has_books)
+).filter(has_books=True)
+```
+
+---
+
+#### **Complex Subquery Example**
+
+**Get authors with their highest-priced book:**
+
+```python
+from django.db.models import OuterRef, Subquery, Max
+
+max_price_book = Book.objects.filter(
+    author=OuterRef('pk')
+).order_by('-price').values('title')[:1]
+
+authors = Author.objects.annotate(
+    most_expensive_book=Subquery(max_price_book)
+)
+```
+
+---
+
+### **4. Annotations - Add Calculated Fields to QuerySets**
+
+**Annotations** allow you to add calculated or aggregated fields to each object in a queryset without modifying the database schema.
+
+#### **Basic Annotation with Count**
+
+**Count the number of books for each author:**
+
+```python
+from django.db.models import Count
+
+authors = Author.objects.annotate(book_count=Count('book'))
+
+for author in authors:
+    print(f"{author.name} has written {author.book_count} books")
+```
+
+---
+
+#### **Annotation with Sum**
+
+**Calculate total sales for each author:**
+
+```python
+from django.db.models import Sum
+
+authors = Author.objects.annotate(
+    total_sales=Sum('book__copies_sold')
+)
+
+for author in authors:
+    print(f"{author.name}: {author.total_sales} total copies sold")
+```
+
+---
+
+#### **Annotation with Avg, Min, Max**
+
+```python
+from django.db.models import Avg, Min, Max
+
+authors = Author.objects.annotate(
+    avg_price=Avg('book__price'),
+    min_price=Min('book__price'),
+    max_price=Max('book__price')
+)
+```
+
+---
+
+#### **Conditional Annotations with Case/When**
+
+**Count only books published after 2020:**
+
+```python
+from django.db.models import Count, Q
+
+authors = Author.objects.annotate(
+    recent_books=Count('book', filter=Q(book__published_date__year__gt=2020))
+)
+```
+
+**Using Case/When for complex logic:**
+
+```python
+from django.db.models import Case, When, Value, CharField
+
+authors = Author.objects.annotate(
+    generation=Case(
+        When(age__lt=30, then=Value('Young')),
+        When(age__lt=50, then=Value('Middle-aged')),
+        default=Value('Senior'),
+        output_field=CharField()
+    )
+)
+
+for author in authors:
+    print(f"{author.name} is {author.generation}")
+```
+
+---
+
+#### **Annotations with F Expressions**
+
+**Calculate profit margin for books:**
+
+```python
+from django.db.models import F, ExpressionWrapper, DecimalField
+
+books = Book.objects.annotate(
+    profit=ExpressionWrapper(
+        F('price') - F('cost'),
+        output_field=DecimalField()
+    ),
+    profit_margin=ExpressionWrapper(
+        (F('price') - F('cost')) / F('price') * 100,
+        output_field=DecimalField()
+    )
+)
+```
+
+---
+
+#### **Chaining Annotations**
+
+```python
+authors = Author.objects.annotate(
+    book_count=Count('book')
+).annotate(
+    avg_price=Avg('book__price')
+).filter(book_count__gt=2)
+```
+
+---
+
+#### **Annotation vs Aggregate**
+
+**Key Difference:**
+- **`annotate()`** → Adds a calculated field to **each object** in the queryset
+- **`aggregate()`** → Returns a **single value** for the entire queryset
+
+**Example:**
+
+```python
+# Annotate: Each author gets their own book count
+authors = Author.objects.annotate(book_count=Count('book'))
+# Result: [Author(name="Jane", book_count=5), Author(name="John", book_count=3)]
+
+# Aggregate: One value for all authors
+total_books = Author.objects.aggregate(total=Count('book'))
+# Result: {'total': 8}
+```
+
+---
+
+### **5. Combining Everything: Real-World Example**
+
+**Find active authors (have books) with their total sales, but only if they've sold more than 1000 copies:**
+
+```python
+from django.db.models import Q, F, Count, Sum, OuterRef, Subquery, Exists
+
+# Check if author has books
+has_books = Book.objects.filter(author=OuterRef('pk'))
+
+authors = Author.objects.annotate(
+    # Add book count
+    book_count=Count('book'),
+    # Add total sales
+    total_sales=Sum('book__copies_sold')
+).filter(
+    # Complex conditions with Q objects
+    Q(total_sales__gt=1000) & Exists(has_books)
+).order_by('-total_sales')
+
+for author in authors:
+    print(f"{author.name}: {author.book_count} books, {author.total_sales} sales")
+```
+
+---
+
+### **6. Comparison Table**
+
+| Feature       | Purpose                                    | Example                                      |
+| ------------- | ------------------------------------------ | -------------------------------------------- |
+| **Q objects** | Complex filtering (OR, AND, NOT)           | `Q(age__gt=50) \| Q(name="Jane")`             |
+| **F expressions** | Reference field values in queries      | `F('price') - F('cost')`                     |
+| **Subqueries** | Nested queries                            | `Subquery(Book.objects.filter(...))`         |
+| **Annotations** | Add calculated fields to querysets       | `annotate(book_count=Count('book'))`         |
+
+---
+
+### **7. Performance Tips**
+
+ **Use Q objects for complex OR conditions** instead of multiple queries  
+ **Use F expressions for atomic updates** to avoid race conditions  
+ **Use annotations to reduce database queries** instead of Python loops  
+ **Use Exists() for checking relationships** instead of Count()  
+
+---
+
+### **Summary**
+
+- **Q objects** let you build complex filters with OR, AND, NOT logic
+- **F expressions** allow field-to-field comparisons and atomic operations
+- **Subqueries** enable nested queries for advanced filtering
+- **Annotations** add calculated fields without changing your database schema
+
+These tools are essential for building **efficient, powerful queries** in Django! 
+
+---

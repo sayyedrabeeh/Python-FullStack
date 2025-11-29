@@ -75,7 +75,7 @@ Let’s say we have two tables:
 
 ---
 
-### 1️⃣ **INNER JOIN**
+###  **INNER JOIN**
 
 Returns rows where there is a **match in both tables**.
 
@@ -99,7 +99,7 @@ ON e.dept_id = d.dept_id;
 
 ---
 
-### 2️⃣ **LEFT JOIN** (or LEFT OUTER JOIN)
+###  **LEFT JOIN** (or LEFT OUTER JOIN)
 
 Returns all rows from the **left table** (`employees`), and matching rows from the right table. If no match → `NULL`.
 
@@ -114,7 +114,7 @@ ON e.dept_id = d.dept_id;
 
 ---
 
-### 3️⃣ **RIGHT JOIN** (or RIGHT OUTER JOIN)
+###  **RIGHT JOIN** (or RIGHT OUTER JOIN)
 
 Returns all rows from the **right table** (`departments`), and matching rows from employees.
 
@@ -137,7 +137,7 @@ ON e.dept_id = d.dept_id;
 
 ---
 
-### 4️⃣ **FULL JOIN** (FULL OUTER JOIN)
+###  **FULL JOIN** (FULL OUTER JOIN)
 
 Returns all rows from both tables. If there’s no match, `NULL` fills in.
 
@@ -152,7 +152,7 @@ ON e.dept_id = d.dept_id;
 
 ---
 
-### 5️⃣ **CROSS JOIN**
+###  **CROSS JOIN**
 
 Returns **all possible combinations** (Cartesian product).
 
@@ -353,7 +353,7 @@ ON a.dept_id = d.dept_id;
 
 ---
 
-## 📌 Example 2: Recursive CTE
+##  Example 2: Recursive CTE
 
 CTEs can also be **recursive**, useful for hierarchical data (like org charts, categories, trees).
 
