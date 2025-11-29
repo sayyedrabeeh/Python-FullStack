@@ -138,7 +138,7 @@ posts = user.post_set.all()
 
  
   This is a powerful feature that lets you **reuse fields and behavior across multiple models**. Django provides three main types of model inheritance. Let’s go through them carefully.
-
+ 
 ---
 
 ## **1. Abstract Base Classes**
@@ -604,3 +604,274 @@ or press **Ctrl + Z**, then **Enter**.
 
 ---
  
+ 
+
+---
+
+## **Django ORM: Bulk Operations**
+
+Bulk operations allow you to perform database actions on **multiple records efficiently** in a single query, which is much faster than looping through records individually.
+
+---
+
+### **1. `bulk_create()` - Insert Multiple Records at Once**
+
+Use `bulk_create()` when you need to create many objects in one database query instead of calling `save()` multiple times.
+
+**Example:**
+
+```python
+from myapp.models import Author
+
+# Creating multiple authors
+authors = [
+    Author(name="George Orwell", age=46),
+    Author(name="Jane Austen", age=41),
+    Author(name="Mark Twain", age=74),
+    Author(name="Leo Tolstoy", age=82),
+]
+
+Author.objects.bulk_create(authors)
+```
+
+ **Benefits:**
+- Much faster than creating objects one by one
+- Reduces database round trips
+
+ **Limitations:**
+- Does **not** call the `save()` method
+- Does **not** trigger signals like `pre_save` or `post_save`
+- Primary keys (IDs) are not set on the objects by default (unless you pass `ignore_conflicts=False`)
+
+**Getting IDs after bulk_create (Django 4.0+):**
+
+```python
+authors = Author.objects.bulk_create([
+    Author(name="Emily Dickinson", age=55),
+    Author(name="Walt Whitman", age=72)
+])
+
+for author in authors:
+    print(author.id)  # IDs are now available
+```
+
+---
+
+### **2. `bulk_update()` - Update Multiple Records Efficiently**
+
+Use `bulk_update()` to update specific fields on multiple objects in one query.
+
+**Example:**
+
+```python
+authors = Author.objects.filter(age__lt=50)
+
+# Modify objects in memory
+for author in authors:
+    author.age += 1
+
+# Update all at once
+Author.objects.bulk_update(authors, ['age'])
+```
+
+ **Benefits:**
+- Updates multiple records in a single query
+- Faster than calling `save()` on each object
+
+**Update multiple fields:**
+
+```python
+authors = Author.objects.all()[:3]
+
+for author in authors:
+    author.age += 5
+    author.name = author.name.upper()
+
+Author.objects.bulk_update(authors, ['age', 'name'])
+```
+
+ **Limitations:**
+- Does **not** trigger `save()` or signals
+- You must specify which fields to update
+
+---
+
+### **3. `get_or_create()` - Get if Exists, Create if Not**
+
+Use `get_or_create()` when you want to retrieve an object if it exists, or create it if it doesn't.
+
+**Example:**
+
+```python
+author, created = Author.objects.get_or_create(
+    name="J.K. Rowling",
+    defaults={'age': 58}
+)
+
+if created:
+    print("New author created!")
+else:
+    print("Author already exists!")
+```
+
+**How it works:**
+- Django searches for an author with `name="J.K. Rowling"`
+- If found, it returns the existing author
+- If not found, it creates a new author with `age=58`
+
+**Returns:**
+- A tuple: `(object, created)`
+  - `object` → The author instance
+  - `created` → `True` if new, `False` if existing
+
+**Another example:**
+
+```python
+book, created = Book.objects.get_or_create(
+    title="Harry Potter",
+    defaults={
+        'published_date': '1997-06-26',
+        'author': author
+    }
+)
+```
+
+---
+
+### **4. `update_or_create()` - Update if Exists, Create if Not**
+
+Use `update_or_create()` when you want to update an existing record or create it if it doesn't exist.
+
+**Example:**
+
+```python
+author, created = Author.objects.update_or_create(
+    name="J.K. Rowling",
+    defaults={'age': 59}
+)
+
+if created:
+    print("New author created with age 59")
+else:
+    print("Author updated to age 59")
+```
+
+**How it works:**
+- Django searches for an author with `name="J.K. Rowling"`
+- If found, it **updates** the `age` to 59
+- If not found, it **creates** a new author with `name="J.K. Rowling"` and `age=59`
+
+**More complex example:**
+
+```python
+author, created = Author.objects.update_or_create(
+    name="George Orwell",
+    defaults={
+        'age': 47,
+        'bio': 'British novelist and essayist'
+    }
+)
+```
+
+---
+
+### **5. Comparison Table**
+
+| Method               | Purpose                                   | Creates? | Updates? | Returns            |
+| -------------------- | ----------------------------------------- | -------- | -------- | ------------------ |
+| `bulk_create()`      | Insert multiple records                   | ✅        | ❌        | List of objects    |
+| `bulk_update()`      | Update multiple records                   | ❌        | ✅        | Number of rows     |
+| `get_or_create()`    | Get existing or create new                | ✅        | ❌        | (object, created)  |
+| `update_or_create()` | Update existing or create new             | ✅        | ✅        | (object, created)  |
+
+---
+
+### **6. Real-World Use Cases**
+
+#### **Use Case 1: Importing CSV Data**
+
+```python
+import csv
+
+authors = []
+with open('authors.csv', 'r') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        authors.append(Author(name=row['name'], age=int(row['age'])))
+
+Author.objects.bulk_create(authors, batch_size=1000)
+```
+
+#### **Use Case 2: Bulk Price Update**
+
+```python
+products = Product.objects.filter(category="Electronics")
+
+for product in products:
+    product.price *= 1.10  # 10% price increase
+
+Product.objects.bulk_update(products, ['price'])
+```
+
+#### **Use Case 3: User Registration**
+
+```python
+user, created = User.objects.get_or_create(
+    email="user@example.com",
+    defaults={
+        'username': 'johndoe',
+        'first_name': 'John',
+        'last_name': 'Doe'
+    }
+)
+```
+
+#### **Use Case 4: Sync External API Data**
+
+```python
+for api_data in external_api.get_products():
+    product, created = Product.objects.update_or_create(
+        sku=api_data['sku'],
+        defaults={
+            'name': api_data['name'],
+            'price': api_data['price'],
+            'stock': api_data['stock']
+        }
+    )
+```
+
+---
+
+### **7. Performance Tips**
+
+ **Use `batch_size` with `bulk_create()`:**
+
+```python
+Author.objects.bulk_create(authors, batch_size=500)
+```
+This splits large inserts into smaller batches.
+
+ **Use `ignore_conflicts=True` to skip duplicates:**
+
+```python
+Author.objects.bulk_create(authors, ignore_conflicts=True)
+```
+
+ **Always specify fields in `bulk_update()`:**
+
+```python
+Author.objects.bulk_update(authors, ['age', 'name'])
+```
+
+---
+
+### **Summary**
+
+- Use **`bulk_create()`** for fast insertion of multiple records
+- Use **`bulk_update()`** for efficient updates on multiple records
+- Use **`get_or_create()`** when you need to retrieve or create a single record
+- Use **`update_or_create()`** when you need to update or create a single record
+
+These methods are essential for **performance optimization** in Django applications! 
+
+---
