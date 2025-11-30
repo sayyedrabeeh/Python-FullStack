@@ -26,6 +26,35 @@ class Linkdinlist:
             print(current.data)
             current = current.next
         print('None')
+    def count_link(self):
+        c=1
+        current = self.head
+        while current.next:
+            c+=1
+            current = current.next
+        return c
+    def printlastthree(self):
+        count = self.count_link()-3
+        c=1
+        current = self.head
+        print('printing last three element ....')
+        while current:
+            if c > count:
+                print(current.data)
+            c+=1
+            current = current.next
+
+    def delete(self,t):
+        current = self.head
+        prev = None
+        while current.next and current.data != t:
+            prev =  current
+            current = current.next
+        prev.next = current.next
+
+
+
 li = Linkdinlist()
 li.arr_link(arr)
 li.print_link()
+li.printlastthree()
