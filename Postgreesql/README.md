@@ -390,7 +390,7 @@ SELECT * FROM emp_tree;
 ```
 
  Result:
-
+ 
 | id | name    | manager\_id |
 | -- | ------- | ----------- |
 | 1  | Alice   | NULL        |
