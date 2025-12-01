@@ -1,5 +1,3 @@
- 
- 
 class Node:
     def __init__(self,data):
         self.data = data
@@ -8,7 +6,7 @@ class Node:
 class Linkidin:
     def __init__(self):
         self.head = None
-    
+
     def insert(self,data):
         new_node = Node(data)
         if self.head is None:
@@ -18,8 +16,7 @@ class Linkidin:
         while current.next:
             current = current.next
         current.next = new_node
-     
-        
+             
     def print_list(self):
         current =  self.head
         while current:
@@ -34,7 +31,6 @@ class Linkidin:
             current =  current.next
             c+=1
         return c 
-   
     
     def removemiddle(self):
         count =  self.count()
@@ -52,36 +48,12 @@ class Linkidin:
             prev = current
             current = current.next 
             c+=1
-        
-        
+
 li = Linkidin()
 li.insert(10)
 li.insert(20)
 li.insert(30)
 li.insert(10)
 li.insert(10)
-  
- 
-
-
 li.removemiddle()
 li.print_list()
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
