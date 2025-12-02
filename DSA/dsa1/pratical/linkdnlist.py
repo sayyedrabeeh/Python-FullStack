@@ -33,9 +33,7 @@ class Linkdilist:
             if current.data == key:
                return True
             current = current.next
-           
         return False
-        
     def delete(self,key):
         current = self.head
         prev = None
@@ -43,14 +41,12 @@ class Linkdilist:
             prev = current
             current = current.next
         prev.next = current.next
-
     def print_list(self):
         current = self.head
         while current:
             print(current.data,end=' -> ')
             current = current.next
         print('none')
-
 li= Linkdilist()
 li.insert_at_begnning(10)    
 li.insert_at_begnning(20)    
@@ -61,7 +57,4 @@ li.insert_at_ending(60)
 print(li.serch(60))
 li.delete(60)
 print(li.serch(60))
-
-li.print_list()
-             
-        
+li.print_list()                     

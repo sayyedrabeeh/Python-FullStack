@@ -19,7 +19,9 @@ import ReactDOM from 'react-dom/client';
 // import Addtwonum from './react2/usememo';
 // import Todo from './react2/todolist';
 // import App from './react3/pratical/counter';
-import App from './react3/pratical/test';
+// import App from './react3/pratical/test';
+// import App from './react1/pratical/counter_redux';
+import Fetchdata from './react1/pratical/fetchdata';
 
 import { Provider } from 'react-redux'
 
@@ -39,8 +41,8 @@ root.render(
       <CounterDisplay/>
       </PersistGate>
     </Provider> */}
-    <App/>
-
+    {/* <App/> */}
+    <Fetchdata />
   </React.StrictMode>
 );
  

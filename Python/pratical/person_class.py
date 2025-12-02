@@ -9,4 +9,4 @@ class person :
 
 
 a = person('rabeeh',21)
-a.get()
+a.get() 

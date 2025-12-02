@@ -1,14 +1,8 @@
+a = [1,2,3]
+b = [4,5]
+a.append(b)
+print(a)
 
-
-
-sentence = "Python is a powerful and expressive programming language"
-longest = ''
-s = sentence.split(' ')
-for i in s:
-    if len(i) > len(longest):
-        longest = i 
-
-print(longest)
-
-
-
+a = [1,2,3]
+a.extend(b)
+print(a)
