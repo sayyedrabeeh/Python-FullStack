@@ -6,3 +6,5 @@ print(a)
 a = [1,2,3]
 a.extend(b)
 print(a)
+
+
