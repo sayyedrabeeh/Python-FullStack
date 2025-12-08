@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import  axios from 'axios'
 
 export default function Fetchdata() {
   const [result, setResult] = useState([]);
@@ -7,9 +8,8 @@ export default function Fetchdata() {
 
   useEffect(() => {
     const fetchdata = async () => {
-      const res = await fetch("https://dummyjson.com/todos");
-      const data = await res.json();
-      setResult(data.todos);
+      const res = await axios.get("https://dummyjson.com/todos");
+      setResult(res.data.todos);
       setLoading(false);
     };
     fetchdata();
