@@ -1,4 +1,5 @@
-import React,{useState} from "react";
+
+import React, { useState } from "react";
 
 function Child({onsend}){
     const [inputvalue,setInputValue] = useState('')
