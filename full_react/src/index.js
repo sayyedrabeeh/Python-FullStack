@@ -24,7 +24,10 @@ import ReactDOM from 'react-dom/client';
 // import Fetchdata from './react1/pratical/fetchdata';
 // import Fetchdata from './react1/pratical/async_fechdata';
 // import Fetchdata from './react1/pratical/axios_fetchdata';
-import PromiseExample from './react1/pratical/promise';
+// import Parent from './react1/pratical/siblings_communiaction';
+// import Parent from './react1/pratical/siblings_context';
+import App from './react1/pratical/HOC';
+// import PromiseExample from './react1/pratical/promise';
 
 import { Provider } from 'react-redux'
 
@@ -44,9 +47,10 @@ root.render(
       <CounterDisplay/>
       </PersistGate>
     </Provider> */}
-    {/* <App/> */}
+    <App/>
     {/* <Fetchdata /> */}
-    <PromiseExample/>
+    {/* <PromiseExample/> */}
+    {/* <Parent/> */}
   </React.StrictMode>
 );
  
