@@ -19,13 +19,13 @@ import ReactDOM from 'react-dom/client';
 // import Addtwonum from './react2/usememo';
 // import Todo from './react2/todolist';
 // import App from './react3/pratical/counter';
-// import App from './react3/pratical/test';
+import App from './react3/pratical/test';
 // import App from './react1/pratical/counter_redux';
 // import Fetchdata from './react1/pratical/fetchdata';
 // import Fetchdata from './react1/pratical/async_fechdata';
 // import Fetchdata from './react1/pratical/axios_fetchdata';
 // import Parent from './react1/pratical/siblings_communiaction';
-import Parent from './react1/pratical/siblings_contet';
+import Parent from './react1/pratical/siblings_context';
 // import PromiseExample from './react1/pratical/promise';
 
 import { Provider } from 'react-redux'
@@ -46,10 +46,10 @@ root.render(
       <CounterDisplay/>
       </PersistGate>
     </Provider> */}
-    {/* <App/> */}
+    <App/>
     {/* <Fetchdata /> */}
     {/* <PromiseExample/> */}
-    <Parent/>
+    {/* <Parent/> */}
   </React.StrictMode>
 );
  

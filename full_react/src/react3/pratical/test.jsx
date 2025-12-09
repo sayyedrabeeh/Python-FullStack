@@ -1,58 +1,58 @@
-import React,{useState} from "react"
-import { createSlice, configureStore } from "@reduxjs/toolkit"
-import { useSelector,useDispatch,Provider } from "react-redux"
+import React, { useState, useEffect } from "react";
+import { useSelector,useDispatch,Provider } from "react-redux";
+import { createSlice,configureStore } from "@reduxjs/toolkit";
 
 
-const CounterSlice = createSlice({
+const counterSlice = createSlice({
     name: 'counter',
-    initialState: { value: 0 },
-    reducers: {
-        increment: (state) => {
-            state.value+=1
+    initialState: { count: 0,num:5 },
+    reducers:
+    {
+        inc: (state) => {
+            state.count+=1
         },
-        decrement: (state) => {
-            state.value -= 1
+        dec: (state) => {
+            state.count-=1
         },
         reset: (state) => {
-            state.value = 0
+            state.count = 0 
         }
     }
-    
 })
 
-const { increment, decrement, reset } = CounterSlice.actions
+const { inc,dec,reset } = counterSlice.actions
 
 const store = configureStore({
     reducer: {
-        'counter': CounterSlice.reducer
+      counter:  counterSlice.reducer
     }
 })
+
 export { store }
 
+function Display() {
 
-function Calc() {
-    const value = useSelector((state) => state.counter.value)
+    const  {num,count}  = useSelector((state) => state.counter)
     const dispatch = useDispatch()
-   
+
     return (
         <>
-            <h1>count :{value}</h1>
-            <button onClick = {() => dispatch(increment())}>inc</button>
-            <button onClick = {() => dispatch(decrement())}>dec</button>
-            <button onClick = {() => dispatch(reset())}>reset</button>
+            <h1>num : { num }</h1>
+            <h1>Count : { count }</h1>
+            <button onClick={()=> dispatch(inc())}>increment</button>
+            <button onClick={()=> dispatch(dec())}>decrement</button>
+            <button onClick={()=> dispatch(reset())}>reset</button>
             
         </>
     )
- 
 
+    
 }
 
 export default function App() {
-
     return (
-        <Provider store={ store }>
-            <Calc/>
+        <Provider store={store}>
+            <Display/>
         </Provider>
     )
-    
-} 
+}
