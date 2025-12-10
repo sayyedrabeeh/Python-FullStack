@@ -26,9 +26,9 @@ import ReactDOM from 'react-dom/client';
 // import Fetchdata from './react1/pratical/axios_fetchdata';
 // import Parent from './react1/pratical/siblings_communiaction';
 // import Parent from './react1/pratical/siblings_context';
-import App from './react1/pratical/HOC';
+// import App from './react1/pratical/HOC';
 // import PromiseExample from './react1/pratical/promise';
-
+import Addtwo from './react1/pratical/add_two_number';
 import { Provider } from 'react-redux'
 
 
@@ -47,7 +47,8 @@ root.render(
       <CounterDisplay/>
       </PersistGate>
     </Provider> */}
-    <App/>
+    {/* <App/> */}
+    <Addtwo/>
     {/* <Fetchdata /> */}
     {/* <PromiseExample/> */}
     {/* <Parent/> */}
