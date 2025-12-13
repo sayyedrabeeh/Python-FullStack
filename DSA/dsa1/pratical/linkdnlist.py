@@ -41,6 +41,8 @@ class Linkdilist:
             prev = current
             current = current.next
         prev.next = current.next
+
+
     def print_list(self):
         current = self.head
         while current:
