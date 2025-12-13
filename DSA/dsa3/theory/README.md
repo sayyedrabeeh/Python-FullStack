@@ -771,7 +771,7 @@ Adjacency list:
 
 ---
  
-    ```python
+```python
 
     class Graph:
     def __init__(self):
@@ -823,9 +823,8 @@ g.show()
             
             
             
- ```
+```
  
-
 * When checking for cycles, you still need to **traverse neighbors**.
 
   * For node `i`, you scan row `i` in the matrix to find all `j` where `matrix[i][j] == 1`.
@@ -1042,7 +1041,7 @@ print(g.is_cyclic())
 
 ---
 
-## ** What is BFS?**
+## **What is BFS?**
 
 BFS stands for **Breadth-First Search**.
 
@@ -1057,7 +1056,7 @@ Imagine BFS like **ripples in a pond**:
 
 ---
 
-## ** How BFS Works**
+## **How BFS Works**
 
 ### Steps:
 
@@ -1074,7 +1073,7 @@ Imagine BFS like **ripples in a pond**:
 
 ---
 
-## ** BFS Algorithm (Pseudocode)**
+## **BFS Algorithm (Pseudocode)**
 
 ```
 BFS(graph, start):
@@ -1095,7 +1094,7 @@ BFS(graph, start):
 
 ---
 
-## ** BFS Example (Undirected Graph)**
+## **BFS Example (Undirected Graph)**
 
 Graph:
 
@@ -1147,7 +1146,7 @@ A B C D E F
 
 ---
 
-## ** Why BFS is Useful**
+## **Why BFS is Useful**
 
 1. **Find Shortest Path in Unweighted Graphs**
 
@@ -1168,7 +1167,7 @@ A B C D E F
 
 ---
 
-## ** When to Use BFS**
+## **When to Use BFS**
 
 | Situation                             | Reason to Use BFS                                                    |
 | ------------------------------------- | -------------------------------------------------------------------- |
@@ -1180,7 +1179,7 @@ A B C D E F
 
 ---
 
-## ** BFS vs DFS (for clarity)**
+## **BFS vs DFS (for clarity)**
 
 | Feature                          | BFS                                        | DFS                                             |
 | -------------------------------- | ------------------------------------------ | ----------------------------------------------- |
@@ -1191,7 +1190,7 @@ A B C D E F
 
 ---
 
-### ** Real-life Analogy**
+### **Real-life Analogy**
 
 * BFS = **spreading news** in a town: everyone close to the source hears first.
 * DFS = **exploring a maze**: go deep along a path until you hit a dead end, then backtrack.
@@ -1323,7 +1322,7 @@ DFS is best for **deep exploration** problems:
   * Spreading information/virus simulation.
 ---
 
-# ** What is a Shortest Path?**
+# **What is a Shortest Path?**
 
 In a graph, the **shortest path** between two nodes is the path with the **minimum cost/distance/weight**.
 
@@ -1332,7 +1331,7 @@ In a graph, the **shortest path** between two nodes is the path with the **minim
 
 ---
 
-# ** Types of Shortest Path Problems**
+# **Types of Shortest Path Problems**
 
 | Problem Type                                  | Description                      | Algorithm Commonly Used |
 | --------------------------------------------- | -------------------------------- | ----------------------- |
@@ -1343,7 +1342,7 @@ In a graph, the **shortest path** between two nodes is the path with the **minim
 
 ---
 
-# ** BFS for Shortest Path (Unweighted Graph)**
+# **BFS for Shortest Path (Unweighted Graph)**
 
 **Idea:**
 
@@ -1394,7 +1393,7 @@ Shortest path from A to F: ['A', 'C', 'F']
 
 ---
 
-# ** Dijkstra’s Algorithm (Weighted Graph, Positive Weights)**
+# **Dijkstra’s Algorithm (Weighted Graph, Positive Weights)**
 
 **Idea:**
 
@@ -1449,7 +1448,7 @@ Shortest distances from A: {'A': 0, 'B': 2, 'C': 5, 'D': 6, 'E': 5, 'F': 6}
 
 ---
 
-# ** Bellman-Ford Algorithm (Handles Negative Weights)**
+# **Bellman-Ford Algorithm (Handles Negative Weights)**
 
 * Works even if **edge weights are negative**.
 * Detects **negative cycles**.
@@ -1457,7 +1456,7 @@ Shortest distances from A: {'A': 0, 'B': 2, 'C': 5, 'D': 6, 'E': 5, 'F': 6}
 
 ---
 
-# ** Floyd-Warshall Algorithm (All-Pairs Shortest Path)**
+# **Floyd-Warshall Algorithm (All-Pairs Shortest Path)**
 
 * Computes shortest paths **between all pairs of nodes**.
 * Uses dynamic programming → updates distances using intermediate nodes.
@@ -1465,7 +1464,7 @@ Shortest distances from A: {'A': 0, 'B': 2, 'C': 5, 'D': 6, 'E': 5, 'F': 6}
 
 ---
 
-# ** When to Use Each**
+# **When to Use Each**
 
 | Scenario                                     | Algorithm      |
 | -------------------------------------------- | -------------- |
@@ -1478,7 +1477,7 @@ Shortest distances from A: {'A': 0, 'B': 2, 'C': 5, 'D': 6, 'E': 5, 'F': 6}
 
 ---
 
-# ** Dijkstra’s Algorithm**
+# **Dijkstra’s Algorithm**
 
 **Purpose:**
 
@@ -1906,7 +1905,7 @@ index_to_node = {0:'A',1:'B',2:'C',3:'D'}
 
 ---
 
-# **Basic Rules of a Tree**
+# **Tree**
 
 A **tree** is a special type of graph with these rules:
 
@@ -3847,6 +3846,531 @@ Trie structure will contain paths for each suffix.
 | Suffix Tree (Compact)   | Substring search (efficient)   | Moderate    | Fast    |
 | Aho-Corasick Automaton  | Multi-pattern matching         | Moderate    | Fastest |
 
+
 ---
 
+#  What is a Heap? 
+
+A **heap** is a **special complete binary tree** where:
+
+1. **Shape property** → Tree is **complete**
+
+   * Filled level by level
+   * Left to right
+2. **Heap property** → Parent-child order rule
+
+Heaps are usually stored in an **array**, not pointers.
+
+
+
+#  Array Representation of Heap
+
+If index = `i`
+
+| Relationship | Formula        |
+| ------------ | -------------- |
+| Parent       | `(i - 1) // 2` |
+| Left child   | `2*i + 1`      |
+| Right child  | `2*i + 2`      |
+
+Example array:
+
+```
+Index:  0  1  2  3  4  5
+Value: [10,20,30,40,50,60]
+```
+
+---
+
+#  Min Heap
+
+### Definition
+
+> **Parent ≤ Children**
+
+Smallest element is always at the **root (index 0)**
+
+### Example
+
+```
+        10
+      /    \
+     20     30
+    /  \   /
+   40  50 60
+```
+
+Array:
+
+```
+[10, 20, 30, 40, 50, 60]
+```
+
+---
+
+### When to use Min Heap?
+
+* Get **minimum** quickly
+* Priority queues
+* Dijkstra
+* Scheduling tasks
+
+---
+
+#  Max Heap
+
+### Definition
+
+> **Parent ≥ Children**
+
+Largest element is always at the **root**
+
+### Example
+
+```
+        60
+      /    \
+     50     40
+    /  \   /
+   20  10 30
+```
+
+Array:
+
+```
+[60, 50, 40, 20, 10, 30]
+```
+
+---
+
+### When to use Max Heap?
+
+* Get **maximum** quickly
+* Top-K problems
+* Heap sort
+
+---
+
+#  Heap Operations (Core Logic)
+
+## A) Insert (Heapify UP)
+
+### Steps
+
+1. Insert at **end** of array
+2. Compare with parent
+3. Swap if heap property violated
+4. Repeat upward
+
+### Time Complexity
+
+```
+O(log n)
+```
+
+---
+
+### Min Heap Insert Example
+
+Insert `5` into:
+
+```
+[10, 20, 30, 40]
+```
+
+Steps:
+
+```
+[10, 20, 30, 40, 5]
+swap with 20 → [10, 5, 30, 40, 20]
+swap with 10 → [5, 10, 30, 40, 20]
+```
+
+---
+
+## B) Remove Root (Heapify DOWN)
+
+### Steps
+
+1. Remove root
+2. Move last element to root
+3. Compare with children
+4. Swap with smaller (min heap) or larger (max heap)
+5. Repeat downward
+
+### Time Complexity
+
+```
+O(log n)
+```
+
+---
+
+#  Python Implementation (From Scratch)
+
+## Min Heap (Manual Implementation)
+
+```python
+class MinHeap:
+    def __init__(self):
+        self.heap = []
+
+    def insert(self, val):
+        self.heap.append(val)
+        self._heapify_up(len(self.heap) - 1)
+
+    def _heapify_up(self, i):
+        parent = (i - 1) // 2
+        if i > 0 and self.heap[i] < self.heap[parent]:
+            self.heap[i], self.heap[parent] = self.heap[parent], self.heap[i]
+            self._heapify_up(parent)
+
+    def pop(self):
+        if len(self.heap) == 1:
+            return self.heap.pop()
+
+        root = self.heap[0]
+        self.heap[0] = self.heap.pop()
+        self._heapify_down(0)
+        return root
+
+    def _heapify_down(self, i):
+        smallest = i
+        left = 2*i + 1
+        right = 2*i + 2
+
+        if left < len(self.heap) and self.heap[left] < self.heap[smallest]:
+            smallest = left
+        if right < len(self.heap) and self.heap[right] < self.heap[smallest]:
+            smallest = right
+
+        if smallest != i:
+            self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
+            self._heapify_down(smallest)
+```
+
+---
+
+## Using Python Built-in `heapq` (Min Heap)
+
+```python
+import heapq
+
+arr = [5, 10, 3, 20]
+heapq.heapify(arr)   # O(n)
+
+heapq.heappush(arr, 2)
+print(arr)           # [2, 5, 3, 20, 10]
+
+print(heapq.heappop(arr))  # 2
+```
+
+---
+
+## Max Heap using `heapq`
+
+Python only has **min heap**, so we invert values.
+
+```python
+import heapq
+
+arr = [5, 10, 3, 20]
+max_heap = [-x for x in arr]
+heapq.heapify(max_heap)
+
+print(-heapq.heappop(max_heap))  # 20
+```
+
+---
+
+#  Heap Sort (VERY IMPORTANT)
+
+### Idea
+
+1. Build **max heap**
+2. Swap root with last element
+3. Reduce heap size
+4. Heapify down
+5. Repeat
+
+---
+
+### Example
+
+```
+Array: [4, 10, 3, 5, 1]
+Max Heap → [10, 5, 3, 4, 1]
+```
+
+Steps:
+
+```
+swap 10 & 1 → [1, 5, 3, 4, 10]
+heapify → [5, 4, 3, 1, 10]
+swap 5 & 1 → [1, 4, 3, 5, 10]
+...
+Sorted: [1, 3, 4, 5, 10]
+```
+
+---
+
+### Heap Sort Python Code
+
+```python
+def heapify(arr, n, i):
+    largest = i
+    left = 2*i + 1
+    right = 2*i + 2
+
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
+
+def heap_sort(arr):
+    n = len(arr)
+
+    # Build max heap
+    for i in range(n//2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+    # Extract elements
+    for i in range(n-1, 0, -1):
+        arr[0], arr[i] = arr[i], arr[0]
+        heapify(arr, i, 0)
+
+arr = [4, 10, 3, 5, 1]
+heap_sort(arr)
+print(arr)
+```
+
+---
+
+#  Time & Space Complexity
+
+| Operation | Time            |
+| --------- | --------------- |
+| Insert    | O(log n)        |
+| Delete    | O(log n)        |
+| Peek      | O(1)            |
+| Heapify   | O(n)            |
+| Heap Sort | O(n log n)      |
+| Space     | O(1) (in-place) |
+
+---
+
+#  Where Heaps Are Used
+
+* Priority Queue
+* Dijkstra Algorithm
+* Top K elements
+* Merge K sorted lists
+* Median of data stream
+* Task scheduling
+* Operating systems
+
+ 
+
+---
+
+#  HEAP SORT
+
+## What is Heap Sort?
+
+Heap Sort is a **comparison-based, in-place sorting algorithm** that uses a **heap data structure** (usually a **Max Heap**) to sort an array.
+
+👉 Final result: **ascending order**
+
+---
+
+## Why Max Heap?
+
+Because:
+
+* Max heap gives the **largest element at root**
+* We place the largest element at the **end** of the array
+* Reduce heap size and repeat
+
+---
+
+## Key Properties
+
+| Property         | Value             |
+| ---------------- | ----------------- |
+| Time Complexity  | `O(n log n)`      |
+| Space Complexity | `O(1)` (in-place) |
+| Stable           | ❌ No              |
+| Uses Recursion   | Optional          |
+| Extra Memory     | ❌ No              |
+
+---
+
+## Step-by-Step Idea
+
+### Given array:
+
+```
+[4, 10, 3, 5, 1]
+```
+
+---
+
+## STEP  Build a Max Heap
+
+Start heapifying from **last non-leaf node**
+
+```
+Last non-leaf index = n//2 - 1
+= 5//2 - 1 = 1
+```
+
+### Heapify process:
+
+```
+Initial: [4, 10, 3, 5, 1]
+
+Heapify index 1 → [4, 10, 3, 5, 1]
+Heapify index 0 → [10, 5, 3, 4, 1]
+```
+
+Now it’s a **max heap**
+
+```
+        10
+      /    \
+     5      3
+    / \
+   4   1
+```
+
+---
+
+## STEP  Extract Max (Sorting Phase)
+
+### Swap root with last element
+
+```
+Swap 10 and 1 → [1, 5, 3, 4, 10]
+```
+
+Heap size = `4`
+
+Heapify again:
+
+```
+[5, 4, 3, 1, 10]
+```
+
+---
+
+### Repeat
+
+```
+Swap 5 and 1 → [1, 4, 3, 5, 10]
+Heapify → [4, 1, 3, 5, 10]
+
+Swap 4 and 1 → [1, 3, 4, 5, 10]
+Heapify → [3, 1, 4, 5, 10]
+
+Swap 3 and 1 → [1, 3, 4, 5, 10]
+```
+
+---
+
+##  Final Sorted Array
+
+```
+[1, 3, 4, 5, 10]
+```
+
+---
+
+#  Core Logic Formula
+
+Index math:
+
+```
+parent = (i-1)//2
+left   = 2*i + 1
+right  = 2*i + 2
+```
+
+---
+
+#  Heap Sort Python Code 
+
+### Heapify Function
+
+```python
+def heapify(arr, n, i):
+    largest = i
+    left = 2*i + 1
+    right = 2*i + 2
+
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
+```
+
+---
+
+### Heap Sort Function
+
+```python
+def heap_sort(arr):
+    n = len(arr)
+
+    # 1️⃣ Build Max Heap
+    for i in range(n//2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+    # 2️⃣ Extract elements one by one
+    for i in range(n-1, 0, -1):
+        arr[0], arr[i] = arr[i], arr[0]
+        heapify(arr, i, 0)
+```
+
+---
+
+### Test
+
+```python
+arr = [4, 10, 3, 5, 1]
+heap_sort(arr)
+print(arr)
+```
+
+Output:
+
+```
+[1, 3, 4, 5, 10]
+```
+
+---
+
+# ⏱ Complexity Analysis
+
+| Case    | Time         |
+| ------- | ------------ |
+| Best    | `O(n log n)` |
+| Average | `O(n log n)` |
+| Worst   | `O(n log n)` |
+
+Space:
+
+```
+O(1)  (in-place)
+```
+
+---
  

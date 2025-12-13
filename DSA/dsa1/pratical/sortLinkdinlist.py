@@ -21,9 +21,7 @@ class Linkdinlist:
         while current:
             print(current.data,end='-->')
             current = current.next
-    
-   
-
+       
     def mergesort(self,head):
         
         if head is None or head.next is None :
