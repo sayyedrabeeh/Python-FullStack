@@ -356,9 +356,8 @@ console.log(window.screen.width, window.screen.height);
 * **DOM** = inside the page (content).
 * **BOM** = outside the page (browser features).
 
----
-Ah! You want to understand **Virtual DOM (VDOM)** — this is a key concept in **React**. Let’s go step by step, clearly explaining what it is, why it exists, and how it works.
-
+ 
+  
 ---
 
 ## **1. What is Virtual DOM?**
@@ -440,9 +439,10 @@ function Counter() {
 
 * Virtual DOM **abstracts the real DOM**.
 * React efficiently updates only the necessary parts.
-* This is why React encourages **declarative programming**: you just declare the UI, React handles the DOM updates under the hood.
+* This is why React encourages **declarative programming**: you just declare the UI, React handles 
+the DOM updates under the hood.
 
----
+
 ---
 
 ## **1. What is a Single Page Application (SPA)?**
