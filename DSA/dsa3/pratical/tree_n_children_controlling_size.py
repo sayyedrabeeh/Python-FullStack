@@ -17,7 +17,7 @@ class Tree:
             return
         queue = [self.root]
         while queue:
-            i=0
+        
             current = queue.pop(0)
             if len(current.children) < self.size:
                 current.children.append(new_node)
